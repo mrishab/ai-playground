@@ -1,0 +1,16 @@
+{
+  "name": "AIspace Studio",
+  "short_name": "AIspace",
+  "description": "Interactive AI Algorithm Studio and Learning Suite",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090d16",
+  "theme_color": "#090d16",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
