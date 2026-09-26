@@ -1,0 +1,53 @@
+import React from "react";
+import { CheckCircle2, XCircle } from "lucide-react";
+import { Badge } from "../ui/Badge";
+import { QuizScore } from "./searchTypes";
+
+interface SearchQuizBannerProps {
+  isQuizMode: boolean;
+  quizScore: QuizScore;
+  quizFeedback: string | null;
+}
+
+export function SearchQuizBanner({
+  isQuizMode,
+  quizScore,
+  quizFeedback,
+}: SearchQuizBannerProps) {
+  if (!isQuizMode && !quizFeedback) return null;
+
+  return (
+    <>
+      {isQuizMode && (
+        <div className="bg-indigo-950/40 border-b border-indigo-500/30 px-4 py-2.5 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <Badge variant="purple">Quiz Mode Active</Badge>
+            <span className="text-indigo-200">
+              Which node will be expanded next? Click on the node on the graph!
+            </span>
+          </div>
+          <div className="font-semibold text-indigo-300">
+            Score: {quizScore.correct} / {quizScore.total}
+          </div>
+        </div>
+      )}
+
+      {quizFeedback && (
+        <div
+          className={`px-4 py-2 text-xs border-b flex items-center gap-2 ${
+            quizFeedback.startsWith("Correct")
+              ? "bg-emerald-950/40 border-emerald-500/30 text-emerald-300"
+              : "bg-rose-950/40 border-rose-500/30 text-rose-300"
+          }`}
+        >
+          {quizFeedback.startsWith("Correct") ? (
+            <CheckCircle2 className="h-4 w-4" />
+          ) : (
+            <XCircle className="h-4 w-4" />
+          )}
+          <span>{quizFeedback}</span>
+        </div>
+      )}
+    </>
+  );
+}
