@@ -1,0 +1,34 @@
+import React from "react";
+import { Play, Pause, StepForward, FastForward, RotateCcw } from "lucide-react";
+import { Button } from "../ui/Button";
+
+interface DTreeActionButtonsProps {
+  onAutoBuild: () => void;
+  onReset: () => void;
+  onStepId3: () => void;
+  isPlaying: boolean;
+  onTogglePlay: () => void;
+  canStep: boolean;
+}
+
+export function DTreeActionButtons(p: DTreeActionButtonsProps) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <Button variant="outline" size="sm" onClick={p.onStepId3} disabled={!p.canStep} className="gap-1 h-8 text-xs font-medium">
+        <StepForward className="h-3.5 w-3.5" />
+        Step (ID3)
+      </Button>
+      <Button variant="outline" size="sm" onClick={p.onTogglePlay} disabled={!p.canStep} className="h-8 px-2" title={p.isPlaying ? "Pause auto-split" : "Auto-split tree"}>
+        {p.isPlaying ? <Pause className="h-3.5 w-3.5 text-amber-500 fill-amber-500" /> : <Play className="h-3.5 w-3.5" />}
+      </Button>
+      <Button variant="default" size="sm" onClick={p.onAutoBuild} className="gap-1.5 h-8 font-semibold">
+        <FastForward className="h-3.5 w-3.5 fill-current" />
+        Auto-Build Full Tree (ID3)
+      </Button>
+      <Button variant="ghost" size="sm" onClick={p.onReset} className="gap-1 h-8 text-xs text-muted-foreground hover:text-foreground">
+        <RotateCcw className="h-3.5 w-3.5" />
+        Reset
+      </Button>
+    </div>
+  );
+}
