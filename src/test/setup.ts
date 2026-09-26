@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 // Mock canvas getContext for tests
 HTMLCanvasElement.prototype.getContext = (() => {
@@ -6,11 +6,11 @@ HTMLCanvasElement.prototype.getContext = (() => {
     fillRect: () => {},
     clearRect: () => {},
     getImageData: (x: number, y: number, w: number, h: number) => ({
-      data: new Array(w * h * 4).fill(0)
+      data: new Array(w * h * 4).fill(0),
     }),
     putImageData: () => {},
     createImageData: (w: number, h: number) => ({
-      data: new Array(w * h * 4).fill(0)
+      data: new Array(w * h * 4).fill(0),
     }),
     setTransform: () => {},
     drawImage: () => {},
