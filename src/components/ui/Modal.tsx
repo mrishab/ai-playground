@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
-import { X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { cn } from "@/lib/utils";
+import { useModalLock } from "./useModalLock";
+import { ModalHeader } from "./ModalHeader";
 
 export function Modal({
   isOpen,
@@ -15,42 +16,28 @@ export function Modal({
   children: React.ReactNode;
   className?: string;
 }) {
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
-
+  useModalLock(isOpen, onClose);
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div
+        role="presentation"
         className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
-        onClick={onClose}
+        onMouseDown={onClose}
       />
-
-      {/* Modal Dialog */}
+      {/* react-doctor-disable-next-line react-doctor/prefer-html-dialog */}
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        onMouseDown={(e) => e.stopPropagation()}
         className={cn(
-          'relative z-50 w-full max-w-2xl rounded-xl border border-border bg-card p-6 shadow-2xl transition-all animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto',
-          className
+          "relative z-50 w-full max-w-2xl rounded-xl border border-border bg-card p-6 shadow-2xl transition-all animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto",
+          className,
         )}
       >
-        {title && (
-          <div className="flex items-center justify-between pb-4 mb-4 border-b border-border">
-            <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
-            <button
-              onClick={onClose}
-              className="rounded-md p-1 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-        )}
+        <ModalHeader title={title} onClose={onClose} />
         {children}
       </div>
     </div>
