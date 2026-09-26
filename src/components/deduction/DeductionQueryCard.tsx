@@ -1,0 +1,58 @@
+import React from "react";
+import { Play, Search } from "lucide-react";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { DeductionStepControls } from "./DeductionStepControls";
+
+interface DeductionQueryCardProps {
+  queryInput: string;
+  onQueryChange: (q: string) => void;
+  sampleQueries: string[];
+  onRunProof: () => void;
+  stepIndex: number;
+  totalSteps: number;
+  isPlaying: boolean;
+  onStepForward: () => void;
+  onStepBack: () => void;
+  onTogglePlay: () => void;
+  speed: number;
+  setSpeed: (v: number) => void;
+}
+
+export function DeductionQueryCard(p: DeductionQueryCardProps) {
+  return (
+    <Card className="p-4 space-y-3 border-border/80 shadow-md">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold text-muted-foreground">Interactive Query Goal</span>
+        <div className="flex items-center gap-1">
+          {p.sampleQueries.map((sq) => (
+            <button
+              key={sq}
+              onClick={() => p.onQueryChange(sq)}
+              className="text-[10px] px-2 py-0.5 rounded bg-secondary hover:bg-primary/20 text-muted-foreground hover:text-primary transition-colors font-mono"
+            >
+              {sq}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1">
+          <input
+            aria-label="Query input"
+            value={p.queryInput}
+            onChange={(e) => p.onQueryChange(e.target.value)}
+            placeholder="?- enter query (e.g. lit(l1))"
+            className="w-full h-9 pl-8 pr-3 text-xs font-mono rounded-lg border border-input bg-background/60 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+          <Search className="h-3.5 w-3.5 text-muted-foreground absolute left-2.5 top-3" />
+        </div>
+        <DeductionStepControls {...p} />
+        <Button onClick={p.onRunProof} className="h-9 gap-1.5 text-xs font-semibold">
+          <Play className="h-3 w-3 fill-current" />
+          Prove Query
+        </Button>
+      </div>
+    </Card>
+  );
+}
