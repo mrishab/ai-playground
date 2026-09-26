@@ -8,7 +8,7 @@ export interface SearchNode {
   h: number;
 }
 
-export interface SearchEdge {
+interface SearchEdge {
   from: string;
   to: string;
   cost: number;
@@ -24,1059 +24,1058 @@ export interface SearchGraph {
   edges: SearchEdge[];
 }
 
-export const SEARCH_GRAPHS: Record<string, SearchGraph> = {
-  "vancouver": {
-    "id": "vancouver",
-    "name": "Vancouver Travel Map",
-    "description": "Classic Vancouver city graph with heuristics estimating travel distance to Stanley Park (SP).",
-    "startNode": "UBC",
-    "goalNodes": [
-      "SP"
+export interface SearchGraphMap {
+  [graphId: string]: SearchGraph;
+}
+
+export const SEARCH_GRAPHS: SearchGraphMap = {
+  vancouver: {
+    id: "vancouver",
+    name: "Vancouver Travel Map",
+    description:
+      "Classic Vancouver city graph with heuristics estimating travel distance to Stanley Park (SP).",
+    startNode: "UBC",
+    goalNodes: ["SP"],
+    nodes: [
+      {
+        id: "UBC",
+        name: "UBC",
+        x: 70.0,
+        y: 195.8,
+        isStart: true,
+        isGoal: false,
+        h: 5.0,
+      },
+      {
+        id: "SP",
+        name: "SP",
+        x: 189.3,
+        y: 60.0,
+        isStart: false,
+        isGoal: true,
+        h: 0.0,
+      },
+      {
+        id: "DT",
+        name: "DT",
+        x: 299.8,
+        y: 60.7,
+        isStart: false,
+        isGoal: false,
+        h: 2.0,
+      },
+      {
+        id: "JB",
+        name: "JB",
+        x: 183.8,
+        y: 151.8,
+        isStart: false,
+        isGoal: false,
+        h: 3.0,
+      },
+      {
+        id: "KD",
+        name: "KD",
+        x: 195.8,
+        y: 253.3,
+        isStart: false,
+        isGoal: false,
+        h: 6.0,
+      },
+      {
+        id: "KB",
+        name: "KB",
+        x: 323.8,
+        y: 148.8,
+        isStart: false,
+        isGoal: false,
+        h: 3.0,
+      },
+      {
+        id: "MP",
+        name: "MP",
+        x: 404.8,
+        y: 261.5,
+        isStart: false,
+        isGoal: false,
+        h: 7.0,
+      },
+      {
+        id: "BBY",
+        name: "BBY",
+        x: 544.8,
+        y: 207.8,
+        isStart: false,
+        isGoal: false,
+        h: 8.0,
+      },
+      {
+        id: "AP",
+        name: "AP",
+        x: 205.7,
+        y: 360.0,
+        isStart: false,
+        isGoal: false,
+        h: 8.0,
+      },
+      {
+        id: "RM",
+        name: "RM",
+        x: 364.3,
+        y: 360.0,
+        isStart: false,
+        isGoal: false,
+        h: 9.0,
+      },
+      {
+        id: "SRY",
+        name: "SRY",
+        x: 570.0,
+        y: 355.5,
+        isStart: false,
+        isGoal: false,
+        h: 29.0,
+      },
     ],
-    "nodes": [
+    edges: [
       {
-        "id": "UBC",
-        "name": "UBC",
-        "x": 70.0,
-        "y": 195.8,
-        "isStart": true,
-        "isGoal": false,
-        "h": 5.0
+        from: "UBC",
+        to: "JB",
+        cost: 3.0,
       },
       {
-        "id": "SP",
-        "name": "SP",
-        "x": 189.3,
-        "y": 60.0,
-        "isStart": false,
-        "isGoal": true,
-        "h": 0.0
+        from: "UBC",
+        to: "KD",
+        cost: 3.0,
       },
       {
-        "id": "DT",
-        "name": "DT",
-        "x": 299.8,
-        "y": 60.7,
-        "isStart": false,
-        "isGoal": false,
-        "h": 2.0
+        from: "DT",
+        to: "SP",
+        cost: 2.0,
       },
       {
-        "id": "JB",
-        "name": "JB",
-        "x": 183.8,
-        "y": 151.8,
-        "isStart": false,
-        "isGoal": false,
-        "h": 3.0
+        from: "JB",
+        to: "KB",
+        cost: 4.0,
       },
       {
-        "id": "KD",
-        "name": "KD",
-        "x": 195.8,
-        "y": 253.3,
-        "isStart": false,
-        "isGoal": false,
-        "h": 6.0
+        from: "KD",
+        to: "JB",
+        cost: 4.0,
       },
       {
-        "id": "KB",
-        "name": "KB",
-        "x": 323.8,
-        "y": 148.8,
-        "isStart": false,
-        "isGoal": false,
-        "h": 3.0
+        from: "KD",
+        to: "MP",
+        cost: 3.0,
       },
       {
-        "id": "MP",
-        "name": "MP",
-        "x": 404.8,
-        "y": 261.5,
-        "isStart": false,
-        "isGoal": false,
-        "h": 7.0
+        from: "KB",
+        to: "DT",
+        cost: 2.0,
       },
       {
-        "id": "BBY",
-        "name": "BBY",
-        "x": 544.8,
-        "y": 207.8,
-        "isStart": false,
-        "isGoal": false,
-        "h": 8.0
+        from: "KB",
+        to: "BBY",
+        cost: 6.0,
       },
       {
-        "id": "AP",
-        "name": "AP",
-        "x": 205.7,
-        "y": 360.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 8.0
+        from: "MP",
+        to: "KB",
+        cost: 4.0,
       },
       {
-        "id": "RM",
-        "name": "RM",
-        "x": 364.3,
-        "y": 360.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 9.0
+        from: "MP",
+        to: "BBY",
+        cost: 5.0,
       },
       {
-        "id": "SRY",
-        "name": "SRY",
-        "x": 570.0,
-        "y": 355.5,
-        "isStart": false,
-        "isGoal": false,
-        "h": 29.0
-      }
+        from: "MP",
+        to: "RM",
+        cost: 3.0,
+      },
+      {
+        from: "RM",
+        to: "AP",
+        cost: 3.0,
+      },
+      {
+        from: "RM",
+        to: "SRY",
+        cost: 21.0,
+      },
+      {
+        from: "SRY",
+        to: "BBY",
+        cost: 22.0,
+      },
     ],
-    "edges": [
-      {
-        "from": "UBC",
-        "to": "JB",
-        "cost": 3.0
-      },
-      {
-        "from": "UBC",
-        "to": "KD",
-        "cost": 3.0
-      },
-      {
-        "from": "DT",
-        "to": "SP",
-        "cost": 2.0
-      },
-      {
-        "from": "JB",
-        "to": "KB",
-        "cost": 4.0
-      },
-      {
-        "from": "KD",
-        "to": "JB",
-        "cost": 4.0
-      },
-      {
-        "from": "KD",
-        "to": "MP",
-        "cost": 3.0
-      },
-      {
-        "from": "KB",
-        "to": "DT",
-        "cost": 2.0
-      },
-      {
-        "from": "KB",
-        "to": "BBY",
-        "cost": 6.0
-      },
-      {
-        "from": "MP",
-        "to": "KB",
-        "cost": 4.0
-      },
-      {
-        "from": "MP",
-        "to": "BBY",
-        "cost": 5.0
-      },
-      {
-        "from": "MP",
-        "to": "RM",
-        "cost": 3.0
-      },
-      {
-        "from": "RM",
-        "to": "AP",
-        "cost": 3.0
-      },
-      {
-        "from": "RM",
-        "to": "SRY",
-        "cost": 21.0
-      },
-      {
-        "from": "SRY",
-        "to": "BBY",
-        "cost": 22.0
-      }
-    ]
   },
-  "simpletree": {
-    "id": "simpletree",
-    "name": "Simple Tree Graph",
-    "description": "A hierarchical search tree ideal for comparing Depth-First, Breadth-First, and A* expansions.",
-    "startNode": "S",
-    "goalNodes": [
-      "G"
+  simpletree: {
+    id: "simpletree",
+    name: "Simple Tree Graph",
+    description:
+      "A hierarchical search tree ideal for comparing Depth-First, Breadth-First, and A* expansions.",
+    startNode: "S",
+    goalNodes: ["G"],
+    nodes: [
+      {
+        id: "S",
+        name: "S",
+        x: 293.5,
+        y: 60.0,
+        isStart: true,
+        isGoal: false,
+        h: 26.0,
+      },
+      {
+        id: "N1",
+        name: "N1",
+        x: 190.9,
+        y: 140.9,
+        isStart: false,
+        isGoal: false,
+        h: 25.1,
+      },
+      {
+        id: "N2",
+        name: "N2",
+        x: 409.4,
+        y: 142.2,
+        isStart: false,
+        isGoal: false,
+        h: 16.4,
+      },
+      {
+        id: "N3",
+        name: "N3",
+        x: 83.2,
+        y: 249.1,
+        isStart: false,
+        isGoal: false,
+        h: 27.6,
+      },
+      {
+        id: "N4",
+        name: "N4",
+        x: 233.9,
+        y: 240.0,
+        isStart: false,
+        isGoal: false,
+        h: 18.1,
+      },
+      {
+        id: "N5",
+        name: "N5",
+        x: 392.8,
+        y: 246.5,
+        isStart: false,
+        isGoal: false,
+        h: 8.8,
+      },
+      {
+        id: "N6",
+        name: "N6",
+        x: 546.8,
+        y: 242.6,
+        isStart: false,
+        isGoal: false,
+        h: 8.5,
+      },
+      {
+        id: "N7",
+        name: "N7",
+        x: 70.0,
+        y: 360.0,
+        isStart: false,
+        isGoal: false,
+        h: 28.0,
+      },
+      {
+        id: "N8",
+        name: "N8",
+        x: 204.1,
+        y: 337.8,
+        isStart: false,
+        isGoal: false,
+        h: 18.7,
+      },
+      {
+        id: "N9",
+        name: "N9",
+        x: 331.6,
+        y: 333.9,
+        isStart: false,
+        isGoal: false,
+        h: 10.0,
+      },
+      {
+        id: "G",
+        name: "G",
+        x: 477.3,
+        y: 323.5,
+        isStart: false,
+        isGoal: true,
+        h: 0.0,
+      },
+      {
+        id: "N10",
+        name: "N10",
+        x: 570.0,
+        y: 339.1,
+        isStart: false,
+        isGoal: false,
+        h: 6.5,
+      },
     ],
-    "nodes": [
+    edges: [
       {
-        "id": "S",
-        "name": "S",
-        "x": 293.5,
-        "y": 60.0,
-        "isStart": true,
-        "isGoal": false,
-        "h": 26.0
+        from: "S",
+        to: "N1",
+        cost: 9.9,
       },
       {
-        "id": "N1",
-        "name": "N1",
-        "x": 190.9,
-        "y": 140.9,
-        "isStart": false,
-        "isGoal": false,
-        "h": 25.1
+        from: "S",
+        to: "N2",
+        cost: 10.6,
       },
       {
-        "id": "N2",
-        "name": "N2",
-        "x": 409.4,
-        "y": 142.2,
-        "isStart": false,
-        "isGoal": false,
-        "h": 16.4
+        from: "N1",
+        to: "N3",
+        cost: 11.9,
       },
       {
-        "id": "N3",
-        "name": "N3",
-        "x": 83.2,
-        "y": 249.1,
-        "isStart": false,
-        "isGoal": false,
-        "h": 27.6
+        from: "N1",
+        to: "N4",
+        cost: 9.1,
       },
       {
-        "id": "N4",
-        "name": "N4",
-        "x": 233.9,
-        "y": 240.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 18.1
+        from: "N2",
+        to: "N5",
+        cost: 9.1,
       },
       {
-        "id": "N5",
-        "name": "N5",
-        "x": 392.8,
-        "y": 246.5,
-        "isStart": false,
-        "isGoal": false,
-        "h": 8.8
+        from: "N2",
+        to: "N6",
+        cost: 12.8,
       },
       {
-        "id": "N6",
-        "name": "N6",
-        "x": 546.8,
-        "y": 242.6,
-        "isStart": false,
-        "isGoal": false,
-        "h": 8.5
+        from: "N3",
+        to: "N7",
+        cost: 9.6,
       },
       {
-        "id": "N7",
-        "name": "N7",
-        "x": 70.0,
-        "y": 360.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 28.0
+        from: "N4",
+        to: "N8",
+        cost: 8.7,
       },
       {
-        "id": "N8",
-        "name": "N8",
-        "x": 204.1,
-        "y": 337.8,
-        "isStart": false,
-        "isGoal": false,
-        "h": 18.7
+        from: "N5",
+        to: "N9",
+        cost: 8.6,
       },
       {
-        "id": "N9",
-        "name": "N9",
-        "x": 331.6,
-        "y": 333.9,
-        "isStart": false,
-        "isGoal": false,
-        "h": 10.0
+        from: "N5",
+        to: "G",
+        cost: 8.8,
       },
       {
-        "id": "G",
-        "name": "G",
-        "x": 477.3,
-        "y": 323.5,
-        "isStart": false,
-        "isGoal": true,
-        "h": 0.0
+        from: "N6",
+        to: "N10",
+        cost: 8.5,
       },
-      {
-        "id": "N10",
-        "name": "N10",
-        "x": 570.0,
-        "y": 339.1,
-        "isStart": false,
-        "isGoal": false,
-        "h": 6.5
-      }
     ],
-    "edges": [
-      {
-        "from": "S",
-        "to": "N1",
-        "cost": 9.9
-      },
-      {
-        "from": "S",
-        "to": "N2",
-        "cost": 10.6
-      },
-      {
-        "from": "N1",
-        "to": "N3",
-        "cost": 11.9
-      },
-      {
-        "from": "N1",
-        "to": "N4",
-        "cost": 9.1
-      },
-      {
-        "from": "N2",
-        "to": "N5",
-        "cost": 9.1
-      },
-      {
-        "from": "N2",
-        "to": "N6",
-        "cost": 12.8
-      },
-      {
-        "from": "N3",
-        "to": "N7",
-        "cost": 9.6
-      },
-      {
-        "from": "N4",
-        "to": "N8",
-        "cost": 8.7
-      },
-      {
-        "from": "N5",
-        "to": "N9",
-        "cost": 8.6
-      },
-      {
-        "from": "N5",
-        "to": "G",
-        "cost": 8.8
-      },
-      {
-        "from": "N6",
-        "to": "N10",
-        "cost": 8.5
-      }
-    ]
   },
-  "misleadingheuristic": {
-    "id": "misleadingheuristic",
-    "name": "Misleading Heuristic Graph",
-    "description": "Demonstrates how Greedy Best-First search gets lured down a costly path while A* recovers the optimal path.",
-    "startNode": "Node 0",
-    "goalNodes": [
-      "Node 8"
+  misleadingheuristic: {
+    id: "misleadingheuristic",
+    name: "Misleading Heuristic Graph",
+    description:
+      "Demonstrates Greedy search lured by heuristic estimates while A* finds the optimal path.",
+    startNode: "Node 0",
+    goalNodes: ["Node 8"],
+    nodes: [
+      {
+        id: "Node 0",
+        name: "Node 0",
+        x: 250.3,
+        y: 114.1,
+        isStart: true,
+        isGoal: false,
+        h: 28.9,
+      },
+      {
+        id: "Node 1",
+        name: "Node 1",
+        x: 207.9,
+        y: 172.7,
+        isStart: false,
+        isGoal: false,
+        h: 23.7,
+      },
+      {
+        id: "Node 2",
+        name: "Node 2",
+        x: 237.7,
+        y: 231.3,
+        isStart: false,
+        isGoal: false,
+        h: 17.0,
+      },
+      {
+        id: "Node 3",
+        name: "Node 3",
+        x: 366.2,
+        y: 271.2,
+        isStart: false,
+        isGoal: false,
+        h: 10.0,
+      },
+      {
+        id: "Node 4",
+        name: "Node 4",
+        x: 476.0,
+        y: 239.3,
+        isStart: false,
+        isGoal: false,
+        h: 15.0,
+      },
+      {
+        id: "Node 5",
+        name: "Node 5",
+        x: 392.9,
+        y: 172.7,
+        isStart: false,
+        isGoal: false,
+        h: 21.1,
+      },
+      {
+        id: "Node 6",
+        name: "Node 6",
+        x: 70.0,
+        y: 111.5,
+        isStart: false,
+        isGoal: false,
+        h: 34.2,
+      },
+      {
+        id: "Node 7",
+        name: "Node 7",
+        x: 91.9,
+        y: 337.8,
+        isStart: false,
+        isGoal: false,
+        h: 18.4,
+      },
+      {
+        id: "Node 8",
+        name: "Node 8",
+        x: 377.2,
+        y: 360.0,
+        isStart: false,
+        isGoal: true,
+        h: 0.0,
+      },
+      {
+        id: "Node 9",
+        name: "Node 9",
+        x: 165.6,
+        y: 60.0,
+        isStart: false,
+        isGoal: false,
+        h: 36.4,
+      },
+      {
+        id: "Node 10",
+        name: "Node 10",
+        x: 436.8,
+        y: 104.4,
+        isStart: false,
+        isGoal: false,
+        h: 29.0,
+      },
+      {
+        id: "Node 11",
+        name: "Node 11",
+        x: 570.0,
+        y: 75.1,
+        isStart: false,
+        isGoal: false,
+        h: 34.4,
+      },
     ],
-    "nodes": [
+    edges: [
       {
-        "id": "Node 0",
-        "name": "Node 0",
-        "x": 250.3,
-        "y": 114.1,
-        "isStart": true,
-        "isGoal": false,
-        "h": 28.9
+        from: "Node 0",
+        to: "Node 1",
+        cost: 7.1,
       },
       {
-        "id": "Node 1",
-        "name": "Node 1",
-        "x": 207.9,
-        "y": 172.7,
-        "isStart": false,
-        "isGoal": false,
-        "h": 23.7
+        from: "Node 0",
+        to: "Node 6",
+        cost: 11.5,
       },
       {
-        "id": "Node 2",
-        "name": "Node 2",
-        "x": 237.7,
-        "y": 231.3,
-        "isStart": false,
-        "isGoal": false,
-        "h": 17.0
+        from: "Node 0",
+        to: "Node 10",
+        cost: 12.0,
       },
       {
-        "id": "Node 3",
-        "name": "Node 3",
-        "x": 366.2,
-        "y": 271.2,
-        "isStart": false,
-        "isGoal": false,
-        "h": 10.0
+        from: "Node 1",
+        to: "Node 2",
+        cost: 6.9,
       },
       {
-        "id": "Node 4",
-        "name": "Node 4",
-        "x": 476.0,
-        "y": 239.3,
-        "isStart": false,
-        "isGoal": false,
-        "h": 15.0
+        from: "Node 2",
+        to: "Node 3",
+        cost: 9.4,
       },
       {
-        "id": "Node 5",
-        "name": "Node 5",
-        "x": 392.9,
-        "y": 172.7,
-        "isStart": false,
-        "isGoal": false,
-        "h": 21.1
+        from: "Node 3",
+        to: "Node 4",
+        cost: 7.9,
       },
       {
-        "id": "Node 6",
-        "name": "Node 6",
-        "x": 70.0,
-        "y": 111.5,
-        "isStart": false,
-        "isGoal": false,
-        "h": 34.2
+        from: "Node 4",
+        to: "Node 5",
+        cost: 9.2,
       },
       {
-        "id": "Node 7",
-        "name": "Node 7",
-        "x": 91.9,
-        "y": 337.8,
-        "isStart": false,
-        "isGoal": false,
-        "h": 18.4
+        from: "Node 5",
+        to: "Node 2",
+        cost: 11.9,
       },
       {
-        "id": "Node 8",
-        "name": "Node 8",
-        "x": 377.2,
-        "y": 360.0,
-        "isStart": false,
-        "isGoal": true,
-        "h": 0.0
+        from: "Node 6",
+        to: "Node 7",
+        cost: 25.5,
       },
       {
-        "id": "Node 9",
-        "name": "Node 9",
-        "x": 165.6,
-        "y": 60.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 36.4
+        from: "Node 6",
+        to: "Node 9",
+        cost: 8.4,
       },
       {
-        "id": "Node 10",
-        "name": "Node 10",
-        "x": 436.8,
-        "y": 104.4,
-        "isStart": false,
-        "isGoal": false,
-        "h": 29.0
+        from: "Node 7",
+        to: "Node 8",
+        cost: 18.4,
       },
       {
-        "id": "Node 11",
-        "name": "Node 11",
-        "x": 570.0,
-        "y": 75.1,
-        "isStart": false,
-        "isGoal": false,
-        "h": 34.4
-      }
+        from: "Node 10",
+        to: "Node 11",
+        cost: 9.1,
+      },
     ],
-    "edges": [
-      {
-        "from": "Node 0",
-        "to": "Node 1",
-        "cost": 7.1
-      },
-      {
-        "from": "Node 0",
-        "to": "Node 6",
-        "cost": 11.5
-      },
-      {
-        "from": "Node 0",
-        "to": "Node 10",
-        "cost": 12.0
-      },
-      {
-        "from": "Node 1",
-        "to": "Node 2",
-        "cost": 6.9
-      },
-      {
-        "from": "Node 2",
-        "to": "Node 3",
-        "cost": 9.4
-      },
-      {
-        "from": "Node 3",
-        "to": "Node 4",
-        "cost": 7.9
-      },
-      {
-        "from": "Node 4",
-        "to": "Node 5",
-        "cost": 9.2
-      },
-      {
-        "from": "Node 5",
-        "to": "Node 2",
-        "cost": 11.9
-      },
-      {
-        "from": "Node 6",
-        "to": "Node 7",
-        "cost": 25.5
-      },
-      {
-        "from": "Node 6",
-        "to": "Node 9",
-        "cost": 8.4
-      },
-      {
-        "from": "Node 7",
-        "to": "Node 8",
-        "cost": 18.4
-      },
-      {
-        "from": "Node 10",
-        "to": "Node 11",
-        "cost": 9.1
-      }
-    ]
   },
-  "multiplepathpruning": {
-    "id": "multiplepathpruning",
-    "name": "Multiple Path Pruning Graph",
-    "description": "Illustrates how multiple paths reaching the same node can be safely pruned to prevent exponential exploration.",
-    "startNode": "Node 0",
-    "goalNodes": [
-      "Node 8"
+  multiplepathpruning: {
+    id: "multiplepathpruning",
+    name: "Multiple Path Pruning Graph",
+    description:
+      "Demonstrates pruning redundant paths to prevent exponential exploration.",
+    startNode: "Node 0",
+    goalNodes: ["Node 8"],
+    nodes: [
+      {
+        id: "Node 0",
+        name: "Node 0",
+        x: 72.4,
+        y: 60.0,
+        isStart: true,
+        isGoal: false,
+        h: 0.0,
+      },
+      {
+        id: "Node 1",
+        name: "Node 1",
+        x: 70.0,
+        y: 205.9,
+        isStart: false,
+        isGoal: false,
+        h: 0.0,
+      },
+      {
+        id: "Node 2",
+        name: "Node 2",
+        x: 72.4,
+        y: 360.0,
+        isStart: false,
+        isGoal: false,
+        h: 0.0,
+      },
+      {
+        id: "Node 3",
+        name: "Node 3",
+        x: 318.8,
+        y: 60.0,
+        isStart: false,
+        isGoal: false,
+        h: 0.0,
+      },
+      {
+        id: "Node 4",
+        name: "Node 4",
+        x: 321.2,
+        y: 205.9,
+        isStart: false,
+        isGoal: false,
+        h: 0.0,
+      },
+      {
+        id: "Node 5",
+        name: "Node 5",
+        x: 323.6,
+        y: 360.0,
+        isStart: false,
+        isGoal: false,
+        h: 0.0,
+      },
+      {
+        id: "Node 6",
+        name: "Node 6",
+        x: 565.2,
+        y: 60.0,
+        isStart: false,
+        isGoal: false,
+        h: 0.0,
+      },
+      {
+        id: "Node 7",
+        name: "Node 7",
+        x: 567.6,
+        y: 207.5,
+        isStart: false,
+        isGoal: false,
+        h: 0.0,
+      },
+      {
+        id: "Node 8",
+        name: "Node 8",
+        x: 570.0,
+        y: 360.0,
+        isStart: false,
+        isGoal: true,
+        h: 0.0,
+      },
     ],
-    "nodes": [
+    edges: [
       {
-        "id": "Node 0",
-        "name": "Node 0",
-        "x": 72.4,
-        "y": 60.0,
-        "isStart": true,
-        "isGoal": false,
-        "h": 0.0
+        from: "Node 0",
+        to: "Node 1",
+        cost: 1.0,
       },
       {
-        "id": "Node 1",
-        "name": "Node 1",
-        "x": 70.0,
-        "y": 205.9,
-        "isStart": false,
-        "isGoal": false,
-        "h": 0.0
+        from: "Node 0",
+        to: "Node 3",
+        cost: 1.0,
       },
       {
-        "id": "Node 2",
-        "name": "Node 2",
-        "x": 72.4,
-        "y": 360.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 0.0
+        from: "Node 0",
+        to: "Node 4",
+        cost: 1.0,
       },
       {
-        "id": "Node 3",
-        "name": "Node 3",
-        "x": 318.8,
-        "y": 60.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 0.0
+        from: "Node 1",
+        to: "Node 2",
+        cost: 1.0,
       },
       {
-        "id": "Node 4",
-        "name": "Node 4",
-        "x": 321.2,
-        "y": 205.9,
-        "isStart": false,
-        "isGoal": false,
-        "h": 0.0
+        from: "Node 1",
+        to: "Node 4",
+        cost: 1.0,
       },
       {
-        "id": "Node 5",
-        "name": "Node 5",
-        "x": 323.6,
-        "y": 360.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 0.0
+        from: "Node 2",
+        to: "Node 5",
+        cost: 1.0,
       },
       {
-        "id": "Node 6",
-        "name": "Node 6",
-        "x": 565.2,
-        "y": 60.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 0.0
+        from: "Node 2",
+        to: "Node 4",
+        cost: 1.0,
       },
       {
-        "id": "Node 7",
-        "name": "Node 7",
-        "x": 567.6,
-        "y": 207.5,
-        "isStart": false,
-        "isGoal": false,
-        "h": 0.0
+        from: "Node 3",
+        to: "Node 6",
+        cost: 1.0,
       },
       {
-        "id": "Node 8",
-        "name": "Node 8",
-        "x": 570.0,
-        "y": 360.0,
-        "isStart": false,
-        "isGoal": true,
-        "h": 0.0
-      }
+        from: "Node 3",
+        to: "Node 4",
+        cost: 1.0,
+      },
+      {
+        from: "Node 4",
+        to: "Node 7",
+        cost: 1.0,
+      },
+      {
+        from: "Node 4",
+        to: "Node 5",
+        cost: 1.0,
+      },
+      {
+        from: "Node 4",
+        to: "Node 6",
+        cost: 1.0,
+      },
+      {
+        from: "Node 4",
+        to: "Node 8",
+        cost: 1.0,
+      },
+      {
+        from: "Node 5",
+        to: "Node 8",
+        cost: 1.0,
+      },
+      {
+        from: "Node 6",
+        to: "Node 7",
+        cost: 1.0,
+      },
+      {
+        from: "Node 7",
+        to: "Node 8",
+        cost: 1.0,
+      },
     ],
-    "edges": [
-      {
-        "from": "Node 0",
-        "to": "Node 1",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 0",
-        "to": "Node 3",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 0",
-        "to": "Node 4",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 1",
-        "to": "Node 2",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 1",
-        "to": "Node 4",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 2",
-        "to": "Node 5",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 2",
-        "to": "Node 4",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 3",
-        "to": "Node 6",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 3",
-        "to": "Node 4",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 4",
-        "to": "Node 7",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 4",
-        "to": "Node 5",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 4",
-        "to": "Node 6",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 4",
-        "to": "Node 8",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 5",
-        "to": "Node 8",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 6",
-        "to": "Node 7",
-        "cost": 1.0
-      },
-      {
-        "from": "Node 7",
-        "to": "Node 8",
-        "cost": 1.0
-      }
-    ]
   },
-  "cyclicdelivery": {
-    "id": "cyclicdelivery",
-    "name": "Cyclic Delivery Robot World",
-    "description": "A delivery navigation map containing cycles that tests cycle checking and infinite loop detection.",
-    "startNode": "o103",
-    "goalNodes": [
-      "r123"
+  cyclicdelivery: {
+    id: "cyclicdelivery",
+    name: "Cyclic Delivery Robot World",
+    description:
+      "Delivery graph containing cycles for evaluating cycle checking and loop prevention.",
+    startNode: "o103",
+    goalNodes: ["r123"],
+    nodes: [
+      {
+        id: "mail",
+        name: "mail",
+        x: 70.0,
+        y: 360.0,
+        isStart: false,
+        isGoal: false,
+        h: 26.0,
+      },
+      {
+        id: "ts",
+        name: "ts",
+        x: 149.5,
+        y: 360.0,
+        isStart: false,
+        isGoal: false,
+        h: 23.0,
+      },
+      {
+        id: "o103",
+        name: "o103",
+        x: 251.9,
+        y: 360.0,
+        isStart: true,
+        isGoal: false,
+        h: 21.0,
+      },
+      {
+        id: "o111",
+        name: "o111",
+        x: 570.0,
+        y: 360.0,
+        isStart: false,
+        isGoal: false,
+        h: 27.0,
+      },
+      {
+        id: "c1",
+        name: "c1",
+        x: 251.9,
+        y: 166.2,
+        isStart: false,
+        isGoal: false,
+        h: 6.0,
+      },
+      {
+        id: "b4",
+        name: "b4",
+        x: 376.1,
+        y: 297.6,
+        isStart: false,
+        isGoal: false,
+        h: 18.0,
+      },
+      {
+        id: "b3",
+        name: "b3",
+        x: 253.2,
+        y: 302.2,
+        isStart: false,
+        isGoal: false,
+        h: 17.0,
+      },
+      {
+        id: "b1",
+        name: "b1",
+        x: 253.2,
+        y: 251.8,
+        isStart: false,
+        isGoal: false,
+        h: 13.0,
+      },
+      {
+        id: "c2",
+        name: "c2",
+        x: 251.3,
+        y: 213.2,
+        isStart: false,
+        isGoal: false,
+        h: 10.0,
+      },
+      {
+        id: "c3",
+        name: "c3",
+        x: 374.4,
+        y: 214.4,
+        isStart: false,
+        isGoal: false,
+        h: 12.0,
+      },
+      {
+        id: "b2",
+        name: "b2",
+        x: 376.7,
+        y: 256.0,
+        isStart: false,
+        isGoal: false,
+        h: 15.0,
+      },
+      {
+        id: "o123",
+        name: "o123",
+        x: 255.3,
+        y: 130.1,
+        isStart: false,
+        isGoal: false,
+        h: 4.0,
+      },
+      {
+        id: "r123",
+        name: "r123",
+        x: 257.2,
+        y: 75.1,
+        isStart: false,
+        isGoal: true,
+        h: 0.0,
+      },
+      {
+        id: "o125",
+        name: "o125",
+        x: 169.0,
+        y: 126.8,
+        isStart: false,
+        isGoal: false,
+        h: 6.0,
+      },
+      {
+        id: "o119",
+        name: "o119",
+        x: 455.0,
+        y: 129.7,
+        isStart: false,
+        isGoal: false,
+        h: 11.0,
+      },
+      {
+        id: "o109",
+        name: "o109",
+        x: 479.6,
+        y: 359.2,
+        isStart: false,
+        isGoal: false,
+        h: 24.0,
+      },
+      {
+        id: "storage",
+        name: "storage",
+        x: 556.4,
+        y: 60.0,
+        isStart: false,
+        isGoal: false,
+        h: 12.0,
+      },
     ],
-    "nodes": [
+    edges: [
       {
-        "id": "mail",
-        "name": "mail",
-        "x": 70.0,
-        "y": 360.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 26.0
+        from: "ts",
+        to: "mail",
+        cost: 6.0,
       },
       {
-        "id": "ts",
-        "name": "ts",
-        "x": 149.5,
-        "y": 360.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 23.0
+        from: "o103",
+        to: "ts",
+        cost: 8.0,
       },
       {
-        "id": "o103",
-        "name": "o103",
-        "x": 251.9,
-        "y": 360.0,
-        "isStart": true,
-        "isGoal": false,
-        "h": 21.0
+        from: "o103",
+        to: "b3",
+        cost: 4.0,
       },
       {
-        "id": "o111",
-        "name": "o111",
-        "x": 570.0,
-        "y": 360.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 27.0
+        from: "b3",
+        to: "b4",
+        cost: 7.0,
       },
       {
-        "id": "c1",
-        "name": "c1",
-        "x": 251.9,
-        "y": 166.2,
-        "isStart": false,
-        "isGoal": false,
-        "h": 6.0
+        from: "b3",
+        to: "b1",
+        cost: 4.0,
       },
       {
-        "id": "b4",
-        "name": "b4",
-        "x": 376.1,
-        "y": 297.6,
-        "isStart": false,
-        "isGoal": false,
-        "h": 18.0
+        from: "b1",
+        to: "c2",
+        cost: 3.0,
       },
       {
-        "id": "b3",
-        "name": "b3",
-        "x": 253.2,
-        "y": 302.2,
-        "isStart": false,
-        "isGoal": false,
-        "h": 17.0
+        from: "c2",
+        to: "c1",
+        cost: 4.0,
       },
       {
-        "id": "b1",
-        "name": "b1",
-        "x": 253.2,
-        "y": 251.8,
-        "isStart": false,
-        "isGoal": false,
-        "h": 13.0
+        from: "c2",
+        to: "c3",
+        cost: 6.0,
       },
       {
-        "id": "c2",
-        "name": "c2",
-        "x": 251.3,
-        "y": 213.2,
-        "isStart": false,
-        "isGoal": false,
-        "h": 10.0
+        from: "c1",
+        to: "c3",
+        cost: 8.0,
       },
       {
-        "id": "c3",
-        "name": "c3",
-        "x": 374.4,
-        "y": 214.4,
-        "isStart": false,
-        "isGoal": false,
-        "h": 12.0
+        from: "b1",
+        to: "b2",
+        cost: 6.0,
       },
       {
-        "id": "b2",
-        "name": "b2",
-        "x": 376.7,
-        "y": 256.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 15.0
+        from: "b2",
+        to: "b4",
+        cost: 3.0,
       },
       {
-        "id": "o123",
-        "name": "o123",
-        "x": 255.3,
-        "y": 130.1,
-        "isStart": false,
-        "isGoal": false,
-        "h": 4.0
+        from: "o123",
+        to: "r123",
+        cost: 4.0,
       },
       {
-        "id": "r123",
-        "name": "r123",
-        "x": 257.2,
-        "y": 75.1,
-        "isStart": false,
-        "isGoal": true,
-        "h": 0.0
+        from: "o123",
+        to: "o125",
+        cost: 4.0,
       },
       {
-        "id": "o125",
-        "name": "o125",
-        "x": 169.0,
-        "y": 126.8,
-        "isStart": false,
-        "isGoal": false,
-        "h": 6.0
+        from: "o119",
+        to: "o123",
+        cost: 9.0,
       },
       {
-        "id": "o119",
-        "name": "o119",
-        "x": 455.0,
-        "y": 129.7,
-        "isStart": false,
-        "isGoal": false,
-        "h": 11.0
+        from: "o103",
+        to: "o109",
+        cost: 12.0,
       },
       {
-        "id": "o109",
-        "name": "o109",
-        "x": 479.6,
-        "y": 359.2,
-        "isStart": false,
-        "isGoal": false,
-        "h": 24.0
+        from: "b4",
+        to: "o109",
+        cost: 7.0,
       },
       {
-        "id": "storage",
-        "name": "storage",
-        "x": 556.4,
-        "y": 60.0,
-        "isStart": false,
-        "isGoal": false,
-        "h": 12.0
-      }
+        from: "o109",
+        to: "o111",
+        cost: 4.0,
+      },
+      {
+        from: "o109",
+        to: "o119",
+        cost: 16.0,
+      },
+      {
+        from: "o119",
+        to: "storage",
+        cost: 7.0,
+      },
+      {
+        from: "o125",
+        to: "o123",
+        cost: 4.0,
+      },
+      {
+        from: "r123",
+        to: "o123",
+        cost: 4.0,
+      },
+      {
+        from: "o123",
+        to: "o119",
+        cost: 9.0,
+      },
+      {
+        from: "storage",
+        to: "o119",
+        cost: 7.0,
+      },
+      {
+        from: "o119",
+        to: "o109",
+        cost: 16.0,
+      },
+      {
+        from: "o111",
+        to: "o109",
+        cost: 4.0,
+      },
+      {
+        from: "o109",
+        to: "o103",
+        cost: 12.0,
+      },
+      {
+        from: "ts",
+        to: "o103",
+        cost: 8.0,
+      },
+      {
+        from: "mail",
+        to: "ts",
+        cost: 6.0,
+      },
+      {
+        from: "b4",
+        to: "b3",
+        cost: 7.0,
+      },
+      {
+        from: "b4",
+        to: "b2",
+        cost: 3.0,
+      },
+      {
+        from: "b2",
+        to: "b1",
+        cost: 6.0,
+      },
+      {
+        from: "b1",
+        to: "b3",
+        cost: 4.0,
+      },
+      {
+        from: "c3",
+        to: "c2",
+        cost: 6.0,
+      },
+      {
+        from: "c1",
+        to: "c2",
+        cost: 4.0,
+      },
+      {
+        from: "c3",
+        to: "c1",
+        cost: 8.0,
+      },
     ],
-    "edges": [
-      {
-        "from": "ts",
-        "to": "mail",
-        "cost": 6.0
-      },
-      {
-        "from": "o103",
-        "to": "ts",
-        "cost": 8.0
-      },
-      {
-        "from": "o103",
-        "to": "b3",
-        "cost": 4.0
-      },
-      {
-        "from": "b3",
-        "to": "b4",
-        "cost": 7.0
-      },
-      {
-        "from": "b3",
-        "to": "b1",
-        "cost": 4.0
-      },
-      {
-        "from": "b1",
-        "to": "c2",
-        "cost": 3.0
-      },
-      {
-        "from": "c2",
-        "to": "c1",
-        "cost": 4.0
-      },
-      {
-        "from": "c2",
-        "to": "c3",
-        "cost": 6.0
-      },
-      {
-        "from": "c1",
-        "to": "c3",
-        "cost": 8.0
-      },
-      {
-        "from": "b1",
-        "to": "b2",
-        "cost": 6.0
-      },
-      {
-        "from": "b2",
-        "to": "b4",
-        "cost": 3.0
-      },
-      {
-        "from": "o123",
-        "to": "r123",
-        "cost": 4.0
-      },
-      {
-        "from": "o123",
-        "to": "o125",
-        "cost": 4.0
-      },
-      {
-        "from": "o119",
-        "to": "o123",
-        "cost": 9.0
-      },
-      {
-        "from": "o103",
-        "to": "o109",
-        "cost": 12.0
-      },
-      {
-        "from": "b4",
-        "to": "o109",
-        "cost": 7.0
-      },
-      {
-        "from": "o109",
-        "to": "o111",
-        "cost": 4.0
-      },
-      {
-        "from": "o109",
-        "to": "o119",
-        "cost": 16.0
-      },
-      {
-        "from": "o119",
-        "to": "storage",
-        "cost": 7.0
-      },
-      {
-        "from": "o125",
-        "to": "o123",
-        "cost": 4.0
-      },
-      {
-        "from": "r123",
-        "to": "o123",
-        "cost": 4.0
-      },
-      {
-        "from": "o123",
-        "to": "o119",
-        "cost": 9.0
-      },
-      {
-        "from": "storage",
-        "to": "o119",
-        "cost": 7.0
-      },
-      {
-        "from": "o119",
-        "to": "o109",
-        "cost": 16.0
-      },
-      {
-        "from": "o111",
-        "to": "o109",
-        "cost": 4.0
-      },
-      {
-        "from": "o109",
-        "to": "o103",
-        "cost": 12.0
-      },
-      {
-        "from": "ts",
-        "to": "o103",
-        "cost": 8.0
-      },
-      {
-        "from": "mail",
-        "to": "ts",
-        "cost": 6.0
-      },
-      {
-        "from": "b4",
-        "to": "b3",
-        "cost": 7.0
-      },
-      {
-        "from": "b4",
-        "to": "b2",
-        "cost": 3.0
-      },
-      {
-        "from": "b2",
-        "to": "b1",
-        "cost": 6.0
-      },
-      {
-        "from": "b1",
-        "to": "b3",
-        "cost": 4.0
-      },
-      {
-        "from": "c3",
-        "to": "c2",
-        "cost": 6.0
-      },
-      {
-        "from": "c1",
-        "to": "c2",
-        "cost": 4.0
-      },
-      {
-        "from": "c3",
-        "to": "c1",
-        "cost": 8.0
-      }
-    ]
-  }
+  },
 };
