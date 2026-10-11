@@ -35,7 +35,7 @@ export function WorkspaceHeader(props: WorkspaceHeaderProps) {
             items={props.prebuiltItems}
             selectedId={props.selectedPrebuiltId}
             onSelect={props.onSelectPrebuiltId}
-            onOpenGraphBuilder={() => props.setCurrentPane("graph_builder")}
+            onOpenGraphBuilder={props.onOpenGraphBuilder}
           />
           <WorkspaceAlgoMenu
             items={props.algorithmItems}

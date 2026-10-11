@@ -18,11 +18,10 @@ export function GraphBuilderRubberband({
       y1={sourceNode.y}
       x2={pointerPos.x}
       y2={pointerPos.y}
-      stroke="#3b82f6"
       strokeWidth={2}
       strokeDasharray="5 5"
       markerEnd="url(#gb-arrow)"
-      className="pointer-events-none"
+      className="stroke-primary pointer-events-none"
     />
   );
 }

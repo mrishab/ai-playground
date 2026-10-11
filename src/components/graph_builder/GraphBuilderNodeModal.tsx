@@ -9,17 +9,17 @@ interface GraphBuilderNodeModalProps {
   onClose: () => void;
 }
 
-export function GraphBuilderNodeModal({
-  node, onSave, onDelete, onClose,
-}: GraphBuilderNodeModalProps) {
+export function GraphBuilderNodeModal({ node, onSave, onDelete, onClose }: GraphBuilderNodeModalProps) {
   const [name, setName] = useState(node.name);
   const [h, setH] = useState(() => node.h.toString());
-  const [isStart, setIsStart] = useState(node.isStart);
-  const [isGoal, setIsGoal] = useState(node.isGoal);
+  const [isStart, setIsStart] = useState(node.isStart); const [isGoal, setIsGoal] = useState(node.isGoal);
+  const isSubmitting = React.useRef(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    onSave({ name, h: parseFloat(h) || 0, isStart, isGoal });
+    if (isSubmitting.current) return;
+    isSubmitting.current = true;
+    onSave({ name, h: Math.max(0, parseFloat(h) || 0), isStart, isGoal });
     onClose();
   };
 
@@ -34,7 +34,7 @@ export function GraphBuilderNodeModal({
           </div>
           <div>
             <label htmlFor="gb-node-h" className="text-muted-foreground block mb-1">Heuristic Value h(n)</label>
-            <input id="gb-node-h" aria-label="Heuristic Value h(n)" type="number" step="0.5" value={h} onChange={(e) => setH(e.target.value)} className="w-full px-2.5 py-1.5 rounded border border-input bg-background" />
+            <input id="gb-node-h" aria-label="Heuristic Value h(n)" type="number" min="0" step="0.5" value={h} onChange={(e) => setH(e.target.value)} className="w-full px-2.5 py-1.5 rounded border border-input bg-background" />
           </div>
           <div className="flex gap-4">
             <label className="flex items-center gap-1.5 cursor-pointer">

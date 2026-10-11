@@ -15,7 +15,7 @@ export function GraphBuilderCanvas({ gb }: GraphBuilderCanvasProps) {
   const srcNode = gb.connectingSourceId ? nodeMap.get(gb.connectingSourceId) || null : null;
 
   return (
-    <div className="relative w-full h-[420px] bg-slate-50 dark:bg-[#070a13] border-b border-border select-none overflow-hidden">
+    <div className="relative w-full h-[420px] bg-muted/20 dark:bg-card/40 border-b border-border select-none overflow-hidden">
       <svg
         ref={gb.svgRef}
         data-testid="gb-canvas-svg"
@@ -24,7 +24,7 @@ export function GraphBuilderCanvas({ gb }: GraphBuilderCanvasProps) {
         role="region"
         aria-label="Graph Builder Canvas"
         tabIndex={0}
-        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") gb.handleCanvasClick(e as unknown as React.MouseEvent<SVGSVGElement>); }}
+        onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && gb.mode === "add_node") gb.addNodeAt(320, 210); }}
         onClick={gb.handleCanvasClick}
         onMouseMove={ev.handleMouseMove}
         onMouseUp={ev.handleMouseUp}
@@ -33,10 +33,10 @@ export function GraphBuilderCanvas({ gb }: GraphBuilderCanvasProps) {
       >
         <defs>
           <pattern id="gb-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <circle cx="2" cy="2" r="1" className="fill-slate-300 dark:fill-slate-700" />
+            <circle cx="2" cy="2" r="1" className="fill-border" />
           </pattern>
           <marker id="gb-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1 L 9 5 L 0 9 z" fill="#94a3b8" />
+            <path d="M 0 1 L 9 5 L 0 9 z" className="fill-muted-foreground" />
           </marker>
         </defs>
         <rect width="100%" height="100%" fill="url(#gb-grid)" />

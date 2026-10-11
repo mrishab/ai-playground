@@ -23,12 +23,12 @@ export function GraphBuilderToolbar({ gb, onSolveGraph }: GraphBuilderToolbarPro
         <div data-testid="gb-drag-node-source" draggable onDragStart={(e) => e.dataTransfer.setData("text/plain", "new-node")} className="px-2.5 py-1 rounded bg-primary/10 border border-primary/30 text-primary cursor-grab active:cursor-grabbing font-medium flex items-center gap-1" title="Drag and drop onto canvas to place a node">
           <Sparkles className="w-3 h-3" /> Drag Node to Canvas
         </div>
-        <select aria-label="Load Graph Preset" onChange={(e) => {
+        <select aria-label="Load Graph Preset" value="" onChange={(e) => {
           if (e.target.value === "blank") gb.setGraph(BLANK_GRAPH);
           if (e.target.value === "triangle") gb.setGraph(TRIANGLE_PRESET);
           if (e.target.value === "grid") gb.setGraph(GRID_PRESET);
         }} className="h-8 px-2 text-xs rounded border border-input bg-card text-foreground">
-          <option value="">Load Preset...</option>
+          <option value="" disabled>Load Preset...</option>
           <option value="blank">Blank Canvas</option>
           <option value="triangle">Triangle Graph</option>
           <option value="grid">2x2 Grid</option>

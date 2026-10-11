@@ -10,14 +10,14 @@ export function GraphBuilderFooter({ graph }: { graph: SearchGraph }) {
         <Badge variant="cyan">{graph.nodes.length} Nodes</Badge>
         <Badge variant="outline">{graph.edges.length} Edges</Badge>
         {graph.startNode && (
-          <span className="text-emerald-500 font-medium">
-            Start: <strong>{graph.startNode}</strong>
-          </span>
+          <Badge variant="success">
+            Start: {graph.startNode}
+          </Badge>
         )}
         {graph.goalNodes.length > 0 && (
-          <span className="text-amber-500 font-medium">
-            Goals: <strong>{graph.goalNodes.join(", ")}</strong>
-          </span>
+          <Badge variant="warning">
+            Goals: {graph.goalNodes.join(", ")}
+          </Badge>
         )}
       </div>
 

@@ -3,6 +3,8 @@ import { SearchNode } from "@/data/searchProblems";
 import { GraphBuilderEdge } from "./graphBuilderTypes";
 import { computeEdgePoints } from "./graphBuilderMath";
 
+import { cn } from "@/lib/utils";
+
 interface GraphBuilderEdgeSvgProps {
   edge: GraphBuilderEdge;
   fromNode: SearchNode;
@@ -25,10 +27,9 @@ export function GraphBuilderEdgeSvg({
         y1={startY}
         x2={endX}
         y2={endY}
-        stroke={isSelected ? "#3b82f6" : "#94a3b8"}
         strokeWidth={isSelected ? 3 : 2}
         markerEnd="url(#gb-arrow)"
-        className="transition-colors group-hover:stroke-primary"
+        className={cn("transition-colors group-hover:stroke-primary", isSelected ? "stroke-primary" : "stroke-muted-foreground/50")}
       />
       <rect
         x={midX - 16}
@@ -36,10 +37,8 @@ export function GraphBuilderEdgeSvg({
         width={32}
         height={20}
         rx={6}
-        fill="#ffffff"
-        stroke={isSelected ? "#3b82f6" : "#cbd5e1"}
         strokeWidth={1.5}
-        className="dark:fill-slate-800 shadow-sm"
+        className={cn("shadow-xs fill-card", isSelected ? "stroke-primary" : "stroke-border")}
       />
       <text
         x={midX}

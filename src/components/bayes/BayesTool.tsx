@@ -31,9 +31,7 @@ export function BayesTool() {
         { label: "Nodes", value: b.network.nodes.length, variant: "cyan" },
         { label: "Observed", value: obsCount, variant: "success" },
       ]}
-      controls={{
-        onReset: b.initializeNetwork,
-      }}
+      controls={{ onReset: b.initializeNetwork }}
       animationSlot={
         <div className="space-y-4">
           <BayesCanvasCard
@@ -46,6 +44,7 @@ export function BayesTool() {
       }
       graphBuilderSlot={<GraphBuilder />}
       codingSlot={<CodeSandbox title="Variable Elimination Code" initialCode={b.codeTemplate} algorithmName="VE" />}
+      theorySlot={<BayesTabs codeTemplate={b.codeTemplate} tutorial={b.tutorial} network={b.network} evidence={b.evidence} />}
       inspectorSlot={<BayesMarginalsCard network={b.network} evidence={b.evidence} beliefs={b.beliefs} />}
       stateSlot={
         <BayesDSeparationCard

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { SearchGraph, SearchNode } from "@/data/searchProblems";
 import { useGraphBuilderState } from "./useGraphBuilderState";
 import { useGraphBuilderActions } from "./useGraphBuilderActions";
@@ -17,13 +17,20 @@ export function useGraphBuilder(
     });
   };
   const a = useGraphBuilderActions({
-    setGraph,
-    setSelectedNodeId: s.setSelectedNodeId,
-    setSelectedEdge: s.setSelectedEdge,
+    setGraph, setSelectedNodeId: s.setSelectedNodeId, setSelectedEdge: s.setSelectedEdge,
   });
   const svgRef = useRef<SVGSVGElement | null>(null);
 
+  useEffect(() => {
+    if (initialGraph) s.setGraph(initialGraph);
+  }, [initialGraph, s.setGraph]);
+
   const handleCanvasClick = (e: React.MouseEvent<SVGSVGElement>) => {
+    if (s.connectingSourceId) {
+      s.setConnectingSourceId(null);
+      s.setPointerPos(null);
+      return;
+    }
     if (s.mode === "add_node") {
       const { x, y } = getCanvasCoords(e, svgRef);
       a.addNodeAt(x, y);

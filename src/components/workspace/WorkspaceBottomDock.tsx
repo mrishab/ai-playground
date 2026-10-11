@@ -11,6 +11,7 @@ interface WorkspaceBottomDockProps {
 }
 
 export function WorkspaceBottomDock({
+  activeLogMessage,
   statsBadges,
   onOpenLogPane,
   currentPane,

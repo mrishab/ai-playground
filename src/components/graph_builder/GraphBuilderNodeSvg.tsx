@@ -1,6 +1,8 @@
 import React from "react";
 import { SearchNode } from "@/data/searchProblems";
 
+import { cn } from "@/lib/utils";
+
 interface GraphBuilderNodeSvgProps {
   node: SearchNode;
   isSelected: boolean;
@@ -11,14 +13,15 @@ interface GraphBuilderNodeSvgProps {
 }
 
 export function GraphBuilderNodeSvg({
-  node,
-  isSelected,
-  isConnectingSource,
-  onMouseDown,
-  onClick,
-  onDoubleClick,
+  node, isSelected, isConnectingSource, onMouseDown, onClick, onDoubleClick,
 }: GraphBuilderNodeSvgProps) {
-  const strokeColor = node.isStart ? "#10b981" : node.isGoal ? "#f59e0b" : isSelected ? "#3b82f6" : "#64748b";
+  const strokeClass = node.isStart
+    ? "stroke-emerald-500"
+    : node.isGoal
+      ? "stroke-amber-500"
+      : isSelected
+        ? "stroke-primary"
+        : "stroke-muted-foreground/60";
 
   return (
     <g
@@ -29,19 +32,17 @@ export function GraphBuilderNodeSvg({
       onDoubleClick={() => onDoubleClick(node)}
     >
       {isConnectingSource && (
-        <circle cx={node.x} cy={node.y} r={28} fill="none" stroke="#3b82f6" strokeWidth={2} strokeDasharray="4 4" className="animate-spin" />
+        <circle cx={node.x} cy={node.y} r={28} fill="none" strokeWidth={2} strokeDasharray="4 4" className="stroke-primary animate-spin" />
       )}
       <circle
         cx={node.x}
         cy={node.y}
         r={22}
-        fill={isSelected ? "#eff6ff" : "#ffffff"}
-        stroke={strokeColor}
         strokeWidth={node.isStart || node.isGoal || isSelected ? 3 : 2}
-        className="dark:fill-slate-900 shadow-sm"
+        className={cn("transition-colors shadow-xs", isSelected ? "fill-primary/10" : "fill-card", strokeClass)}
       />
       {node.isGoal && (
-        <circle cx={node.x} cy={node.y} r={17} fill="none" stroke="#f59e0b" strokeWidth={1.5} />
+        <circle cx={node.x} cy={node.y} r={17} fill="none" strokeWidth={1.5} className="stroke-amber-500" />
       )}
       <text x={node.x} y={node.y + 4} textAnchor="middle" className="text-xs font-bold fill-foreground select-none pointer-events-none">
         {node.name}

@@ -22,6 +22,7 @@ export function SearchTool() {
       prebuiltItems={SEARCH_PREBUILT_ITEMS}
       selectedPrebuiltId={t.selectedGraphId}
       onSelectPrebuiltId={t.setSelectedGraphId}
+      onOpenGraphBuilder={() => t.setActivePane("graph_builder")}
       algorithmItems={SEARCH_ALGORITHM_ITEMS}
       selectedAlgorithmId={t.algorithm}
       onSelectAlgorithmId={(a) => t.setAlgorithm(a as AlgorithmType)}
@@ -35,7 +36,8 @@ export function SearchTool() {
       controls={{
         onStep: t.stepSearch, stepLabel: "Step Forward", onStepBack: t.stepBack, hasStepBack: t.history.length > 0,
         isPlaying: t.isPlaying, onTogglePlay: () => t.setIsPlaying(!t.isPlaying),
-        onReset: t.initializeSearch, speed: t.speed, setSpeed: t.setSpeed, isDone: t.isGoalReached,
+        onReset: t.initializeSearch, speed: t.speed, setSpeed: t.setSpeed,
+        isDone: t.isGoalReached || (t.frontier.length === 0 && t.expanded.length > 0),
       }}
       animationSlot={<SearchCanvasCard t={t} />}
       graphBuilderSlot={

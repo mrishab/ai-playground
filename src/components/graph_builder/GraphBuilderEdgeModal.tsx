@@ -13,10 +13,13 @@ export function GraphBuilderEdgeModal({
   edge, onSave, onDelete, onClose,
 }: GraphBuilderEdgeModalProps) {
   const [cost, setCost] = useState(() => edge.cost.toString());
+  const isSubmitting = React.useRef(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    onSave(edge, parseFloat(cost) || 1.0);
+    if (isSubmitting.current) return;
+    isSubmitting.current = true;
+    onSave(edge, Math.max(0.1, parseFloat(cost) || 1.0));
     onClose();
   };
 

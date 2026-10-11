@@ -1,5 +1,6 @@
 import React from "react";
-import { SearchGraph } from "@/data/searchProblems";
+import { SearchGraph, SearchNode } from "@/data/searchProblems";
+import { GraphBuilderEdge } from "./graphBuilderTypes";
 import { useGraphBuilder } from "./useGraphBuilder";
 import { GraphBuilderToolbar } from "./GraphBuilderToolbar";
 import { GraphBuilderCanvas } from "./GraphBuilderCanvas";
@@ -15,24 +16,21 @@ interface GraphBuilderProps {
 export function GraphBuilder({ initialGraph, onGraphChange, onSolveGraph }: GraphBuilderProps) {
   const gb = useGraphBuilder(initialGraph, onGraphChange);
 
-  const handleSaveNode = (u: any) => {
+  const handleSaveNode = (u: Partial<SearchNode>) => {
     gb.setGraph((prev) => {
-      const nodes = prev.nodes.map((n) => (n.id === gb.editingNode?.id ? { ...n, ...u } : n));
-      const startNode = u.isStart ? gb.editingNode!.id : prev.startNode === gb.editingNode!.id && !u.isStart ? "" : prev.startNode;
-      const goalNodes = u.isGoal ? Array.from(new Set([...prev.goalNodes, gb.editingNode!.id])) : prev.goalNodes.filter((g) => g !== gb.editingNode!.id);
-      const next = { ...prev, nodes, startNode, goalNodes };
-      onGraphChange?.(next);
-      return next;
+      const id = gb.editingNode?.id;
+      const nodes = prev.nodes.map((n) => (n.id === id ? { ...n, ...u } : u.isStart ? { ...n, isStart: false } : n));
+      const startNode = u.isStart ? id! : prev.startNode === id && u.isStart === false ? "" : prev.startNode;
+      const goalNodes = u.isGoal ? Array.from(new Set([...prev.goalNodes, id!])) : prev.goalNodes.filter((g) => g !== id);
+      return { ...prev, nodes, startNode, goalNodes };
     });
   };
 
-  const handleSaveEdge = (edge: any, cost: number) => {
-    gb.setGraph((prev) => {
-      const edges = prev.edges.map((e) => (e.from === edge.from && e.to === edge.to ? { ...e, cost } : e));
-      const next = { ...prev, edges };
-      onGraphChange?.(next);
-      return next;
-    });
+  const handleSaveEdge = (edge: GraphBuilderEdge, cost: number) => {
+    gb.setGraph((prev) => ({
+      ...prev,
+      edges: prev.edges.map((e) => (e.from === edge.from && e.to === edge.to ? { ...e, cost } : e)),
+    }));
   };
 
   return (
