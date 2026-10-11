@@ -1,33 +1,29 @@
 import { useState, useEffect } from "react";
-import { SEARCH_GRAPHS } from "@/data/searchProblems";
 import { TOOL_TUTORIALS } from "@/data/toolTutorials";
 import { AlgorithmType } from "./searchTypes";
+import { WorkspacePane } from "../workspace/workspaceTypes";
 import { getSearchCodeTemplate } from "./searchCodeTemplate";
 import { useSimulationTimer } from "@/hooks/useSimulationTimer";
 import { useSearchQuiz } from "./useSearchQuiz";
 import { useSearchExecution } from "./useSearchExecution";
+import { useSearchCustomGraph } from "./useSearchCustomGraph";
 
 export function useSearchTool() {
-  const [selectedGraphId, setSelectedGraphId] = useState("vancouver");
+  const g = useSearchCustomGraph();
   const [algorithm, setAlgorithm] = useState<AlgorithmType>("astar");
   const [speed, setSpeed] = useState(600);
   const [isPlaying, setIsPlaying] = useState(false);
-  const graph = SEARCH_GRAPHS[selectedGraphId] || SEARCH_GRAPHS.vancouver;
+  const [activePane, setActivePane] = useState<WorkspacePane>("animation");
 
-  const exec = useSearchExecution(graph, algorithm);
-  const quiz = useSearchQuiz(
-    algorithm,
-    exec.frontier,
-    exec.isGoalReached,
-    exec.stepSearch,
-  );
+  const exec = useSearchExecution(g.graph, algorithm);
+  const quiz = useSearchQuiz(algorithm, exec.frontier, exec.isGoalReached, exec.stepSearch);
 
   useEffect(() => {
     setIsPlaying(false);
     exec.initializeSearch();
     quiz.resetQuiz();
     // react-doctor-disable-next-line react-doctor/exhaustive-deps
-  }, [graph, algorithm]);
+  }, [g.graph, algorithm]);
 
   useSimulationTimer(
     isPlaying,
@@ -39,18 +35,18 @@ export function useSearchTool() {
   );
 
   return {
-    selectedGraphId,
-    setSelectedGraphId,
+    ...g,
     algorithm,
     setAlgorithm,
     speed,
     setSpeed,
     isPlaying,
     setIsPlaying,
+    activePane,
+    setActivePane,
     ...quiz,
     ...exec,
-    graph,
     tutorial: TOOL_TUTORIALS.search,
-    codeTemplate: getSearchCodeTemplate(graph),
+    codeTemplate: getSearchCodeTemplate(g.graph),
   };
 }

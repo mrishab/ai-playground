@@ -15,7 +15,7 @@ export function useSearchExecution(
     const start =
       graph.nodes.find((n) => n.id === graph.startNode) || graph.nodes[0];
     const h = start?.h || 0;
-    s.setFrontier([{ nodes: [start.id], cost: 0, h, f: h }]);
+    s.setFrontier(start ? [{ nodes: [start.id], cost: 0, h, f: h }] : []);
     s.setExpanded([]);
     s.setCurrentNode(null);
     s.setCurrentPath([]);
@@ -23,7 +23,9 @@ export function useSearchExecution(
     s.setHistory([]);
     s.setInspectedNode(null);
     s.setLog(
-      `Initialized ${algorithm.toUpperCase()} from start node "${start.id}".`,
+      start
+        ? `Initialized ${algorithm.toUpperCase()} from start node "${start.id}".`
+        : "No nodes in graph.",
     );
     // react-doctor-disable-next-line react-doctor/exhaustive-deps
   }, [graph, algorithm]);

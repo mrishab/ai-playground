@@ -1,52 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRobotSimulation } from "./useRobotSimulation";
-import { RobotHeader } from "./RobotHeader";
 import { RobotCanvasCard } from "./RobotCanvasCard";
 import { RobotTelemetryCard } from "./RobotTelemetryCard";
 import { RobotPlanList } from "./RobotPlanList";
 import { RobotTabs } from "./RobotTabs";
+import { GraphBuilder } from "../graph_builder/GraphBuilder";
+import { StudioWorkspace } from "../workspace/StudioWorkspace";
+import { ROBOT_PREBUILT_ITEMS, ROBOT_ALGORITHM_ITEMS } from "./robotWorkspaceData";
 
 export function RobotTool() {
   const d = useRobotSimulation();
+  const [algo, setAlgo] = useState("sense_plan_act");
   const isComplete = d.currentPlanIndex >= d.world.plan.length;
 
   return (
-    <div className="space-y-6">
-      <RobotHeader
-        world={d.world}
-        selectedWorldId={d.selectedWorldId}
-        onSelectWorldId={d.setSelectedWorldId}
-        isComplete={isComplete}
-        badgeText={d.tutorial.badge}
-      />
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-4">
-          <RobotCanvasCard
-            isPlaying={d.isPlaying}
-            onTogglePlay={() => d.setIsPlaying(!d.isPlaying)}
-            onStep={d.stepSimulation}
-            onReset={d.initializeWorld}
-            currentPlanIndex={d.currentPlanIndex}
-            world={d.world}
-            robotPose={d.robotPose}
-            breadcrumbs={d.breadcrumbs}
-            log={d.log}
-            speed={d.speed}
-            setSpeed={d.setSpeed}
-          />
-        </div>
-        <div className="space-y-4">
-          <RobotTelemetryCard
-            sensorWhiskers={d.sensorWhiskers}
-            robotPose={d.robotPose}
-          />
-          <RobotPlanList
-            plan={d.world.plan}
-            currentPlanIndex={d.currentPlanIndex}
-          />
-        </div>
-      </div>
-      <RobotTabs tutorial={d.tutorial} />
-    </div>
+    <StudioWorkspace
+      title="Autonomous Robot Control Lab"
+      category={d.tutorial.badge}
+      description={d.world.description}
+      prebuiltLabel="Robot World"
+      prebuiltItems={ROBOT_PREBUILT_ITEMS}
+      selectedPrebuiltId={d.selectedWorldId}
+      onSelectPrebuiltId={d.setSelectedWorldId}
+      algorithmItems={ROBOT_ALGORITHM_ITEMS}
+      selectedAlgorithmId={algo}
+      onSelectAlgorithmId={setAlgo}
+      activeLogMessage={d.log}
+      statsBadges={[
+        { label: "Plan Steps", value: `${d.currentPlanIndex}/${d.world.plan.length}`, variant: isComplete ? "success" : "cyan" },
+        { label: "Status", value: isComplete ? "Goal Reached" : "Navigating", variant: isComplete ? "success" : "outline" },
+      ]}
+      controls={{
+        onReset: d.initializeWorld,
+        speed: d.speed,
+        setSpeed: d.setSpeed,
+      }}
+      animationSlot={
+        <RobotCanvasCard
+          isPlaying={d.isPlaying} onTogglePlay={() => d.setIsPlaying(!d.isPlaying)}
+          onStep={d.stepSimulation} onReset={d.initializeWorld} currentPlanIndex={d.currentPlanIndex}
+          world={d.world} robotPose={d.robotPose} breadcrumbs={d.breadcrumbs} log={d.log}
+          speed={d.speed} setSpeed={d.setSpeed}
+        />
+      }
+      graphBuilderSlot={<GraphBuilder />}
+      theorySlot={<RobotTabs tutorial={d.tutorial} />}
+      inspectorSlot={<RobotTelemetryCard sensorWhiskers={d.sensorWhiskers} robotPose={d.robotPose} />}
+      stateSlot={<RobotPlanList plan={d.world.plan} currentPlanIndex={d.currentPlanIndex} />}
+    />
   );
 }
