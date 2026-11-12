@@ -8,6 +8,14 @@ export function solveStripsCsp(
   problemId: string,
   horizonK: number,
 ): StripsSolverResult {
+  if (problemId === "blank") {
+    return {
+      isSolved: false,
+      plan: [],
+      log: "Reset empty STRIPS problem.",
+    };
+  }
+
   if (problemId === "coffeeDelivery") {
     if (horizonK >= 4) {
       const plan = [

@@ -29,10 +29,13 @@ export function SearchTool() {
       activePane={t.activePane}
       onPaneChange={t.setActivePane}
       activeLogMessage={t.log}
-      statsBadges={[
-        { label: "Frontier", value: t.frontier.length, variant: "cyan" },
-        { label: "Expanded", value: t.expanded.length, variant: "success" },
-      ]}
+      exportData={{ toolType: "search", problem: t.graph, filename: `${t.graph.id || "search"}-graph` }}
+      onImportProblem={(data) => {
+        if (!data.problem || !Array.isArray(data.problem.nodes)) throw new Error("Invalid search graph: missing nodes array");
+        t.handleCustomGraphChange(data.problem);
+      }}
+      onResetProblem={t.handleResetProblem}
+      statsBadges={[{ label: "Frontier", value: t.frontier.length, variant: "cyan" }, { label: "Expanded", value: t.expanded.length, variant: "success" }]}
       controls={{
         onStep: t.stepSearch, stepLabel: "Step Forward", onStepBack: t.stepBack, hasStepBack: t.history.length > 0,
         isPlaying: t.isPlaying, onTogglePlay: () => t.setIsPlaying(!t.isPlaying),
@@ -40,13 +43,7 @@ export function SearchTool() {
         isDone: t.isGoalReached || (t.frontier.length === 0 && t.expanded.length > 0),
       }}
       animationSlot={<SearchCanvasCard t={t} />}
-      graphBuilderSlot={
-        <GraphBuilder
-          initialGraph={t.graph}
-          onGraphChange={t.handleCustomGraphChange}
-          onSolveGraph={() => { t.setActivePane("animation"); t.initializeSearch(); }}
-        />
-      }
+      graphBuilderSlot={<GraphBuilder initialGraph={t.graph} onGraphChange={t.handleCustomGraphChange} onSolveGraph={() => { t.setActivePane("animation"); t.initializeSearch(); }} />}
       codingSlot={<CodeSandbox title="Search Algorithm Code" initialCode={t.codeTemplate} algorithmName={t.algorithm.toUpperCase()} />}
       theorySlot={<SearchTabs codeTemplate={t.codeTemplate} tutorial={t.tutorial} graph={t.graph} />}
       inspectorSlot={<SearchInspectorCard node={t.inspectedNode} graph={t.graph} />}

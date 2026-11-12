@@ -1,31 +1,27 @@
-import { useState, useEffect, useCallback } from "react";
-import { ROBOT_WORLDS, RobotWorld } from "@/data/robotProblems";
+import { useEffect, useCallback } from "react";
 import { TOOL_TUTORIALS } from "@/data/toolTutorials";
 import { useRobotPoseState } from "./useRobotPoseState";
 import { useRobotStepper } from "./useRobotStepper";
+import { useRobotWorldSelection } from "./useRobotWorldSelection";
 
 export function useRobotSimulation() {
-  const [selectedWorldId, setSelectedWorldId] = useState<string>("bookWorld");
-  const world: RobotWorld =
-    ROBOT_WORLDS[selectedWorldId] || ROBOT_WORLDS.bookWorld;
+  const worldState = useRobotWorldSelection();
   const tutorial = TOOL_TUTORIALS.robot;
 
-  const poseState = useRobotPoseState(world);
-  const stepper = useRobotStepper(world, poseState);
+  const poseState = useRobotPoseState(worldState.world);
+  const stepper = useRobotStepper(worldState.world, poseState);
 
   const initializeWorld = useCallback(() => {
     stepper.resetStepper();
-    poseState.resetPoseState(world);
-  }, [world, stepper.resetStepper, poseState.resetPoseState]);
+    poseState.resetPoseState(worldState.world);
+  }, [worldState.world, stepper.resetStepper, poseState.resetPoseState]);
 
   useEffect(() => {
     initializeWorld();
   }, [initializeWorld]);
 
   return {
-    selectedWorldId,
-    setSelectedWorldId,
-    world,
+    ...worldState,
     tutorial,
     ...stepper,
     ...poseState,

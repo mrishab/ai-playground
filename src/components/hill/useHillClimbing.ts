@@ -1,20 +1,19 @@
 import { useEffect } from "react";
-import { CSP_PROBLEMS, CSPProblem } from "@/data/cspProblems";
 import { TOOL_TUTORIALS } from "@/data/toolTutorials";
 import { getHillCodeTemplate } from "./hillCodeTemplate";
 import { useSimulationTimer } from "@/hooks/useSimulationTimer";
 import { useHillSettings } from "./useHillSettings";
 import { useHillState } from "./useHillState";
 import { useHillStepper } from "./useHillStepper";
+import { useHillProblemSelection } from "./useHillProblemSelection";
 
 export function useHillClimbing() {
   const cfg = useHillSettings();
-  const problem: CSPProblem =
-    CSP_PROBLEMS[cfg.selectedProblemId] || CSP_PROBLEMS.scheduling1;
+  const probState = useHillProblemSelection(cfg.selectedProblemId, cfg.setSelectedProblemId);
+  const s = useHillState(probState.problem, cfg.setTemperature);
 
-  const s = useHillState(problem, cfg.setTemperature);
   const stepSLS = useHillStepper({
-    problem,
+    problem: probState.problem,
     assignment: s.assignment,
     conflicts: s.conflicts,
     tabuList: s.tabuList,
@@ -30,23 +29,21 @@ export function useHillClimbing() {
     cfg.setIsPlaying(false);
     s.initializeAssignment();
     // react-doctor-disable-next-line react-doctor/exhaustive-deps
-  }, [problem]);
+  }, [probState.problem]);
 
   useSimulationTimer(
     cfg.isPlaying,
     s.conflicts > 0,
-    () => {
-      if (!stepSLS()) cfg.setIsPlaying(false);
-    },
+    () => { if (!stepSLS()) cfg.setIsPlaying(false); },
     1050 - cfg.speed,
   );
 
   return {
     ...cfg,
-    problem,
+    ...probState,
     tutorial: TOOL_TUTORIALS.hill,
     ...s,
     stepSLS,
-    codeTemplate: getHillCodeTemplate(problem),
+    codeTemplate: getHillCodeTemplate(probState.problem),
   };
 }

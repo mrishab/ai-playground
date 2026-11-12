@@ -2,6 +2,9 @@ import { ActionStep } from "./planningTypes";
 
 export function createInitialColumns(problemId: string): string[][] {
   const cols: string[][] = [[], [], [], [], []];
+  if (problemId === "blank") {
+    return cols;
+  }
   if (problemId === "sussman") {
     cols[0] = ["block1", "block3"];
     cols[1] = ["block2"];

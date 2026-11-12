@@ -4,6 +4,8 @@ export type WorkspacePane = "animation" | "graph_builder" | "coding" | "log" | "
 
 export interface PrebuiltItem { id: string; label: string; description?: string; badge?: string; }
 export interface AlgorithmItem { id: string; label: string; description?: string; badge?: string; }
+export interface StatBadge { label: string; value: string | number; variant?: "default" | "secondary" | "destructive" | "outline" | "success" | "warning" | "purple" | "cyan"; }
+export interface ProblemExportData { toolType: string; problem: any; filename?: string; }
 
 export interface WorkspaceControlsConfig {
   onStep?: () => void;
@@ -18,12 +20,6 @@ export interface WorkspaceControlsConfig {
   isDone?: boolean;
   canStep?: boolean;
   extraActions?: React.ReactNode;
-}
-
-export interface StatBadge {
-  label: string;
-  value: string | number;
-  variant?: "default" | "secondary" | "destructive" | "outline" | "success" | "warning" | "purple" | "cyan";
 }
 
 export interface StudioWorkspaceProps {
@@ -50,4 +46,7 @@ export interface StudioWorkspaceProps {
   activePane?: WorkspacePane;
   onPaneChange?: (p: WorkspacePane) => void;
   onOpenGraphBuilder?: () => void;
+  exportData?: ProblemExportData;
+  onImportProblem?: (imported: { toolType?: string; problem: any; format: "json" | "xml" }) => void;
+  onResetProblem?: () => void;
 }

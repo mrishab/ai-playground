@@ -1,34 +1,45 @@
 import { useState, useEffect } from "react";
-import { DEDUCTION_KBS, DeductionKB } from "@/data/deductionProblems";
 import { TOOL_TUTORIALS } from "@/data/toolTutorials";
 import { ProofNode, SubstitutionMap } from "./deductionTypes";
 import { runDeductionProof } from "./deductionRunner";
 import { useDeductionStepper } from "./useDeductionStepper";
+import { useDeductionKbState } from "./useDeductionKbState";
+import { DeductionKB } from "@/data/deductionProblems";
 
 export function useDeduction() {
-  const [selectedKBId, setSelectedKBId] = useState<string>("elect");
-  const currentKB: DeductionKB =
-    DEDUCTION_KBS[selectedKBId] || DEDUCTION_KBS.elect;
-  const tutorial = TOOL_TUTORIALS.deduction;
-
-  const [kbCode, setKbCode] = useState<string>(currentKB.code);
-  const [queryInput, setQueryInput] = useState<string>(
-    currentKB.sampleQueries[0] || "lit(l1)",
-  );
+  const kbState = useDeductionKbState();
+  const [kbCode, setKbCode] = useState<string>(kbState.currentKB.code);
+  const [queryInput, setQueryInput] = useState<string>(kbState.currentKB.sampleQueries[0] || "lit(l1)");
   const [proofTree, setProofTree] = useState<ProofNode | null>(null);
   const [answers, setAnswers] = useState<SubstitutionMap[]>([]);
-  const [log, setLog] = useState<string>(
-    'Ready to deduce. Select a query and click "Prove Query".',
-  );
+  const [log, setLog] = useState<string>('Ready to deduce. Select a query and click "Prove Query".');
   const stepper = useDeductionStepper();
 
-  useEffect(() => {
-    setKbCode(currentKB.code);
-    setQueryInput(currentKB.sampleQueries[0] || "");
+  const handleImportKB = (imported: DeductionKB) => {
+    kbState.handleImportKB(imported);
+    setKbCode(imported.code || "");
+    setQueryInput(imported.sampleQueries?.[0] || "");
     setProofTree(null);
     setAnswers([]);
-    setLog(`Loaded knowledge base "${currentKB.name}".`);
-  }, [selectedKBId, currentKB]);
+    setLog(`Imported knowledge base "${imported.name || "Custom KB"}".`);
+  };
+
+  const handleResetKB = () => {
+    kbState.handleResetKB();
+    setKbCode("");
+    setQueryInput("");
+    setProofTree(null);
+    setAnswers([]);
+    setLog("Knowledge base reset to empty.");
+  };
+
+  useEffect(() => {
+    setKbCode(kbState.currentKB.code || "");
+    setQueryInput(kbState.currentKB.sampleQueries?.[0] || "");
+    setProofTree(null);
+    setAnswers([]);
+    setLog(`Loaded knowledge base "${kbState.currentKB.name || "Knowledge Base"}".`);
+  }, [kbState.selectedKBId, kbState.currentKB]);
 
   const runProof = () => {
     const res = runDeductionProof(queryInput, kbCode);
@@ -37,23 +48,12 @@ export function useDeduction() {
     setAnswers(res.answers);
   };
 
-  const activeTree = stepper.currentStep ? stepper.currentStep.treeSnapshot : proofTree;
-  const activeLog = stepper.currentStep ? stepper.currentStep.log : log;
-  const activeAnswers = stepper.currentStep ? stepper.currentStep.answers : answers;
-
   return {
-    selectedKBId,
-    setSelectedKBId,
-    currentKB,
-    tutorial,
-    kbCode,
-    setKbCode,
-    queryInput,
-    setQueryInput,
-    proofTree: activeTree,
-    answers: activeAnswers,
-    log: activeLog,
-    runProof,
-    stepper,
+    ...kbState, handleImportKB, handleResetKB, tutorial: TOOL_TUTORIALS.deduction,
+    kbCode, setKbCode, queryInput, setQueryInput,
+    proofTree: stepper.currentStep ? stepper.currentStep.treeSnapshot : proofTree,
+    answers: stepper.currentStep ? stepper.currentStep.answers : answers,
+    log: stepper.currentStep ? stepper.currentStep.log : log,
+    runProof, stepper,
   };
 }

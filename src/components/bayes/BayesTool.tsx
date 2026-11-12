@@ -27,18 +27,17 @@ export function BayesTool() {
       selectedAlgorithmId={algo}
       onSelectAlgorithmId={setAlgo}
       activeLogMessage={`Observed ${obsCount} variables. Network initialized.`}
-      statsBadges={[
-        { label: "Nodes", value: b.network.nodes.length, variant: "cyan" },
-        { label: "Observed", value: obsCount, variant: "success" },
-      ]}
+      exportData={{ toolType: "bayes", problem: b.network, filename: `${b.network.id || "bayes"}-network` }}
+      onImportProblem={(data) => {
+        if (!data.problem || !Array.isArray(data.problem.nodes)) throw new Error("Invalid Bayesian network: missing nodes array");
+        b.handleImportNetwork(data.problem);
+      }}
+      onResetProblem={b.handleResetNetwork}
+      statsBadges={[{ label: "Nodes", value: b.network.nodes.length, variant: "cyan" }, { label: "Observed", value: obsCount, variant: "success" }]}
       controls={{ onReset: b.initializeNetwork }}
       animationSlot={
         <div className="space-y-4">
-          <BayesCanvasCard
-            network={b.network} evidence={b.evidence} beliefs={b.beliefs}
-            observedCount={obsCount} onClearEvidence={b.initializeNetwork}
-            onToggleEvidence={b.toggleEvidence}
-          />
+          <BayesCanvasCard network={b.network} evidence={b.evidence} beliefs={b.beliefs} observedCount={obsCount} onClearEvidence={b.initializeNetwork} onToggleEvidence={b.toggleEvidence} />
           <BayesTabs codeTemplate={b.codeTemplate} tutorial={b.tutorial} network={b.network} evidence={b.evidence} />
         </div>
       }
@@ -46,13 +45,7 @@ export function BayesTool() {
       codingSlot={<CodeSandbox title="Variable Elimination Code" initialCode={b.codeTemplate} algorithmName="VE" />}
       theorySlot={<BayesTabs codeTemplate={b.codeTemplate} tutorial={b.tutorial} network={b.network} evidence={b.evidence} />}
       inspectorSlot={<BayesMarginalsCard network={b.network} evidence={b.evidence} beliefs={b.beliefs} />}
-      stateSlot={
-        <BayesDSeparationCard
-          network={b.network} dsepNodeA={b.dsepNodeA} setDsepNodeA={b.setDsepNodeA}
-          dsepNodeB={b.dsepNodeB} setDsepNodeB={b.setDsepNodeB} dsepResult={b.dsepResult}
-          onTestDSeparation={b.testDSeparation}
-        />
-      }
+      stateSlot={<BayesDSeparationCard network={b.network} dsepNodeA={b.dsepNodeA} setDsepNodeA={b.setDsepNodeA} dsepNodeB={b.dsepNodeB} setDsepNodeB={b.setDsepNodeB} dsepResult={b.dsepResult} onTestDSeparation={b.testDSeparation} />}
     />
   );
 }

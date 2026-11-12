@@ -6,6 +6,8 @@ import { PlanningPlanStepsQueue } from "./PlanningPlanStepsQueue";
 import { PlanningTabs } from "./PlanningTabs";
 import { GraphBuilder } from "../graph_builder/GraphBuilder";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
+import { CodeSandbox } from "../CodeSandbox";
+import { getPlanningCodeTemplate } from "./planningCodeTemplate";
 import { PLANNING_PREBUILT_ITEMS, PLANNING_ALGORITHM_ITEMS } from "./planningWorkspaceData";
 
 export function PlanningTool() {
@@ -25,15 +27,14 @@ export function PlanningTool() {
       selectedAlgorithmId={d.plannerType}
       onSelectAlgorithmId={(t) => d.setPlannerType(t as "forward" | "regression")}
       activeLogMessage={d.log}
-      statsBadges={[
-        { label: "Steps", value: `${d.currentStepIndex}/${d.planSteps.length}`, variant: isGoalAchieved ? "success" : "cyan" },
-        { label: "Goal", value: isGoalAchieved ? "Achieved" : "In Progress", variant: isGoalAchieved ? "success" : "warning" },
-      ]}
-      controls={{
-        onReset: d.initializeBlocks,
-        speed: d.speed,
-        setSpeed: d.setSpeed,
+      exportData={{ toolType: "planning", problem: d.problem, filename: `${d.problem.id || "planning"}-problem` }}
+      onImportProblem={(data) => {
+        if (!data.problem || (!Array.isArray(data.problem.blocks) && !data.problem.initial)) throw new Error("Invalid planning problem: missing blocks or initial state");
+        d.handleImportProblem(data.problem);
       }}
+      onResetProblem={d.handleResetProblem}
+      statsBadges={[{ label: "Steps", value: `${d.currentStepIndex}/${d.planSteps.length}`, variant: isGoalAchieved ? "success" : "cyan" }, { label: "Goal", value: isGoalAchieved ? "Achieved" : "In Progress", variant: isGoalAchieved ? "success" : "warning" }]}
+      controls={{ onReset: d.initializeBlocks, speed: d.speed, setSpeed: d.setSpeed }}
       animationSlot={
         <PlanningCanvasCard
           isExecuting={d.isExecuting} onToggleExecute={() => d.setIsExecuting(!d.isExecuting)}
@@ -43,7 +44,8 @@ export function PlanningTool() {
         />
       }
       graphBuilderSlot={<GraphBuilder />}
-      theorySlot={<PlanningTabs problemId={d.problem.id} tutorial={d.tutorial} />}
+      codingSlot={<CodeSandbox title="STRIPS Planner Code" initialCode={getPlanningCodeTemplate(d.problem.id)} algorithmName="STRIPS" />}
+      theorySlot={<PlanningTabs tutorial={d.tutorial} />}
       inspectorSlot={<PlanningGoalCard problem={d.problem} />}
       stateSlot={<PlanningPlanStepsQueue planSteps={d.planSteps} currentStepIndex={d.currentStepIndex} />}
     />

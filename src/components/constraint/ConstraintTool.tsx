@@ -26,19 +26,17 @@ export function ConstraintTool() {
       selectedAlgorithmId={algo}
       onSelectAlgorithmId={setAlgo}
       activeLogMessage={c.log}
-      statsBadges={[
-        { label: "Variables", value: c.problem.variables.length, variant: "cyan" },
-        { label: "Arc Queue", value: c.arcQueue.length, variant: "warning" },
-      ]}
+      exportData={{ toolType: "constraint", problem: c.problem, filename: `${c.problem.id || "csp"}-problem` }}
+      onImportProblem={(data) => {
+        if (!data.problem || !Array.isArray(data.problem.variables)) throw new Error("Invalid CSP problem: missing variables array");
+        c.handleImportProblem(data.problem);
+      }}
+      onResetProblem={c.handleResetProblem}
+      statsBadges={[{ label: "Variables", value: c.problem.variables.length, variant: "cyan" }, { label: "Arc Queue", value: c.arcQueue.length, variant: "warning" }]}
       controls={{
-        onStep: c.fineStep,
-        stepLabel: "Advance Arc",
-        isPlaying: c.isPlaying,
-        onTogglePlay: c.toggleAutoAC,
-        onReset: c.initializeCSP,
-        speed: c.speed,
-        setSpeed: c.setSpeed,
-        isDone: c.isCSPFullySolved,
+        onStep: algo === "mac" ? (c.arcQueue.length > 0 ? c.fineStep : c.stepMacSearch) : c.fineStep,
+        stepLabel: algo === "mac" ? (c.arcQueue.length > 0 ? "Advance Arc" : "Step MAC") : "Advance Arc",
+        isPlaying: c.isPlaying, onTogglePlay: c.toggleAutoAC, onReset: c.initializeCSP, speed: c.speed, setSpeed: c.setSpeed, isDone: c.isCSPFullySolved,
       }}
       animationSlot={<ConstraintCanvasCard c={c} />}
       graphBuilderSlot={<GraphBuilder />}

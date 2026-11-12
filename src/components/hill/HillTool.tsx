@@ -26,31 +26,22 @@ export function HillTool() {
       selectedAlgorithmId={h.algorithm}
       onSelectAlgorithmId={(a) => h.setAlgorithm(a as SLSAlgorithm)}
       activeLogMessage={`Step ${h.stepCount}: Conflicts = ${h.conflicts}`}
-      statsBadges={[
-        { label: "Conflicts", value: h.conflicts, variant: h.conflicts === 0 ? "success" : "warning" },
-        { label: "Steps", value: h.stepCount, variant: "cyan" },
-      ]}
+      exportData={{ toolType: "hill", problem: h.problem, filename: `${h.problem.id || "sls"}-problem` }}
+      onImportProblem={(data) => {
+        if (!data.problem || !Array.isArray(data.problem.variables)) throw new Error("Invalid SLS problem: missing variables array");
+        h.handleImportProblem(data.problem);
+      }}
+      onResetProblem={h.handleResetProblem}
+      statsBadges={[{ label: "Conflicts", value: h.conflicts, variant: h.conflicts === 0 ? "success" : "warning" }, { label: "Steps", value: h.stepCount, variant: "cyan" }]}
       controls={{
-        onStep: h.stepSLS,
-        stepLabel: "Next Step",
-        isPlaying: h.isPlaying,
-        onTogglePlay: () => h.setIsPlaying(!h.isPlaying),
-        onReset: h.initializeAssignment,
-        speed: h.speed,
-        setSpeed: h.setSpeed,
-        isDone: h.conflicts === 0,
+        onStep: h.stepSLS, stepLabel: "Next Step", isPlaying: h.isPlaying,
+        onTogglePlay: () => h.setIsPlaying(!h.isPlaying), onReset: h.initializeAssignment, speed: h.speed, setSpeed: h.setSpeed, isDone: h.conflicts === 0,
       }}
       animationSlot={<HillMainCard h={h} />}
       graphBuilderSlot={<GraphBuilder />}
       codingSlot={<CodeSandbox title="SLS Algorithm Code" initialCode={h.codeTemplate} algorithmName={h.algorithm.toUpperCase()} />}
       theorySlot={<HillTabs codeTemplate={h.codeTemplate} tutorial={h.tutorial} />}
-      inspectorSlot={
-        <HillParamsCard
-          algorithm={h.algorithm} randomWalkProb={h.randomWalkProb} setRandomWalkProb={h.setRandomWalkProb}
-          temperature={h.temperature} setTemperature={h.setTemperature} tabuTenure={h.tabuTenure}
-          setTabuTenure={h.setTabuTenure} speed={h.speed} setSpeed={h.setSpeed}
-        />
-      }
+      inspectorSlot={<HillParamsCard algorithm={h.algorithm} randomWalkProb={h.randomWalkProb} setRandomWalkProb={h.setRandomWalkProb} temperature={h.temperature} setTemperature={h.setTemperature} tabuTenure={h.tabuTenure} setTabuTenure={h.setTabuTenure} speed={h.speed} setSpeed={h.setSpeed} />}
       stateSlot={h.batchStats ? <HillBatchStatsCard batchStats={h.batchStats} /> : undefined}
     />
   );

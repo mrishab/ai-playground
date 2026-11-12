@@ -1,42 +1,30 @@
 import { useState, useEffect, useCallback } from "react";
-import {
-  BAYES_NETWORKS,
-  BayesNetwork,
-  EvidenceMap,
-  NetworkBeliefs,
-} from "@/data/bayesProblems";
+import { EvidenceMap, NetworkBeliefs } from "@/data/bayesProblems";
 import { TOOL_TUTORIALS } from "@/data/toolTutorials";
 import { computeBayesBeliefs } from "./bayesInference";
 import { useBayesDSep } from "./useBayesDSep";
 import { getBayesCodeTemplate } from "./bayesCodeTemplate";
+import { useBayesNetworkSelection } from "./useBayesNetworkSelection";
 
 export function useBayesNetwork() {
-  const [selectedNetId, setSelectedNetId] = useState<string>("umbrella");
-  const network: BayesNetwork =
-    BAYES_NETWORKS[selectedNetId] || BAYES_NETWORKS.umbrella;
+  const netState = useBayesNetworkSelection();
   const tutorial = TOOL_TUTORIALS.bayes;
-
   const [evidence, setEvidence] = useState<EvidenceMap>({});
   const [beliefs, setBeliefs] = useState<NetworkBeliefs>({});
-  const dsep = useBayesDSep(network, evidence);
+  const dsep = useBayesDSep(netState.network, evidence);
 
   const initializeNetwork = useCallback(() => {
     const initEvidence: EvidenceMap = {};
-    for (const n of network.nodes) initEvidence[n.id] = null;
+    for (const n of netState.network.nodes) initEvidence[n.id] = null;
     setEvidence(initEvidence);
-    dsep.resetDSep(network);
-  }, [network, dsep.resetDSep]);
+    dsep.resetDSep(netState.network);
+  }, [netState.network, dsep.resetDSep]);
 
-  useEffect(() => {
-    initializeNetwork();
-  }, [initializeNetwork]);
-
-  useEffect(() => {
-    setBeliefs(computeBayesBeliefs(network, evidence));
-  }, [evidence, network]);
+  useEffect(() => { initializeNetwork(); }, [initializeNetwork]);
+  useEffect(() => { setBeliefs(computeBayesBeliefs(netState.network, evidence)); }, [evidence, netState.network]);
 
   const toggleEvidence = (nodeId: string) => {
-    const node = network.nodes.find((n) => n.id === nodeId);
+    const node = netState.network.nodes.find((n) => n.id === nodeId);
     if (!node || node.type === "utility") return;
     const outs = node.outcomes.length > 0 ? node.outcomes : ["true", "false"];
     const cur = evidence[nodeId];
@@ -45,15 +33,13 @@ export function useBayesNetwork() {
   };
 
   return {
-    selectedNetId,
-    setSelectedNetId,
-    network,
+    ...netState,
     tutorial,
     evidence,
     beliefs,
     ...dsep,
     initializeNetwork,
     toggleEvidence,
-    codeTemplate: getBayesCodeTemplate(network, evidence),
+    codeTemplate: getBayesCodeTemplate(netState.network, evidence),
   };
 }

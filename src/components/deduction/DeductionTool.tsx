@@ -25,19 +25,16 @@ export function DeductionTool() {
       selectedAlgorithmId={algo}
       onSelectAlgorithmId={setAlgo}
       activeLogMessage={d.log}
-      statsBadges={[
-        { label: "Answers", value: d.answers.length, variant: "success" },
-        { label: "Steps", value: d.stepper.stepIndex, variant: "cyan" },
-      ]}
+      exportData={{ toolType: "deduction", problem: { id: d.selectedKBId, name: d.currentKB.name, description: d.currentKB.description, code: d.kbCode, sampleQueries: d.currentKB.sampleQueries }, filename: `${d.selectedKBId || "deduction"}-kb` }}
+      onImportProblem={(data) => {
+        if (!data.problem || typeof data.problem.code !== "string") throw new Error("Invalid knowledge base: missing code string");
+        d.handleImportKB(data.problem);
+      }}
+      onResetProblem={d.handleResetKB}
+      statsBadges={[{ label: "Answers", value: d.answers.length, variant: "success" }, { label: "Steps", value: Math.max(0, d.stepper.stepIndex), variant: "cyan" }]}
       controls={{
-        onStep: () => d.stepper.stepForward(d.queryInput, d.kbCode),
-        stepLabel: "Advance",
-        onStepBack: d.stepper.stepBack,
-        hasStepBack: d.stepper.stepIndex > 0,
-        isPlaying: d.stepper.isPlaying,
-        onTogglePlay: () => d.stepper.togglePlay(d.queryInput, d.kbCode),
-        speed: d.stepper.speed,
-        setSpeed: d.stepper.setSpeed,
+        onStep: () => d.stepper.stepForward(d.queryInput, d.kbCode), stepLabel: "Advance", onStepBack: d.stepper.stepBack, hasStepBack: d.stepper.stepIndex > 0,
+        isPlaying: d.stepper.isPlaying, onTogglePlay: () => d.stepper.togglePlay(d.queryInput, d.kbCode), speed: d.stepper.speed, setSpeed: d.stepper.setSpeed,
       }}
       animationSlot={<ProofTreeCanvas proofTree={d.proofTree} log={d.log} answers={d.answers} />}
       graphBuilderSlot={<GraphBuilder />}
@@ -48,8 +45,7 @@ export function DeductionTool() {
           queryInput={d.queryInput} onQueryChange={d.setQueryInput} sampleQueries={d.currentKB.sampleQueries}
           onRunProof={d.runProof} stepIndex={d.stepper.stepIndex} totalSteps={d.stepper.steps.length}
           isPlaying={d.stepper.isPlaying} onStepForward={() => d.stepper.stepForward(d.queryInput, d.kbCode)}
-          onStepBack={d.stepper.stepBack} onTogglePlay={() => d.stepper.togglePlay(d.queryInput, d.kbCode)}
-          speed={d.stepper.speed} setSpeed={d.stepper.setSpeed}
+          onStepBack={d.stepper.stepBack} onTogglePlay={() => d.stepper.togglePlay(d.queryInput, d.kbCode)} speed={d.stepper.speed} setSpeed={d.stepper.setSpeed}
         />
       }
     />

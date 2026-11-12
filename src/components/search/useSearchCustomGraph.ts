@@ -11,7 +11,12 @@ export function useSearchCustomGraph() {
       : SEARCH_GRAPHS[selectedGraphId] || SEARCH_GRAPHS.vancouver;
 
   const handleCustomGraphChange = useCallback((updated: SearchGraph) => {
-    setCustomGraph(updated);
+    setCustomGraph({
+      ...updated,
+      nodes: Array.isArray(updated.nodes) ? updated.nodes : [],
+      edges: Array.isArray(updated.edges) ? updated.edges : [],
+      goalNodes: Array.isArray(updated.goalNodes) ? updated.goalNodes : [],
+    });
     setSelectedGraphId("custom");
   }, []);
 
@@ -22,11 +27,25 @@ export function useSearchCustomGraph() {
     }
   }, []);
 
+  const handleResetProblem = useCallback(() => {
+    setCustomGraph({
+      id: "blank",
+      name: "Blank Canvas",
+      description: "Reset empty graph",
+      startNode: "",
+      goalNodes: [],
+      nodes: [],
+      edges: [],
+    });
+    setSelectedGraphId("custom");
+  }, []);
+
   return {
     selectedGraphId,
     setSelectedGraphId: handleSelectGraphId,
     customGraph: customGraph || activeGraph,
     handleCustomGraphChange,
+    handleResetProblem,
     graph: activeGraph,
   };
 }

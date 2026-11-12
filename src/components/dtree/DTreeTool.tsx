@@ -26,15 +26,14 @@ export function DTreeTool() {
       selectedAlgorithmId={algo}
       onSelectAlgorithmId={setAlgo}
       activeLogMessage={d.log}
-      statsBadges={[
-        { label: "Examples", value: d.dataset.examples.length, variant: "cyan" },
-        { label: "Attributes", value: d.dataset.attributes.length, variant: "success" },
-      ]}
-      controls={{
-        onReset: d.initializeDTree,
-        speed: d.speed,
-        setSpeed: d.setSpeed,
+      exportData={{ toolType: "dtree", problem: d.dataset, filename: `${d.dataset.id || "dtree"}-dataset` }}
+      onImportProblem={(data) => {
+        if (!data.problem || !Array.isArray(data.problem.examples)) throw new Error("Invalid decision tree dataset: missing examples array");
+        d.handleImportDataset(data.problem);
       }}
+      onResetProblem={d.handleResetDataset}
+      statsBadges={[{ label: "Examples", value: d.dataset.examples.length, variant: "cyan" }, { label: "Attributes", value: d.dataset.attributes.length, variant: "success" }]}
+      controls={{ onReset: d.initializeDTree, speed: d.speed, setSpeed: d.setSpeed }}
       animationSlot={
         <DTreeCanvasCard
           onAutoBuild={d.autoBuildTree} onReset={d.initializeDTree} onStepId3={d.stepId3}

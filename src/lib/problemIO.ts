@@ -1,0 +1,208 @@
+/**
+ * Problem I/O: Universal XML and JSON Serialization & Deserialization
+ * Supports all AIspace problem formats: Search graphs, CSPs, Bayes nets,
+ * DTree datasets, Neural sets, Planning worlds, Robot worlds, Deduction KBs, Strips problems.
+ */
+
+const VALID_XML_TAG = /^(?!xml)[a-zA-Z_][a-zA-Z0-9_.-]*$/i;
+
+function escapeXml(unsafe: string): string {
+  return String(unsafe)
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function serializeValue(val: any, tagName: string, indent: string): string {
+  const isTagValid = VALID_XML_TAG.test(tagName);
+  const tag = isTagValid ? tagName : "field";
+  const keyAttr = isTagValid ? "" : ` key="${escapeXml(tagName)}"`;
+
+  if (val === null || val === undefined) {
+    return `${indent}<${tag}${keyAttr} type="null"/>\n`;
+  }
+  if (typeof val === "boolean") {
+    return `${indent}<${tag}${keyAttr} type="boolean">${val}</${tag}>\n`;
+  }
+  if (typeof val === "number") {
+    return `${indent}<${tag}${keyAttr} type="number">${val}</${tag}>\n`;
+  }
+  if (typeof val === "string") {
+    return `${indent}<${tag}${keyAttr} type="string">${escapeXml(val)}</${tag}>\n`;
+  }
+  if (Array.isArray(val)) {
+    if (val.length === 0) {
+      return `${indent}<${tag}${keyAttr} type="array"/>\n`;
+    }
+    let out = `${indent}<${tag}${keyAttr} type="array">\n`;
+    for (const item of val) {
+      out += serializeValue(item, "item", indent + "  ");
+    }
+    out += `${indent}</${tag}>\n`;
+    return out;
+  }
+  if (typeof val === "object") {
+    const keys = Object.keys(val);
+    if (keys.length === 0) {
+      return `${indent}<${tag}${keyAttr} type="object"/>\n`;
+    }
+    let out = `${indent}<${tag}${keyAttr} type="object">\n`;
+    for (const k of keys) {
+      out += serializeValue(val[k], k, indent + "  ");
+    }
+    out += `${indent}</${tag}>\n`;
+    return out;
+  }
+  return `${indent}<${tag}${keyAttr}>${escapeXml(String(val))}</${tag}>\n`;
+}
+
+function getDOMParser(): DOMParser {
+  if (typeof window !== "undefined" && window.DOMParser) {
+    return new window.DOMParser();
+  }
+  if (typeof DOMParser !== "undefined") {
+    return new DOMParser();
+  }
+  throw new Error("DOMParser is not available in the current environment.");
+}
+
+function deserializeNode(element: Element): any {
+  const typeAttr = element.getAttribute("type");
+
+  if (typeAttr === "null") return null;
+  if (typeAttr === "boolean") return element.textContent?.trim() === "true";
+  if (typeAttr === "number") return Number(element.textContent?.trim());
+  if (typeAttr === "string") return element.textContent ?? "";
+
+  const children = Array.from(element.children);
+
+  if (typeAttr === "array" || (!typeAttr && children.length > 0 && children.every((c) => c.tagName.toLowerCase() === "item"))) {
+    return children.map((c) => deserializeNode(c));
+  }
+
+  if (typeAttr === "object" || children.length > 0) {
+    const res: Record<string, any> = {};
+    for (const child of children) {
+      const key = child.getAttribute("key") || child.tagName;
+      res[key] = deserializeNode(child);
+    }
+    return res;
+  }
+
+  // Fallback if no type attribute and no children
+  const text = element.textContent ?? "";
+  const trimmed = text.trim();
+  if (trimmed === "true") return true;
+  if (trimmed === "false") return false;
+  if (trimmed === "null") return null;
+  if (trimmed !== "" && !isNaN(Number(trimmed)) && !trimmed.startsWith("0x")) {
+    return Number(trimmed);
+  }
+  return text;
+}
+
+/**
+ * Serialize problem data to standard AIspace XML string.
+ */
+export function exportProblemXml(problem: any, toolType = "generic"): string {
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+  xml += `<aispace-problem version="1.0" toolType="${escapeXml(toolType)}">\n`;
+  xml += `  <toolType type="string">${escapeXml(toolType)}</toolType>\n`;
+  xml += serializeValue(problem, "problem", "  ");
+  xml += `</aispace-problem>\n`;
+  return xml;
+}
+
+/**
+ * Serialize problem data to formatted AIspace JSON string.
+ */
+export function exportProblemJson(problem: any, toolType = "generic"): string {
+  const payload = {
+    format: "aispace-problem",
+    version: "1.0",
+    toolType,
+    problem,
+  };
+  return JSON.stringify(payload, null, 2);
+}
+
+/**
+ * Parse an AIspace XML problem string back to object.
+ */
+export function parseProblemXml(xmlString: string): { toolType?: string; problem: any } {
+  const parser = getDOMParser();
+  const xmlDoc = parser.parseFromString(xmlString, "application/xml");
+  const parserError = xmlDoc.getElementsByTagName("parsererror");
+  if (parserError.length > 0) {
+    throw new Error("XML Parse Error: " + (parserError[0].textContent || "Invalid XML format"));
+  }
+
+  const root = xmlDoc.documentElement;
+  const toolTypeAttr = root.getAttribute("toolType") || root.getAttribute("type") || undefined;
+  const data = deserializeNode(root);
+
+  const toolType = data?.toolType || toolTypeAttr;
+  const problem = data?.problem !== undefined ? data.problem : data;
+
+  return { toolType, problem };
+}
+
+/**
+ * Parse an AIspace JSON problem string back to object.
+ */
+export function parseProblemJson(jsonString: string): { toolType?: string; problem: any } {
+  const parsed = JSON.parse(jsonString);
+  if (parsed && typeof parsed === "object") {
+    if (parsed.format === "aispace-problem" && parsed.problem !== undefined) {
+      return { toolType: parsed.toolType, problem: parsed.problem };
+    }
+    if (parsed.problem !== undefined) {
+      return { toolType: parsed.toolType, problem: parsed.problem };
+    }
+  }
+  return { problem: parsed };
+}
+
+/**
+ * Universal importer: detects whether string is XML or JSON and parses it.
+ */
+export function importProblemAny(rawText: string): {
+  toolType?: string;
+  problem: any;
+  format: "json" | "xml";
+} {
+  const trimmed = (rawText || "").trim();
+  if (!trimmed) {
+    throw new Error("Empty input: Please provide valid XML or JSON problem data.");
+  }
+  if (trimmed.startsWith("<")) {
+    const res = parseProblemXml(trimmed);
+    return { ...res, format: "xml" };
+  } else {
+    const res = parseProblemJson(trimmed);
+    return { ...res, format: "json" };
+  }
+}
+
+/**
+ * Triggers browser file download with blob URL.
+ */
+export function triggerFileDownload(content: string, filename: string, mimeType: string): void {
+  if (typeof document === "undefined") return;
+  try {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch (err) {
+    console.warn("triggerFileDownload skipped:", err);
+  }
+}
