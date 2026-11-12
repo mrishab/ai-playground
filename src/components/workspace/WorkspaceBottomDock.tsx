@@ -19,27 +19,24 @@ export function WorkspaceBottomDock({
   if (currentPane === "log") return null;
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 bg-card/90 border border-border rounded-xl shadow-xs text-xs backdrop-blur-xs">
-      <div className="flex items-center gap-2.5 min-w-0 flex-1">
+    <div className="flex flex-wrap items-center justify-between gap-3 px-3.5 py-2 bg-card/40 border border-border/80 rounded-xl shadow-xs text-xs">
+      <div className="flex items-center gap-2 min-w-0 flex-1">
         <Terminal className="w-3.5 h-3.5 text-primary shrink-0" />
-        <span className="font-semibold text-muted-foreground shrink-0 hidden sm:inline">
-          Studio Terminal:
-        </span>
-        <span className="text-muted-foreground truncate font-mono text-[11.5px]">
-          Execution environment active. Click to view detailed algorithm trace.
+        <span className="text-muted-foreground truncate font-mono text-xs">
+          Execution environment active
         </span>
       </div>
 
       <div className="flex items-center gap-2 shrink-0">
         {statsBadges?.map((s) => (
-          <Badge key={s.label} variant={s.variant || "outline"} className="text-[11px]">
-            {s.label}: <strong>{s.value}</strong>
+          <Badge key={s.label} variant={s.variant || "outline"} className="text-[10px] py-0 px-2 font-normal">
+            {s.label}: <strong className="font-semibold ml-0.5">{s.value}</strong>
           </Badge>
         ))}
         <button
           type="button"
           onClick={onOpenLogPane}
-          className="flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline ml-1"
+          className="flex items-center gap-0.5 text-xs text-primary hover:underline transition-colors duration-150 ml-1"
         >
           View Full Log <ChevronRight className="w-3 h-3" />
         </button>

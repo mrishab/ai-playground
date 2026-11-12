@@ -25,7 +25,7 @@ export function BayesVeCard({ network, evidence }: { network: BayesNetwork; evid
         speed={ve.speed}
         setSpeed={ve.setSpeed}
       />
-      <div className="p-4 space-y-3 bg-slate-50 dark:bg-[#070a13]">
+      <div className="p-4 space-y-3 bg-canvas">
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="text-primary font-mono text-[11px]">{snap?.action || "Ready"}</Badge>
           <span className="text-xs text-muted-foreground font-mono">{snap?.description}</span>

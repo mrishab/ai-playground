@@ -26,7 +26,7 @@ export function Slider({
       value={value}
       onChange={(e) => onChange(parseFloat(e.target.value))}
       className={cn(
-        "w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary focus:outline-none transition-all",
+        "w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary focus:outline-none transition-colors duration-150",
         className,
       )}
       {...props}

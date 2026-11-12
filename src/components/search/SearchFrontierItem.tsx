@@ -10,7 +10,7 @@ interface SearchFrontierItemProps {
 export function SearchFrontierItem({ path, isNext }: SearchFrontierItemProps) {
   return (
     <div
-      className={`p-2.5 rounded-lg border text-xs transition-all duration-300 ease-out ${
+      className={`p-2.5 rounded-lg border text-xs transition-colors duration-200 ease-out ${
         isNext
           ? "bg-sky-500/10 border-sky-500/40 text-sky-800 dark:text-sky-200"
           : "bg-secondary/40 border-border/50 text-foreground/90"

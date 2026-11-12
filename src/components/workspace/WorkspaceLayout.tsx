@@ -27,17 +27,25 @@ export function WorkspaceLayout(props: WorkspaceLayoutProps) {
     }
   };
 
+  const isFullWidthPane = currentPane === "coding" || currentPane === "log" || currentPane === "theory";
+
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-4">
-          {renderMainPane()}
+      {isFullWidthPane ? (
+        <div className="space-y-4">{renderMainPane()}</div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div className="lg:col-span-2 space-y-4 min-w-0">
+            {renderMainPane()}
+          </div>
+          {(inspectorSlot || stateSlot) && (
+            <div className="space-y-4 min-w-0">
+              {inspectorSlot}
+              {stateSlot}
+            </div>
+          )}
         </div>
-        <div className="space-y-4">
-          {inspectorSlot}
-          {stateSlot}
-        </div>
-      </div>
+      )}
 
       <WorkspaceBottomDock
         activeLogMessage={props.activeLogMessage}

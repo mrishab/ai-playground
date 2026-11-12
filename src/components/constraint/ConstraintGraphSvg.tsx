@@ -19,7 +19,7 @@ export function ConstraintGraphSvg(props: ConstraintGraphSvgProps) {
 
   return (
     <>
-      <div className="relative w-full h-[400px] bg-slate-50 dark:bg-[#070a13] border-b border-border select-none overflow-hidden">
+      <div className="relative w-full h-[400px] bg-canvas border-b border-border select-none overflow-hidden">
         <svg className="w-full h-full" viewBox="0 0 620 400">
           <ConstraintGraphEdges problem={problem} currentArc={currentArc} />
           {problem.variables.map((v) => (

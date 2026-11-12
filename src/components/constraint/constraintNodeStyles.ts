@@ -5,32 +5,28 @@ export function getConstraintNodeStyle(
 ) {
   if (isSingle) {
     return {
-      circleClassName:
-        "fill-emerald-100 dark:fill-emerald-950 stroke-emerald-500 dark:stroke-emerald-400",
-      textClassName: "fill-emerald-900 dark:fill-emerald-100",
-      domainClassName: "fill-emerald-700 dark:fill-emerald-300",
+      circleClassName: "fill-primary/15 stroke-primary",
+      textClassName: "fill-foreground",
+      domainClassName: "fill-primary",
     };
   }
   if (isEmpty) {
     return {
-      circleClassName:
-        "fill-rose-100 dark:fill-rose-950 stroke-rose-500 dark:stroke-rose-400",
-      textClassName: "fill-rose-900 dark:fill-rose-100",
-      domainClassName: "fill-rose-700 dark:fill-rose-300",
+      circleClassName: "fill-destructive/15 stroke-destructive",
+      textClassName: "fill-destructive",
+      domainClassName: "fill-destructive",
     };
   }
   if (isBeingEvaluated) {
     return {
-      circleClassName:
-        "fill-purple-100 dark:fill-purple-950 stroke-purple-500 dark:stroke-purple-400",
-      textClassName: "fill-purple-900 dark:fill-purple-100",
-      domainClassName: "fill-purple-700 dark:fill-purple-300",
+      circleClassName: "fill-accent stroke-accent-foreground",
+      textClassName: "fill-accent-foreground",
+      domainClassName: "fill-accent-foreground",
     };
   }
   return {
-    circleClassName:
-      "fill-white dark:fill-slate-900 stroke-blue-500 dark:stroke-blue-400",
-    textClassName: "fill-slate-800 dark:fill-slate-100",
-    domainClassName: "fill-slate-600 dark:fill-slate-400",
+    circleClassName: "fill-card stroke-border",
+    textClassName: "fill-foreground",
+    domainClassName: "fill-muted-foreground",
   };
 }

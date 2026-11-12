@@ -26,7 +26,7 @@ export function ConstraintVariableDomainRow({
             return (
               <span
                 key={val}
-                className={`px-2 py-0.5 rounded text-[11px] font-mono transition-all duration-300 ease-out ${
+                className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors duration-200 ease-out ${
                   isPruned
                     ? "bg-destructive/10 text-destructive/50 line-through"
                     : currentVals.length === 1

@@ -30,7 +30,7 @@ export function ProofTreeCanvas({
         )}
       </div>
 
-      <div className="p-6 bg-slate-50 dark:bg-[#070a13] min-h-[300px] flex flex-col items-center justify-center">
+      <div className="p-6 bg-canvas min-h-[300px] flex flex-col items-center justify-center">
         {proofTree ? (
           <div className="w-full space-y-4">
             <div className="flex flex-col items-center">

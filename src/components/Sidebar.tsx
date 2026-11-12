@@ -24,7 +24,7 @@ export function Sidebar({
         <button
           type="button"
           aria-label="Close sidebar"
-          className="fixed inset-0 top-14 z-20 bg-black/60 backdrop-blur-sm lg:hidden animate-in fade-in"
+          className="fixed inset-0 top-14 z-20 bg-background/80 backdrop-blur-sm lg:hidden animate-in fade-in"
           onClick={onClose}
         />
       )}

@@ -8,7 +8,7 @@ export const MAIN_TOOLS_B2: OverviewToolItem[] = [
     category: "Main Tools",
     badge: "Connectionism",
     icon: Cpu,
-    color: "text-rose-400 bg-rose-500/10 border-rose-500/20",
+    color: "text-accent-foreground bg-accent border-border",
     description:
       "Feedforward neural networks and backpropagation with 2D decision boundary visualization.",
     algorithms: [
@@ -24,7 +24,7 @@ export const MAIN_TOOLS_B2: OverviewToolItem[] = [
     category: "Main Tools",
     badge: "Planning as CSP",
     icon: Laptop,
-    color: "text-blue-400 bg-blue-500/10 border-blue-500/20",
+    color: "text-primary bg-primary/10 border-primary/20",
     description:
       "Compile STRIPS planning into temporal constraint satisfaction problems.",
     algorithms: [

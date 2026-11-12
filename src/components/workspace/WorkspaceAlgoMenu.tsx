@@ -17,10 +17,7 @@ export function WorkspaceAlgoMenu({
 
   return (
     <div className="flex items-center gap-1.5">
-      <Cpu className="w-3.5 h-3.5 text-muted-foreground hidden sm:inline" />
-      <span className="text-xs font-semibold text-muted-foreground hidden md:inline">
-        Algorithm:
-      </span>
+      <Cpu className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
       <select
         aria-label="Select Algorithm"
         value={selectedId}

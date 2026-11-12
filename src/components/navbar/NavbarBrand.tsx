@@ -1,7 +1,6 @@
 import React from "react";
 import { Menu, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 
 export function NavbarBrand({
   onToggleSidebar,
@@ -33,17 +32,14 @@ export function NavbarBrand({
         }}
         className="flex items-center gap-2 cursor-pointer select-none group"
       >
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md group-hover:scale-105 transition-transform">
-          <Sparkles className="h-4 w-4" />
+        <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-xs shadow-xs group-hover:scale-105 transition-transform">
+          <Sparkles className="h-3.5 w-3.5" />
         </div>
         <div className="flex flex-col">
-          <span className="font-extrabold text-sm tracking-tight text-foreground flex items-center gap-1.5">
+          <span className="font-bold text-sm tracking-tight text-foreground">
             AIspace Studio
-            <Badge variant="cyan" className="text-[9px] py-0 px-1 font-mono">
-              v3.0
-            </Badge>
           </span>
-          <span className="text-[10px] text-muted-foreground hidden sm:inline">
+          <span className="text-[10px] text-muted-foreground hidden sm:inline leading-none">
             Interactive AI Algorithm Lab
           </span>
         </div>

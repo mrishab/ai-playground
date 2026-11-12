@@ -41,7 +41,7 @@ export function ExerciseFiltersHeader({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search concepts, questions..."
-            className="w-full h-9 pl-9 pr-3 text-xs rounded-lg border border-input bg-background/50 focus:outline-none focus:ring-1 focus:ring-primary"
+            className="w-full h-9 pl-9 pr-3 text-xs rounded-lg border border-input bg-background/50 focus:outline-none focus:ring-1 focus:ring-primary transition-colors duration-150"
           />
         </div>
 

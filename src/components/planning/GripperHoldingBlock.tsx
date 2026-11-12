@@ -20,15 +20,15 @@ export function GripperHoldingBlock({
         width="50"
         height="42"
         rx="6"
-        fill={blk?.color || "#3b82f6"}
-        stroke="#f8fafc"
+        fill={blk?.color || "hsl(var(--primary))"}
+        stroke="hsl(var(--card))"
         strokeWidth="2"
       />
       <text
         x="25"
         y="26"
         textAnchor="middle"
-        fill="#ffffff"
+        fill="hsl(var(--primary-foreground))"
         fontSize="16"
         fontWeight="bold"
         fontFamily="sans-serif"

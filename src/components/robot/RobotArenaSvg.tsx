@@ -16,7 +16,7 @@ export function RobotArenaSvg({
   currentPlanIndex: number;
 }) {
   return (
-    <div className="relative w-full h-[380px] bg-slate-50 dark:bg-[#070a13] select-none overflow-hidden">
+    <div className="relative w-full h-[380px] bg-canvas select-none overflow-hidden">
       <svg className="w-full h-full" viewBox="0 0 600 380">
         <pattern
           id="dot-grid"
@@ -24,7 +24,7 @@ export function RobotArenaSvg({
           height="25"
           patternUnits="userSpaceOnUse"
         >
-          <circle cx="2" cy="2" r="0.8" className="fill-slate-300 dark:fill-[#1e293b]" />
+          <circle cx="2" cy="2" r="0.8" className="fill-muted" />
         </pattern>
         <rect width="600" height="380" fill="url(#dot-grid)" />
 
@@ -34,7 +34,7 @@ export function RobotArenaSvg({
             cx={b.x}
             cy={b.y}
             r="1.5"
-            fill="#38bdf8"
+            fill="hsl(var(--primary))"
             opacity={0.4}
           />
         ))}

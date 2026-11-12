@@ -29,7 +29,7 @@ export function DTreeDatasetTable({ dataset }: { dataset: DTreeDataset }) {
               {dataset.examples.map((ex) => (
                 <tr
                   key={Object.values(ex).join("-")}
-                  className="border-b border-border/20 hover:bg-secondary/20 font-mono"
+                  className="border-b border-border/20 hover:bg-secondary/20 font-mono transition-colors duration-150"
                 >
                   {dataset.attributes.map((a) => (
                     <td key={a} className="p-1.5 text-muted-foreground">

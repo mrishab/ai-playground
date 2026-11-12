@@ -35,8 +35,8 @@ export function BayesMarginalRow({
             <div className="flex items-center gap-2">
               <div className="w-20 h-1.5 bg-secondary rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-primary rounded-full transition-[width] duration-300"
-                  style={{ width: `${prob * 100}%` }}
+                  className="h-full w-full bg-primary rounded-full origin-left transition-transform duration-300 ease-out"
+                  style={{ transform: `scaleX(${prob})` }}
                 />
               </div>
               <span className="w-10 text-right font-semibold text-foreground">

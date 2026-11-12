@@ -27,10 +27,10 @@ export function ConstraintNodeSvg({
           cy={v.y}
           r="34"
           fill="none"
-          stroke="#c084fc"
+          stroke="hsl(var(--primary))"
           strokeWidth="1.5"
           opacity="0.6"
-          className="animate-pulse"
+          className="transition-opacity duration-200"
           style={{ transformBox: "fill-box", transformOrigin: "center" }}
         />
       )}
@@ -39,7 +39,7 @@ export function ConstraintNodeSvg({
         cy={v.y}
         r="25"
         strokeWidth="2.5"
-        className={`transition-all duration-300 ease-out ${circleClassName}`}
+        className={`transition-colors duration-200 ease-out ${circleClassName}`}
       />
       <ConstraintNodeLabel
         name={v.name}

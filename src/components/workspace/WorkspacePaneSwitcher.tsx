@@ -32,7 +32,7 @@ export function WorkspacePaneSwitcher({
             key={p.id}
             type="button"
             onClick={() => onSelectPane(p.id)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-[background-color,color,transform] duration-150 ease-out active:scale-[0.98] ${
               isActive
                 ? "bg-card text-foreground shadow-xs border border-border/80"
                 : "text-muted-foreground hover:text-foreground hover:bg-card/40"

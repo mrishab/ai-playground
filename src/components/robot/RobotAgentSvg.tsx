@@ -12,7 +12,7 @@ export function RobotAgentSvg({ pose }: { pose: RobotPose }) {
         y1="0"
         x2="35"
         y2="-15"
-        stroke="#38bdf8"
+        stroke="hsl(var(--primary))"
         strokeWidth="1"
         strokeDasharray="2 2"
         opacity="0.7"
@@ -22,7 +22,7 @@ export function RobotAgentSvg({ pose }: { pose: RobotPose }) {
         y1="0"
         x2="40"
         y2="0"
-        stroke="#38bdf8"
+        stroke="hsl(var(--primary))"
         strokeWidth="1.5"
         strokeDasharray="2 2"
         opacity="0.9"
@@ -32,7 +32,7 @@ export function RobotAgentSvg({ pose }: { pose: RobotPose }) {
         y1="0"
         x2="35"
         y2="15"
-        stroke="#38bdf8"
+        stroke="hsl(var(--primary))"
         strokeWidth="1"
         strokeDasharray="2 2"
         opacity="0.7"
@@ -41,11 +41,11 @@ export function RobotAgentSvg({ pose }: { pose: RobotPose }) {
         cx="0"
         cy="0"
         r="14"
-        fill="#0284c7"
-        stroke="#38bdf8"
+        fill="hsl(var(--primary))"
+        stroke="hsl(var(--primary-foreground))"
         strokeWidth="2.5"
       />
-      <polygon points="12,0 0,-5 0,5" fill="#f8fafc" />
+      <polygon points="12,0 0,-5 0,5" fill="hsl(var(--primary-foreground))" />
     </g>
   );
 }

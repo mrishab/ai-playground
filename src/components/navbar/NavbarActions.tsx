@@ -41,15 +41,15 @@ export function NavbarActions({
         variant="ghost"
         size="icon"
         onClick={onToggleDarkMode}
-        className="h-8 w-8 text-muted-foreground hover:text-foreground"
+        className="h-8 w-8 text-muted-foreground hover:text-foreground transition-colors duration-150"
         aria-label={
           isDarkMode ? "Switch to light theme" : "Switch to dark theme"
         }
       >
         {isDarkMode ? (
-          <Sun className="h-4 w-4 text-amber-400" />
+          <Sun className="h-4 w-4 text-primary" />
         ) : (
-          <Moon className="h-4 w-4 text-slate-700" />
+          <Moon className="h-4 w-4 text-foreground" />
         )}
       </Button>
     </div>

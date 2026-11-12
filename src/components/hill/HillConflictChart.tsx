@@ -26,7 +26,7 @@ export function HillConflictChart({
           </span>
         </div>
 
-        <div className="h-28 w-full bg-slate-50 dark:bg-[#0b0f19] rounded-lg border border-border/50 relative overflow-hidden flex items-end px-2 pt-2 pb-1">
+        <div className="h-28 w-full bg-canvas rounded-lg border border-border/50 relative overflow-hidden flex items-end px-2 pt-2 pb-1">
           {conflictHistory.length > 1 ? (
             <svg
               className="w-full h-full"
@@ -35,7 +35,7 @@ export function HillConflictChart({
             >
               <polyline
                 fill="none"
-                stroke="#f59e0b"
+                stroke="hsl(var(--primary))"
                 strokeWidth="2.5"
                 points={points}
               />

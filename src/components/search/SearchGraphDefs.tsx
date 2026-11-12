@@ -13,7 +13,7 @@ export function SearchGraphDefs() {
       >
         <polygon
           points="0 0, 7 3.5, 0 7"
-          className="fill-slate-400 dark:fill-slate-500"
+          className="fill-muted-foreground"
         />
       </marker>
       <marker
@@ -24,7 +24,7 @@ export function SearchGraphDefs() {
         refY="3.5"
         orient="auto"
       >
-        <polygon points="0 0, 8 3.5, 0 7" className="fill-emerald-500" />
+        <polygon points="0 0, 8 3.5, 0 7" className="fill-primary" />
       </marker>
     </defs>
   );

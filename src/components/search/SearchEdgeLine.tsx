@@ -23,10 +23,8 @@ export function SearchEdgeLine({
         y1={fromNode.y}
         x2={toNode.x}
         y2={toNode.y}
-        className={`transition-[stroke,stroke-width] duration-300 ease-out ${
-          inPath
-            ? "stroke-emerald-500"
-            : "stroke-slate-300 dark:stroke-slate-600"
+        className={`transition-colors duration-200 ease-out ${
+          inPath ? "stroke-primary" : "stroke-border"
         }`}
         strokeWidth={inPath ? 3.5 : 1.5}
         markerEnd={inPath ? "url(#arrowhead-path)" : "url(#arrowhead)"}
@@ -37,14 +35,14 @@ export function SearchEdgeLine({
         width="24"
         height="18"
         rx="4"
-        className="fill-white dark:fill-[#0f172a] stroke-slate-300 dark:stroke-slate-700"
+        className="fill-card stroke-border"
         strokeWidth="1"
       />
       <text
         x={midX}
         y={midY + 3.5}
         textAnchor="middle"
-        className="fill-slate-600 dark:fill-slate-300 font-semibold font-mono text-[10px]"
+        className="fill-muted-foreground font-semibold font-mono text-[10px]"
       >
         {cost}
       </text>

@@ -1,11 +1,7 @@
 import { DataPoint } from "@/data/neuralProblems";
 import { NeuralWeights, forwardPass } from "./neuralMath";
 
-export function renderNeuralCanvas(
-  canvas: HTMLCanvasElement,
-  weights: NeuralWeights,
-  points: DataPoint[],
-) {
+export function renderNeuralCanvas(canvas: HTMLCanvasElement, weights: NeuralWeights, points: DataPoint[]) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
   const { width, height } = canvas;
@@ -25,10 +21,7 @@ export function renderNeuralCanvas(
         for (let dy = 0; dy < step; dy++) {
           if (px + dx < width && py + dy < height) {
             const idx = ((py + dy) * width + (px + dx)) * 4;
-            data[idx] = r;
-            data[idx + 1] = 40;
-            data[idx + 2] = b;
-            data[idx + 3] = 200;
+            data[idx] = r; data[idx + 1] = 40; data[idx + 2] = b; data[idx + 3] = 200;
           }
         }
       }
@@ -36,13 +29,17 @@ export function renderNeuralCanvas(
   }
   ctx.putImageData(imgData, 0, 0);
 
-  ctx.strokeStyle = "#334155";
+  const style = typeof window !== "undefined" ? getComputedStyle(document.documentElement) : null;
+  const borderHsl = style?.getPropertyValue("--border").trim() || "220 13% 88%";
+  const destHsl = style?.getPropertyValue("--destructive").trim() || "0 84% 60%";
+  const primHsl = style?.getPropertyValue("--primary").trim() || "217 91% 54%";
+  const cardHsl = style?.getPropertyValue("--card").trim() || "0 0% 100%";
+
+  ctx.strokeStyle = `hsl(${borderHsl})`;
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(0, height / 2);
-  ctx.lineTo(width, height / 2);
-  ctx.moveTo(width / 2, 0);
-  ctx.lineTo(width / 2, height);
+  ctx.moveTo(0, height / 2); ctx.lineTo(width, height / 2);
+  ctx.moveTo(width / 2, 0); ctx.lineTo(width / 2, height);
   ctx.stroke();
 
   for (const p of points) {
@@ -50,10 +47,10 @@ export function renderNeuralCanvas(
     const cy = ((-p.y + 1) / 2) * height;
     ctx.beginPath();
     ctx.arc(cx, cy, 7, 0, 2 * Math.PI);
-    ctx.fillStyle = p.label === 1 ? "#ef4444" : "#3b82f6";
+    ctx.fillStyle = p.label === 1 ? `hsl(${destHsl})` : `hsl(${primHsl})`;
     ctx.fill();
     ctx.lineWidth = 2;
-    ctx.strokeStyle = "#ffffff";
+    ctx.strokeStyle = `hsl(${cardHsl})`;
     ctx.stroke();
   }
 }

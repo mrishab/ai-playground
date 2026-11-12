@@ -25,7 +25,7 @@ export function SearchGraphSvg({
 
   return (
     <>
-      <div className="relative w-full h-[420px] bg-slate-50 dark:bg-[#070a13] border-b border-border select-none overflow-hidden">
+      <div className="relative w-full h-[420px] bg-canvas border-b border-border select-none overflow-hidden">
         <svg className="w-full h-full" viewBox="0 0 640 420">
           <SearchGraphEdges graph={graph} currentPath={currentPath} />
           {graph.nodes.map((node) => (

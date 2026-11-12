@@ -21,10 +21,10 @@ export function SearchNodeHaloSvg({
           cy={y}
           r="28"
           fill="none"
-          stroke="#60a5fa"
+          stroke="hsl(var(--primary))"
           strokeWidth="2"
           opacity="0.6"
-          className="animate-pulse"
+          className="transition-opacity duration-200 pointer-events-none"
           style={{ transformBox: "fill-box", transformOrigin: "center" }}
         />
       )}
@@ -34,9 +34,10 @@ export function SearchNodeHaloSvg({
           cy={y}
           r="23"
           fill="none"
-          stroke="#f59e0b"
+          stroke="hsl(var(--accent-foreground))"
           strokeWidth="1.5"
           strokeDasharray="3 3"
+          className="pointer-events-none"
         />
       )}
     </>

@@ -23,7 +23,7 @@ export function Modal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
         role="presentation"
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 bg-background/80 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
         onMouseDown={onClose}
       />
       {/* react-doctor-disable-next-line react-doctor/prefer-html-dialog */}
@@ -33,7 +33,7 @@ export function Modal({
         aria-labelledby="modal-title"
         onMouseDown={(e) => e.stopPropagation()}
         className={cn(
-          "relative z-50 w-full max-w-2xl rounded-xl border border-border bg-card p-6 shadow-2xl transition-all animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto",
+          "relative z-50 w-full max-w-2xl rounded-xl border border-border bg-card p-6 shadow-2xl transition-[opacity,transform] animate-in zoom-in-95 slide-in-from-bottom-2 duration-200 ease-out max-h-[90vh] overflow-y-auto",
           className,
         )}
       >

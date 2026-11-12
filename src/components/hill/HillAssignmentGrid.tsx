@@ -17,7 +17,7 @@ export function HillAssignmentGrid({
   stepCount,
 }: HillAssignmentGridProps) {
   return (
-    <div className="p-4 bg-slate-50 dark:bg-[#070a13] border-b border-border">
+    <div className="p-4 bg-canvas border-b border-border">
       <div className="flex items-center justify-between mb-3 text-xs">
         <span className="text-muted-foreground font-semibold">
           Total Assignment State

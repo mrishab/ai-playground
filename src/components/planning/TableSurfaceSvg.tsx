@@ -10,27 +10,27 @@ export function TableSurfaceSvg() {
         height="24"
         rx="4"
         strokeWidth="2"
-        className="fill-slate-200 dark:fill-[#334155] stroke-slate-300 dark:stroke-[#475569]"
+        className="fill-muted stroke-border"
       />
       <rect
         x="70"
         y="324"
         width="20"
         height="36"
-        className="fill-slate-300 dark:fill-[#1e293b]"
+        className="fill-muted"
       />
       <rect
         x="510"
         y="324"
         width="20"
         height="36"
-        className="fill-slate-300 dark:fill-[#1e293b]"
+        className="fill-muted"
       />
       <text
         x="300"
         y="316"
         textAnchor="middle"
-        className="fill-slate-600 dark:fill-[#94a3b8] font-bold text-[10px]"
+        className="fill-muted-foreground font-bold text-[10px]"
       >
         TABLE
       </text>

@@ -35,7 +35,7 @@ export function BayesNodeSvg({
         textAnchor="middle"
         fontSize="11"
         fontWeight="bold"
-        className="pointer-events-none fill-slate-800 dark:fill-[#f8fafc]"
+        className="pointer-events-none fill-foreground"
       >
         {node.id}
       </text>

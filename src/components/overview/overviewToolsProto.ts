@@ -8,7 +8,7 @@ export const PROTO_TOOLS: OverviewToolItem[] = [
     category: "Prototype Tools",
     badge: "Embodied AI",
     icon: Bot,
-    color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
+    color: "text-primary bg-primary/10 border-primary/20",
     description:
       "Autonomous robot navigation with whisker sensors, obstacle avoidance, and subsumption.",
     algorithms: [
@@ -24,7 +24,7 @@ export const PROTO_TOOLS: OverviewToolItem[] = [
     category: "Prototype Tools",
     badge: "Classical Planning",
     icon: Box,
-    color: "text-teal-400 bg-teal-500/10 border-teal-500/20",
+    color: "text-accent-foreground bg-accent border-border",
     description:
       "Blocks World planning with gripper execution and Sussman Anomaly resolution.",
     algorithms: [

@@ -16,7 +16,7 @@ export function BlocksWorldArenaSvg({
   problem: PlanningProblem;
 }) {
   return (
-    <div className="relative w-full h-[360px] bg-slate-50 dark:bg-[#070a13] select-none overflow-hidden">
+    <div className="relative w-full h-[360px] bg-canvas select-none overflow-hidden">
       <svg className="w-full h-full" viewBox="0 0 600 360">
         <TableSurfaceSvg />
         <GripperArmSvg

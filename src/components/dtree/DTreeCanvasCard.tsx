@@ -25,7 +25,7 @@ export function DTreeCanvasCard(props: DTreeCanvasCardProps) {
   return (
     <Card className="overflow-hidden border-border/80 shadow-md">
       <DTreeToolbar {...props} />
-      <div className="p-8 bg-slate-50 dark:bg-[#070a13] min-h-[380px] flex flex-col items-center justify-start overflow-x-auto">
+      <div className="p-8 bg-canvas min-h-[380px] flex flex-col items-center justify-start overflow-x-auto">
         {props.tree ? (
           <div className="flex flex-col items-center w-full">
             <TreeNodeView node={props.tree} />

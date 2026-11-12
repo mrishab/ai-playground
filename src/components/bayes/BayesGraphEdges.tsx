@@ -15,7 +15,7 @@ export function BayesGraphEdges({ network }: { network: BayesNetwork }) {
         >
           <polygon
             points="0 0, 8 3.5, 0 7"
-            className="fill-slate-400 dark:fill-slate-500"
+            className="fill-muted-foreground"
           />
         </marker>
       </defs>
@@ -35,7 +35,7 @@ export function BayesGraphEdges({ network }: { network: BayesNetwork }) {
               y2={targetNode.y}
               strokeWidth="2"
               markerEnd="url(#bayes-arrow)"
-              className="stroke-slate-300 dark:stroke-slate-600 transition-colors duration-200"
+              className="stroke-border transition-colors duration-200"
             />
           );
         });

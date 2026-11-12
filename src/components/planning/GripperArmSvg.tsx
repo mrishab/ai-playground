@@ -25,12 +25,12 @@ export function GripperArmSvg({
         y="0"
         width="16"
         height="60"
-        className="fill-slate-300 dark:fill-[#475569] stroke-slate-400 dark:stroke-[#64748b]"
+        className="fill-muted stroke-border"
         rx="2"
       />
-      <rect x="-30" y="60" width="60" height="12" rx="3" fill="#0ea5e9" />
-      <rect x="-30" y="72" width="10" height="24" rx="2" fill="#0284c7" />
-      <rect x="20" y="72" width="10" height="24" rx="2" fill="#0284c7" />
+      <rect x="-30" y="60" width="60" height="12" rx="3" className="fill-primary" />
+      <rect x="-30" y="72" width="10" height="24" rx="2" className="fill-primary" />
+      <rect x="20" y="72" width="10" height="24" rx="2" className="fill-primary" />
       <GripperHoldingBlock holdingBlock={holdingBlock} blk={blk} />
     </g>
   );

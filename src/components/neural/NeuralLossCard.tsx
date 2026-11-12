@@ -9,12 +9,12 @@ export function NeuralLossCard({ lossHistory }: { lossHistory: number[] }) {
     <Card className="border-border/80 shadow-sm">
       <CardHeader className="p-4 pb-2">
         <CardTitle className="text-sm font-semibold flex items-center gap-1.5">
-          <Activity className="h-4 w-4 text-amber-500 dark:text-amber-400" />
+          <Activity className="h-4 w-4 text-primary" />
           Loss Curve (MSE vs Epoch)
         </CardTitle>
       </CardHeader>
       <CardContent className="p-4 pt-1">
-        <div className="h-28 w-full bg-slate-50 dark:bg-[#0b0f19] rounded-lg border border-border/50 relative overflow-hidden flex items-end p-2">
+        <div className="h-28 w-full bg-canvas rounded-lg border border-border/50 relative overflow-hidden flex items-end p-2">
           {lossHistory.length > 1 ? (
             <svg
               className="w-full h-full"
@@ -24,7 +24,7 @@ export function NeuralLossCard({ lossHistory }: { lossHistory: number[] }) {
               <polyline
                 className="transition-[stroke,opacity] duration-300 ease-out"
                 fill="none"
-                stroke="#10b981"
+                stroke="hsl(var(--primary))"
                 strokeWidth="2"
                 points={lossHistory
                   .map(

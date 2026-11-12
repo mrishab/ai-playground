@@ -17,7 +17,7 @@ export function ExerciseChapterTabs({
         <button
           key={ch}
           onClick={() => onSelectChapter(ch)}
-          className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+          className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors duration-150 ease-out ${
             selectedChapter === ch
               ? "bg-primary text-primary-foreground font-semibold shadow-sm"
               : "bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"

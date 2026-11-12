@@ -17,7 +17,7 @@ export function PlanningPlanStepItem({
 }: PlanningPlanStepItemProps) {
   return (
     <div
-      className={`p-2.5 rounded-lg border transition-all ${
+      className={`p-2.5 rounded-lg border transition-colors duration-150 ease-out ${
         isCurrent
           ? "bg-primary/20 border-primary text-primary font-bold"
           : isDone

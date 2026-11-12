@@ -13,7 +13,7 @@ export function RobotWallsSvg({ walls }: { walls: RobotWall[] }) {
           y2={wall.y2}
           strokeWidth="6"
           strokeLinecap="round"
-          className="stroke-slate-800 dark:stroke-[#e2e8f0] shadow-lg"
+          className="stroke-foreground shadow-lg"
         />
       ))}
     </>

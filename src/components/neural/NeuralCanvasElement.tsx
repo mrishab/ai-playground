@@ -34,7 +34,7 @@ export function NeuralCanvasElement({
   };
 
   return (
-    <div className="p-4 bg-slate-50 dark:bg-[#070a13] flex flex-col items-center justify-center">
+    <div className="p-4 bg-canvas flex flex-col items-center justify-center">
       <canvas
         ref={canvasRef}
         width={480}

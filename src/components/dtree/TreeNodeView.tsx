@@ -11,9 +11,9 @@ export const TreeNodeView = ({
 }) => (
   <div className="flex flex-col items-center space-y-2">
     <div
-      className={`p-3 rounded-xl border text-center shadow min-w-[120px] transition-all duration-300 ease-out ${
+      className={`p-3 rounded-xl border text-center shadow min-w-[120px] transition-colors duration-200 ease-out ${
         node.isLeaf
-          ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-800 dark:text-emerald-300"
+          ? "bg-primary/10 border-primary/30 text-primary"
           : "bg-card border-border text-foreground"
       }`}
     >

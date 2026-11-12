@@ -8,8 +8,8 @@ export const HILL_PREBUILT_ITEMS: PrebuiltItem[] = Object.values(CSP_PROBLEMS).m
 }));
 
 export const HILL_ALGORITHM_ITEMS: AlgorithmItem[] = [
-  { id: "greedy_descent", label: "Greedy Descent (Min-Conflicts)" },
+  { id: "min_conflicts", label: "Greedy Descent (Min-Conflicts)" },
   { id: "random_walk", label: "Random Walk" },
-  { id: "simulated_annealing", label: "Simulated Annealing" },
+  { id: "annealing", label: "Simulated Annealing" },
   { id: "tabu", label: "Tabu Search" },
 ];

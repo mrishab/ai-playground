@@ -20,7 +20,7 @@ export function CommandPaletteInput({
         value={query}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Type to search tools, algorithms, exercises..."
-        className="w-full h-12 bg-transparent text-sm focus:outline-none placeholder:text-muted-foreground"
+        className="w-full h-12 bg-transparent text-sm focus:outline-none placeholder:text-muted-foreground transition-colors duration-150"
       />
       <kbd className="px-1.5 py-0.5 text-[10px] rounded bg-secondary text-muted-foreground font-mono border border-border">
         ESC

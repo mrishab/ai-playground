@@ -10,7 +10,7 @@ export function SidebarHeader({ onClose }: { onClose: () => void }) {
       <button
         onClick={onClose}
         aria-label="Close navigation"
-        className="p-1 rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
+        className="p-1 rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors duration-150"
       >
         <X className="h-5 w-5" />
       </button>

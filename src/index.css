@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: light dark;
     --background: 220 20% 97%;
     --foreground: 224 71% 4%;
     --card: 0 0% 100%;
@@ -25,6 +25,7 @@
     --input: 220 13% 88%;
     --ring: 217 91% 54%;
     --radius: 0.75rem;
+    --canvas: 220 14% 96%;
   }
 
   .dark {
@@ -48,6 +49,7 @@
     --border: 217 24% 20%;
     --input: 217 24% 20%;
     --ring: 217 91% 60%;
+    --canvas: 222 47% 5%;
   }
 }
 
@@ -79,17 +81,17 @@
 
 /* Glassmorphism utility */
 .glass-panel {
-  background: rgba(17, 24, 39, 0.75);
+  background: hsl(var(--card) / 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid hsl(var(--border) / 0.5);
 }
 
 .light .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
+  background: hsl(var(--card) / 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid hsl(var(--border) / 0.3);
 }
 
 /* Code fonts */
@@ -105,7 +107,8 @@ code, pre {
 }
 
 .animate-node-pulse {
-  animation: nodePulse 1.5s infinite ease-in-out;
+  animation: nodePulse 1.0s cubic-bezier(0.2, 0, 0, 1) infinite;
+  will-change: transform, opacity;
 }
 
 @keyframes fadeInSlide {
@@ -121,4 +124,18 @@ code, pre {
 
 .animate-step-enter {
   animation: fadeInSlide 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .modal-overlay, .dropdown, .toast, .tooltip {
+    transition: opacity 150ms ease-out !important;
+    transform: none !important;
+  }
 }

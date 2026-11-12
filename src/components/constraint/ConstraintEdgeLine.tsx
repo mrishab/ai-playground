@@ -20,8 +20,8 @@ export function ConstraintEdgeLine({ v1, v2, isCur }: ConstraintEdgeLineProps) {
         y2={v2.y}
         className={
           isCur
-            ? "stroke-purple-500"
-            : "stroke-slate-300 dark:stroke-slate-700 transition-colors duration-200"
+            ? "stroke-primary"
+            : "stroke-border transition-colors duration-200"
         }
         strokeWidth={isCur ? 2.5 : 1.5}
         strokeDasharray={isCur ? "4 2" : "none"}
@@ -31,8 +31,8 @@ export function ConstraintEdgeLine({ v1, v2, isCur }: ConstraintEdgeLineProps) {
           points="0,-12 12,0 0,12 -12,0"
           className={
             isCur
-              ? "fill-purple-100 dark:fill-purple-950 stroke-purple-500 dark:stroke-purple-400"
-              : "fill-white dark:fill-slate-900 stroke-slate-300 dark:stroke-slate-600"
+              ? "fill-accent stroke-accent-foreground"
+              : "fill-card stroke-border"
           }
           strokeWidth="1.5"
         />
@@ -42,8 +42,8 @@ export function ConstraintEdgeLine({ v1, v2, isCur }: ConstraintEdgeLineProps) {
           textAnchor="middle"
           className={
             isCur
-              ? "fill-purple-700 dark:fill-purple-300 font-bold font-mono text-[8px]"
-              : "fill-slate-600 dark:fill-slate-300 font-bold font-mono text-[8px]"
+              ? "fill-accent-foreground font-bold font-mono text-[8px]"
+              : "fill-muted-foreground font-bold font-mono text-[8px]"
           }
         >
           C

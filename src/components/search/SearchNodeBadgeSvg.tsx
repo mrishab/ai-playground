@@ -15,14 +15,14 @@ export function SearchNodeBadgeSvg({ x, y, h }: SearchNodeBadgeSvgProps) {
         width="28"
         height="14"
         rx="3"
-        className="fill-card dark:fill-[#0f172a] stroke-sky-500"
+        className="fill-card stroke-primary"
         strokeWidth="0.8"
       />
       <text
         x="0"
         y="1.5"
         textAnchor="middle"
-        className="fill-sky-600 dark:fill-[#38bdf8]"
+        className="fill-primary"
         fontSize="9"
         fontFamily="monospace"
         fontWeight="600"

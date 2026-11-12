@@ -9,7 +9,7 @@ const MAIN_TOOLS_B1: OverviewToolItem[] = [
     category: "Main Tools",
     badge: "Uncertainty",
     icon: Network,
-    color: "text-cyan-400 bg-cyan-500/10 border-cyan-500/20",
+    color: "text-primary bg-primary/10 border-primary/20",
     description:
       "Probabilistic reasoning with Variable Elimination and D-Separation in Bayesian networks.",
     algorithms: [
@@ -25,7 +25,7 @@ const MAIN_TOOLS_B1: OverviewToolItem[] = [
     category: "Main Tools",
     badge: "Supervised Learning",
     icon: TreePine,
-    color: "text-lime-400 bg-lime-500/10 border-lime-500/20",
+    color: "text-secondary-foreground bg-secondary border-border",
     description:
       "Decision tree induction using Shannon Entropy, Information Gain, and ID3.",
     algorithms: [

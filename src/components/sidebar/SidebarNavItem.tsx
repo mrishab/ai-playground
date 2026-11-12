@@ -15,7 +15,7 @@ export function SidebarNavItem({
     <button
       aria-current={isActive ? "page" : undefined}
       onClick={onSelect}
-      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-colors duration-150 ease-out ${
         isActive
           ? "bg-primary text-primary-foreground font-semibold shadow-sm"
           : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"

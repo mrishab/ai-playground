@@ -47,7 +47,7 @@ export function RobotControlButtons({
         variant="ghost"
         size="sm"
         onClick={onReset}
-        className="gap-1.5 h-8 text-xs text-muted-foreground hover:text-foreground"
+        className="gap-1.5 h-8 text-xs text-muted-foreground hover:text-foreground transition-colors duration-150"
       >
         <RotateCcw className="h-3.5 w-3.5" />
         Reset

@@ -14,10 +14,10 @@ export function BayesNodeShape({ type, isObserved }: BayesNodeShapeProps) {
         rx="46"
         ry="30"
         strokeWidth={isObserved ? 2.5 : 1.5}
-        className={`shadow-lg transition-colors duration-300 ease-out ${
+        className={`shadow-lg transition-colors duration-200 ease-out ${
           isObserved
-            ? "fill-sky-100 dark:fill-[#0c4a6e] stroke-sky-500 dark:stroke-[#38bdf8]"
-            : "fill-white dark:fill-[#0f172a] stroke-slate-300 dark:stroke-slate-700"
+            ? "fill-primary/20 stroke-primary"
+            : "fill-card stroke-border"
         }`}
       />
     );
@@ -31,10 +31,10 @@ export function BayesNodeShape({ type, isObserved }: BayesNodeShapeProps) {
         height="52"
         rx="6"
         strokeWidth="2"
-        className={`transition-colors duration-300 ease-out ${
+        className={`transition-colors duration-200 ease-out ${
           isObserved
-            ? "fill-emerald-100 dark:fill-[#064e3b] stroke-emerald-500 dark:stroke-emerald-400"
-            : "fill-white dark:fill-[#0f172a] stroke-emerald-500 dark:stroke-emerald-400"
+            ? "fill-accent stroke-accent-foreground"
+            : "fill-card stroke-accent-foreground"
         }`}
       />
     );
@@ -43,7 +43,7 @@ export function BayesNodeShape({ type, isObserved }: BayesNodeShapeProps) {
     return (
       <polygon
         points="0,-28 44,0 0,28 -44,0"
-        className="fill-purple-100 dark:fill-[#4c1d95] stroke-purple-500 dark:stroke-[#a855f7] transition-colors duration-300 ease-out"
+        className="fill-primary/20 stroke-primary transition-colors duration-200 ease-out"
         strokeWidth="2"
       />
     );

@@ -8,7 +8,7 @@ export const MAIN_TOOLS_A2: OverviewToolItem[] = [
     category: "Main Tools",
     badge: "Optimization",
     icon: Zap,
-    color: "text-amber-400 bg-amber-500/10 border-amber-500/20",
+    color: "text-primary bg-primary/10 border-primary/20",
     description:
       "Local search and optimization via Min-Conflicts, Simulated Annealing, and Tabu Search.",
     algorithms: [
@@ -24,7 +24,7 @@ export const MAIN_TOOLS_A2: OverviewToolItem[] = [
     category: "Main Tools",
     badge: "Logic & Proofs",
     icon: GitBranch,
-    color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+    color: "text-accent-foreground bg-accent border-border",
     description:
       "Top-down SLD resolution, unification, and answer extraction for Horn clauses.",
     algorithms: [
