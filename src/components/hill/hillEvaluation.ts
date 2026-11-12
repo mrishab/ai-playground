@@ -33,13 +33,19 @@ export function generateRandomAssignment(
   problem: CSPProblem,
 ): VariableAssignment {
   const initAssign: VariableAssignment = {};
+  if (!problem?.variables) return initAssign;
   for (const v of problem.variables) {
-    initAssign[v.name] = v.domain[Math.floor(Math.random() * v.domain.length)];
+    if (v.domain && v.domain.length > 0) {
+      initAssign[v.name] = v.domain[Math.floor(Math.random() * v.domain.length)];
+    }
   }
   return initAssign;
 }
 
 export function initHillAssignment(problem: CSPProblem) {
+  if (!problem?.variables || problem.variables.length === 0) {
+    return { assignment: {}, conflicts: 0 };
+  }
   const assignment = generateRandomAssignment(problem);
   return { assignment, conflicts: evaluateConflicts(problem, assignment) };
 }

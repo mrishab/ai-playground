@@ -8,8 +8,11 @@ import {
 
 export function createConstraintArcs(problem: CSPProblem): ArcItem[] {
   const arcs: ArcItem[] = [];
+  if (!problem?.constraints) return arcs;
   for (const c of problem.constraints) {
-    for (const v of c.variables) arcs.push({ varName: v, constraint: c });
+    if (c?.variables) {
+      for (const v of c.variables) arcs.push({ varName: v, constraint: c });
+    }
   }
   return arcs;
 }

@@ -18,6 +18,17 @@ export function executeSLSStep(ctx: SLSStepContext) {
     tabuTenure,
   } = ctx;
 
+  if (!problem?.variables || problem.variables.length === 0) {
+    return {
+      nextAssign: assignment,
+      newConflicts: 0,
+      log: "No variables in problem.",
+      newTabuList: tabuList,
+      newTemperature: temperature,
+      stopped: true,
+    };
+  }
+
   if (algorithm === "min_conflicts") {
     return {
       ...stepMinConflicts(problem, assignment),

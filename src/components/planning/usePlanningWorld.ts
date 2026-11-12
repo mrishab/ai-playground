@@ -13,10 +13,10 @@ export function usePlanningWorld(problem: PlanningProblem) {
   );
 
   const resetWorld = useCallback(() => {
-    setColumns(createInitialColumns(problem.id));
+    setColumns(createInitialColumns(problem));
     setHoldingBlock(null);
     setGripperColIndex(2);
-  }, [problem.id]);
+  }, [problem]);
 
   const applyStep = useCallback(
     (step: ActionStep) => {

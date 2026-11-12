@@ -1,23 +1,52 @@
 import { ActionStep } from "./planningTypes";
+import { PlanningProblem } from "@/data/planningProblems";
 
-export function createInitialColumns(problemId: string): string[][] {
+export function createInitialColumns(problem: string | PlanningProblem): string[][] {
   const cols: string[][] = [[], [], [], [], []];
+  const problemId = typeof problem === "string" ? problem : problem.id;
+
   if (problemId === "blank") {
     return cols;
   }
   if (problemId === "sussman") {
     cols[0] = ["block1", "block3"];
     cols[1] = ["block2"];
-  } else if (problemId === "simpleSwap") {
+    return cols;
+  }
+  if (problemId === "simpleSwap") {
     cols[0] = ["block1"];
     cols[1] = ["block2"];
-  } else if (problemId === "fiveBlocks") {
+    return cols;
+  }
+  if (problemId === "fiveBlocks") {
     cols[0] = ["block1", "block2"];
     cols[1] = ["block3", "block4", "block5"];
-  } else {
-    cols[0] = ["block1", "block2"];
-    cols[1] = ["block3"];
+    return cols;
   }
+
+  if (typeof problem === "object" && problem.initial) {
+    let colIdx = 0;
+    if (Array.isArray(problem.initial.stacks)) {
+      for (const stack of problem.initial.stacks) {
+        if (colIdx < cols.length && Array.isArray(stack)) {
+          cols[colIdx] = [...stack];
+          colIdx++;
+        }
+      }
+    }
+    if (Array.isArray(problem.initial.table)) {
+      for (const blockId of problem.initial.table) {
+        if (colIdx < cols.length) {
+          cols[colIdx] = [blockId];
+          colIdx++;
+        }
+      }
+    }
+    return cols;
+  }
+
+  cols[0] = ["block1", "block2"];
+  cols[1] = ["block3"];
   return cols;
 }
 
