@@ -11,24 +11,24 @@ export function getPrismTokens(code: string, language: string = "javascript"): (
 export function getSyntaxTokenClass(type: string): string {
   switch (type) {
     case "keyword":
-      return "text-purple-600 dark:text-purple-400 font-semibold";
+      return "text-primary font-semibold";
     case "string":
-      return "text-emerald-600 dark:text-emerald-400";
+      return "text-foreground font-mono";
     case "number":
     case "boolean":
-      return "text-amber-600 dark:text-amber-400";
+      return "text-accent-foreground font-semibold";
     case "comment":
-      return "text-slate-400 dark:text-slate-500 italic";
+      return "text-muted-foreground italic";
     case "function":
-      return "text-blue-600 dark:text-blue-400 font-medium";
+      return "text-primary font-medium";
     case "operator":
-      return "text-pink-600 dark:text-pink-400";
+      return "text-foreground";
     case "punctuation":
-      return "text-slate-500 dark:text-slate-400";
+      return "text-muted-foreground";
     case "variable":
     case "property":
-      return "text-cyan-600 dark:text-cyan-400";
+      return "text-foreground font-medium";
     default:
-      return "text-slate-800 dark:text-slate-200";
+      return "text-foreground";
   }
 }

@@ -651,7 +651,7 @@ export const TOOL_TUTORIALS: ToolTutorialMap = {
       },
       {
         step: "4. Tune Controller",
-        description: "Adjust steering thresholds and obstacle distances in sandbox.",
+        description: "Adjust steering thresholds and obstacle distances in the visual builder controls.",
       },
     ],
   },

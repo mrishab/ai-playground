@@ -1,32 +1,27 @@
 import React from "react";
-import { Code, BookOpen, Settings2, GitFork } from "lucide-react";
+import { BookOpen, Settings2, GitFork } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/Tabs";
 import { ToolTutorialData } from "@/data/toolTutorials";
 import { BayesNetwork, EvidenceMap } from "@/data/bayesProblems";
-import { BayesSandboxTab } from "./BayesSandboxTab";
 import { BayesVeCard } from "./BayesVeCard";
 import { TutorialTheoryCards } from "../shared/TutorialTheoryCards";
 import { TutorialWalkthroughCards } from "../shared/TutorialWalkthroughCards";
 
 interface BayesTabsProps {
-  codeTemplate: string;
+  codeTemplate?: string;
   tutorial: ToolTutorialData;
   network: BayesNetwork;
   evidence: EvidenceMap;
 }
 
-export function BayesTabs({ codeTemplate, tutorial, network, evidence }: BayesTabsProps) {
+export function BayesTabs({ tutorial, network, evidence }: BayesTabsProps) {
   return (
     <Tabs defaultValue="ve-trace" className="mt-8">
       {/* react-doctor-disable-next-line react-doctor/duplicate-jsx-subtree */}
-      <TabsList className="grid grid-cols-4 max-w-lg">
+      <TabsList className="grid grid-cols-3 max-w-md">
         <TabsTrigger value="ve-trace" className="gap-1.5">
           <GitFork className="h-3.5 w-3.5" />
           Step-by-Step VE
-        </TabsTrigger>
-        <TabsTrigger value="sandbox" className="gap-1.5">
-          <Code className="h-3.5 w-3.5" />
-          Run VE Code
         </TabsTrigger>
         <TabsTrigger value="concepts" className="gap-1.5">
           <BookOpen className="h-3.5 w-3.5" />
@@ -39,9 +34,6 @@ export function BayesTabs({ codeTemplate, tutorial, network, evidence }: BayesTa
       </TabsList>
       <TabsContent value="ve-trace">
         <BayesVeCard network={network} evidence={evidence} />
-      </TabsContent>
-      <TabsContent value="sandbox">
-        <BayesSandboxTab codeTemplate={codeTemplate} />
       </TabsContent>
       <TabsContent value="concepts">
         <TutorialTheoryCards tutorial={tutorial} />

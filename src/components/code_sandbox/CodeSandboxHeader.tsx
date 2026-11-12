@@ -7,18 +7,12 @@ export function CodeSandboxHeader({
   title,
   algorithmName,
   isCopied,
-  isRunning,
-  onReset,
   onCopy,
-  onRun,
 }: {
   title: string;
   algorithmName?: string;
   isCopied: boolean;
-  isRunning: boolean;
-  onReset: () => void;
   onCopy: () => void;
-  onRun: () => void;
 }) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 bg-secondary/40 px-4 py-2.5 border-b border-border">
@@ -34,10 +28,7 @@ export function CodeSandboxHeader({
 
       <CodeSandboxHeaderActions
         isCopied={isCopied}
-        isRunning={isRunning}
-        onReset={onReset}
         onCopy={onCopy}
-        onRun={onRun}
       />
     </div>
   );
