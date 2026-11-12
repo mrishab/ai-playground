@@ -31,7 +31,8 @@ export function SearchTool() {
       activeLogMessage={t.log}
       exportData={{ toolType: "search", problem: t.graph, filename: `${t.graph.id || "search"}-graph` }}
       onImportProblem={(data) => {
-        if (!data.problem || !Array.isArray(data.problem.nodes)) throw new Error("Invalid search graph: missing nodes array");
+        const rawNodes = Array.isArray(data.problem?.nodes) ? data.problem.nodes : data.problem?.nodes?.node;
+        if (!data.problem || !rawNodes) throw new Error("Invalid search graph: missing nodes array");
         t.handleCustomGraphChange(data.problem);
       }}
       onResetProblem={t.handleResetProblem}
