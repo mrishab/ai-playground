@@ -69,6 +69,17 @@ function getDOMParser(): DOMParser {
   throw new Error("DOMParser is not available in the current environment.");
 }
 
+function parseAttrValue(val: string): any {
+  const trimmed = val.trim();
+  if (trimmed === "true") return true;
+  if (trimmed === "false") return false;
+  if (trimmed === "null") return null;
+  if (trimmed !== "" && !isNaN(Number(trimmed)) && !trimmed.startsWith("0x")) {
+    return Number(trimmed);
+  }
+  return val;
+}
+
 function deserializeNode(element: Element): any {
   const typeAttr = element.getAttribute("type");
 
@@ -77,17 +88,44 @@ function deserializeNode(element: Element): any {
   if (typeAttr === "number") return Number(element.textContent?.trim());
   if (typeAttr === "string") return element.textContent ?? "";
 
+  // Extract non-type and non-key attributes
+  const attrs: Record<string, any> = {};
+  if (element.attributes) {
+    for (let i = 0; i < element.attributes.length; i++) {
+      const attr = element.attributes[i];
+      if (attr.name === "type" || attr.name === "key") continue;
+      attrs[attr.name] = parseAttrValue(attr.value);
+    }
+  }
+  const hasAttrs = Object.keys(attrs).length > 0;
+
   const children = Array.from(element.children);
 
-  if (typeAttr === "array" || (!typeAttr && children.length > 0 && children.every((c) => c.tagName.toLowerCase() === "item"))) {
+  if (
+    typeAttr === "array" ||
+    (!typeAttr && children.length > 0 && children.every((c) => c.tagName.toLowerCase() === "item"))
+  ) {
     return children.map((c) => deserializeNode(c));
   }
 
   if (typeAttr === "object" || children.length > 0) {
-    const res: Record<string, any> = {};
+    const res: Record<string, any> = { ...attrs };
     for (const child of children) {
       const key = child.getAttribute("key") || child.tagName;
-      res[key] = deserializeNode(child);
+      const childVal = deserializeNode(child);
+      if (key in res) {
+        if (res[key] === childVal) {
+          // Sibling or attribute with identical scalar value
+          continue;
+        }
+        if (Array.isArray(res[key])) {
+          res[key].push(childVal);
+        } else {
+          res[key] = [res[key], childVal];
+        }
+      } else {
+        res[key] = childVal;
+      }
     }
     return res;
   }
@@ -95,6 +133,13 @@ function deserializeNode(element: Element): any {
   // Fallback if no type attribute and no children
   const text = element.textContent ?? "";
   const trimmed = text.trim();
+  if (hasAttrs) {
+    if (trimmed !== "") {
+      return { ...attrs, value: parseAttrValue(trimmed) };
+    }
+    return attrs;
+  }
+
   if (trimmed === "true") return true;
   if (trimmed === "false") return false;
   if (trimmed === "null") return null;
@@ -129,6 +174,30 @@ export function exportProblemJson(problem: any, toolType = "generic"): string {
   return JSON.stringify(payload, null, 2);
 }
 
+const ROOT_TAG_TOOL_MAP: Record<string, string> = {
+  search: "search",
+  "search-graph": "search",
+  graph: "search",
+  bayes: "bayes",
+  "bayes-network": "bayes",
+  bayesian: "bayes",
+  csp: "constraint",
+  constraint: "constraint",
+  hill: "hill",
+  sls: "hill",
+  deduction: "deduction",
+  "knowledge-base": "deduction",
+  dtree: "dtree",
+  "decision-tree": "dtree",
+  neural: "neural",
+  "neural-network": "neural",
+  planning: "planning",
+  robot: "robot",
+  strips: "strips_to_csp",
+  strips_to_csp: "strips_to_csp",
+  "strips-csp": "strips_to_csp",
+};
+
 /**
  * Parse an AIspace XML problem string back to object.
  */
@@ -144,7 +213,11 @@ export function parseProblemXml(xmlString: string): { toolType?: string; problem
   const toolTypeAttr = root.getAttribute("toolType") || root.getAttribute("type") || undefined;
   const data = deserializeNode(root);
 
-  const toolType = data?.toolType || toolTypeAttr;
+  const rootTagLower = root.tagName.toLowerCase();
+  const inferredToolType = ROOT_TAG_TOOL_MAP[rootTagLower];
+
+  const rawToolType = data?.toolType || toolTypeAttr || inferredToolType;
+  const toolType = Array.isArray(rawToolType) ? rawToolType[0] : rawToolType;
   const problem = data?.problem !== undefined ? data.problem : data;
 
   return { toolType, problem };
@@ -162,6 +235,7 @@ export function parseProblemJson(jsonString: string): { toolType?: string; probl
     if (parsed.problem !== undefined) {
       return { toolType: parsed.toolType, problem: parsed.problem };
     }
+    return { toolType: parsed.toolType, problem: parsed };
   }
   return { problem: parsed };
 }
@@ -198,6 +272,12 @@ export function triggerFileDownload(content: string, filename: string, mimeType:
     const link = document.createElement("a");
     link.href = url;
     link.download = filename;
+    link.addEventListener("click", (e) => {
+      // Prevent navigation warning in testing/JSDOM environments
+      if (typeof process !== "undefined" && process.env?.NODE_ENV === "test") {
+        e.preventDefault();
+      }
+    });
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

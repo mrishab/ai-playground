@@ -1,3 +1,7 @@
+import { createInitialColumns } from "../components/planning/planningSynthesizer";
+import { executeSLSStep } from "../components/hill/hillStepEngine";
+import { initHillAssignment } from "../components/hill/hillEvaluation";
+import { createConstraintArcs } from "../components/constraint/ac3Splitter";
 import { describe, it, expect } from "vitest";
 import {
   exportProblemJson,
@@ -180,6 +184,116 @@ describe("Universal Problem I/O (JSON & XML)", () => {
     expect(problem["spaced key"]).toBe("spaced");
     expect(problem["user:id"]).toBe(1234);
     expect(problem.withControlChar).toBe("helloworld");
+  });
+
+  it("parses XML elements with attributes and repeated sibling nodes into collections", () => {
+    const rawXml = `
+      <graph toolType="search">
+        <name>Custom XML Map</name>
+        <nodes>
+          <node id="A" label="Start Node" x="50" y="100" isStart="true" />
+          <node id="B" label="Goal Node" x="250" y="300" isGoal="true" />
+        </nodes>
+        <edges>
+          <edge from="A" to="B" cost="12.5" />
+        </edges>
+      </graph>
+    `;
+    const { toolType, problem } = parseProblemXml(rawXml);
+
+    expect(toolType).toBe("search");
+    expect(problem.name).toBe("Custom XML Map");
+    expect(Array.isArray(problem.nodes.node)).toBe(true);
+    expect(problem.nodes.node.length).toBe(2);
+    expect(problem.nodes.node[0]).toEqual({
+      id: "A",
+      label: "Start Node",
+      x: 50,
+      y: 100,
+      isStart: true,
+    });
+    expect(problem.nodes.node[1]).toEqual({
+      id: "B",
+      label: "Goal Node",
+      x: 250,
+      y: 300,
+      isGoal: true,
+    });
+    expect(problem.edges.edge).toEqual({
+      from: "A",
+      to: "B",
+      cost: 12.5,
+    });
+  });
+
+  it("infers toolType from root tag in standard AIspace XML without explicit toolType attribute", () => {
+    const searchXml = `<search-graph><id>grid</id></search-graph>`;
+    const bayesXml = `<bayes><id>alarm</id></bayes>`;
+    const cspXml = `<csp><id>queens</id></csp>`;
+
+    expect(parseProblemXml(searchXml).toolType).toBe("search");
+    expect(parseProblemXml(bayesXml).toolType).toBe("bayes");
+    expect(parseProblemXml(cspXml).toolType).toBe("constraint");
+  });
+
+  it("preserves standalone toolType attribute in raw JSON problem", () => {
+    const rawJson = JSON.stringify({
+      toolType: "search",
+      id: "custom-json-graph",
+      nodes: [{ id: "A" }],
+    });
+    const parsed = parseProblemJson(rawJson);
+    expect(parsed.toolType).toBe("search");
+    expect(parsed.problem.id).toBe("custom-json-graph");
+  });
+
+  it("handles planning initial columns layout for custom and imported problems", () => {
+    const customProblem = {
+      id: "importedCustom",
+      name: "Custom Problem",
+      description: "Imported blocks",
+      blocks: [],
+      goal: [],
+      initial: {
+        holding: null,
+        clear: ["b2", "b3"],
+        table: ["b3"],
+        stacks: [["b1", "b2"]],
+      },
+    };
+    const cols = createInitialColumns(customProblem as any);
+    expect(cols[0]).toEqual(["b1", "b2"]);
+    expect(cols[1]).toEqual(["b3"]);
+    expect(cols[2]).toEqual([]);
+  });
+
+  it("safely handles SLS and CSP solvers with empty variables or constraints", () => {
+    const emptyCsp = {
+      id: "blank",
+      name: "Empty",
+      description: "No vars",
+      variables: [],
+      constraints: [],
+    };
+    const { assignment, conflicts } = initHillAssignment(emptyCsp);
+    expect(assignment).toEqual({});
+    expect(conflicts).toBe(0);
+
+    const slsRes = executeSLSStep({
+      problem: emptyCsp,
+      assignment: {},
+      conflicts: 0,
+      algorithm: "min_conflicts",
+      randomWalkProb: 0.1,
+      temperature: 10,
+      tabuList: [],
+      tabuTenure: 3,
+    });
+    expect(slsRes.stopped).toBe(true);
+    expect(slsRes.newConflicts).toBe(0);
+
+    const arcs = createConstraintArcs(emptyCsp);
+    expect(arcs).toEqual([]);
   });
 
   it("rejects invalid XML and JSON with descriptive error", () => {
