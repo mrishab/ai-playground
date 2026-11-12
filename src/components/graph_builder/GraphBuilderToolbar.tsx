@@ -1,42 +1,30 @@
 import React from "react";
-import { Hand, PlusCircle, ArrowUpRight, Trash2, Play, Sparkles } from "lucide-react";
+import { Download, Upload, RotateCcw, FileCode } from "lucide-react";
 import { Button } from "../ui/Button";
 import { useGraphBuilder } from "./useGraphBuilder";
-import { BLANK_GRAPH, TRIANGLE_PRESET, GRID_PRESET } from "./graphBuilderPresets";
+import { BLANK_GRAPH } from "./graphBuilderPresets";
+import { GraphBuilderModeControls } from "./GraphBuilderModeControls";
+import { GraphBuilderPresetSelect } from "./GraphBuilderPresetSelect";
+import { GraphBuilderIoModal } from "./GraphBuilderIoModal";
+import { useGraphBuilderIo } from "./useGraphBuilderIo";
 
-interface GraphBuilderToolbarProps {
-  gb: ReturnType<typeof useGraphBuilder>;
-  onSolveGraph?: () => void;
-}
+export function GraphBuilderToolbar({ gb, onSolveGraph }: { gb: ReturnType<typeof useGraphBuilder>; onSolveGraph?: () => void }) {
+  const io = useGraphBuilderIo(gb);
 
-export function GraphBuilderToolbar({ gb, onSolveGraph }: GraphBuilderToolbarProps) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-card border-b border-border text-xs">
-      <div className="flex items-center gap-1.5 bg-muted/60 p-1 rounded-lg">
-        <Button size="sm" variant={gb.mode === "move" ? "default" : "ghost"} onClick={() => gb.setMode("move")} title="Move / Select Nodes"><Hand className="w-3.5 h-3.5 mr-1" /> Move</Button>
-        <Button size="sm" variant={gb.mode === "add_node" ? "default" : "ghost"} onClick={() => gb.setMode("add_node")} title="Click to Add Node"><PlusCircle className="w-3.5 h-3.5 mr-1" /> Add Node</Button>
-        <Button size="sm" variant={gb.mode === "add_edge" ? "default" : "ghost"} onClick={() => gb.setMode("add_edge")} title="Click or Drag between nodes to connect"><ArrowUpRight className="w-3.5 h-3.5 mr-1" /> Add Edge</Button>
-        <Button size="sm" variant={gb.mode === "delete" ? "destructive" : "ghost"} onClick={() => gb.setMode("delete")} title="Click node or edge to delete"><Trash2 className="w-3.5 h-3.5 mr-1" /> Delete</Button>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <div data-testid="gb-drag-node-source" draggable onDragStart={(e) => e.dataTransfer.setData("text/plain", "new-node")} className="px-2.5 py-1 rounded bg-primary/10 border border-primary/30 text-primary cursor-grab active:cursor-grabbing font-medium flex items-center gap-1" title="Drag and drop onto canvas to place a node">
-          <Sparkles className="w-3 h-3" /> Drag Node to Canvas
+      <GraphBuilderModeControls mode={gb.mode} setMode={gb.setMode} />
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-1 border-l border-r border-border px-2">
+          <Button size="sm" variant="outline" data-testid="gb-export-json" onClick={() => io.handleExport("json")} className="gap-1 h-8 px-2"><Download className="w-3 h-3 text-primary" /><span>JSON</span></Button>
+          <Button size="sm" variant="outline" data-testid="gb-export-xml" onClick={() => io.handleExport("xml")} className="gap-1 h-8 px-2"><FileCode className="w-3 h-3 text-primary" /><span>XML</span></Button>
+          <Button size="sm" variant="outline" data-testid="gb-reset-btn" onClick={() => gb.setGraph(BLANK_GRAPH)} className="gap-1 h-8 px-2"><RotateCcw className="w-3 h-3 text-muted-foreground" /><span>Reset</span></Button>
+          <Button size="sm" variant="outline" data-testid="gb-import-btn" onClick={() => { io.setIsImportModalOpen(true); io.setImportError(null); }} className="gap-1 h-8 px-2"><Upload className="w-3 h-3 text-primary" /><span>Import</span></Button>
         </div>
-        <select aria-label="Load Graph Preset" value="" onChange={(e) => {
-          if (e.target.value === "blank") gb.setGraph(BLANK_GRAPH);
-          if (e.target.value === "triangle") gb.setGraph(TRIANGLE_PRESET);
-          if (e.target.value === "grid") gb.setGraph(GRID_PRESET);
-        }} className="h-8 px-2 text-xs rounded border border-input bg-card text-foreground">
-          <option value="" disabled>Load Preset...</option>
-          <option value="blank">Blank Canvas</option>
-          <option value="triangle">Triangle Graph</option>
-          <option value="grid">2x2 Grid</option>
-        </select>
-        {onSolveGraph && (
-          <Button size="sm" variant="success" onClick={onSolveGraph} className="gap-1.5 font-bold"><Play className="w-3 h-3 fill-current" /> Solve in Animation</Button>
-        )}
+        <GraphBuilderPresetSelect onSetGraph={gb.setGraph} onSolveGraph={onSolveGraph} />
       </div>
+      <input type="file" ref={io.fileInputRef} accept=".json,.xml,text/xml,application/json" onChange={io.handleFileUpload} data-testid="gb-file-input" className="hidden" />
+      <GraphBuilderIoModal isOpen={io.isImportModalOpen} onClose={() => io.setIsImportModalOpen(false)} importText={io.importText} setImportText={io.setImportText} importError={io.importError} onChooseFile={() => io.fileInputRef.current?.click()} onLoadLast={() => { if (typeof window !== "undefined" && (window as any).__lastExportedProblem) { io.setImportText((window as any).__lastExportedProblem); io.setImportError(null); } }} onApply={io.handleApplyImport} />
     </div>
   );
 }

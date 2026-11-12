@@ -24,7 +24,7 @@ export function GraphBuilderEdgeModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-xs p-4">
       <div className="bg-card border border-border p-5 rounded-xl shadow-xl w-full max-w-xs space-y-4">
         <h3 className="font-bold text-sm">
           Edit Edge: {edge.from} &rarr; {edge.to}

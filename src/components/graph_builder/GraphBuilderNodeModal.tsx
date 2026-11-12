@@ -24,7 +24,7 @@ export function GraphBuilderNodeModal({ node, onSave, onDelete, onClose }: Graph
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-xs p-4">
       <div className="bg-card border border-border p-5 rounded-xl shadow-xl w-full max-w-xs space-y-4">
         <h3 className="font-bold text-sm">Edit Node: {node.id}</h3>
         <form onSubmit={handleSubmit} className="space-y-3 text-xs">
@@ -38,10 +38,10 @@ export function GraphBuilderNodeModal({ node, onSave, onDelete, onClose }: Graph
           </div>
           <div className="flex gap-4">
             <label className="flex items-center gap-1.5 cursor-pointer">
-              <input type="checkbox" checked={isStart} onChange={(e) => setIsStart(e.target.checked)} /> Start Node
+              <input type="checkbox" aria-label="Start Node" checked={isStart} onChange={(e) => setIsStart(e.target.checked)} /> Start Node
             </label>
             <label className="flex items-center gap-1.5 cursor-pointer">
-              <input type="checkbox" checked={isGoal} onChange={(e) => setIsGoal(e.target.checked)} /> Goal Node
+              <input type="checkbox" aria-label="Goal Node" checked={isGoal} onChange={(e) => setIsGoal(e.target.checked)} /> Goal Node
             </label>
           </div>
           <div className="flex justify-between pt-2">

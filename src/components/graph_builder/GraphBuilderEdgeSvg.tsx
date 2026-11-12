@@ -21,7 +21,11 @@ export function GraphBuilderEdgeSvg({
   );
 
   return (
-    <g className="cursor-pointer group" onClick={() => onEdgeClick(edge)}>
+    <g
+      data-testid={`gb-edge-${edge.from}-${edge.to}`}
+      className="cursor-pointer group"
+      onClick={() => onEdgeClick(edge)}
+    >
       <line
         x1={startX}
         y1={startY}
