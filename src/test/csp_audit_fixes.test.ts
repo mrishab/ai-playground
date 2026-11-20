@@ -7,8 +7,39 @@ import { getDTreeCodeTemplate } from "@/components/dtree/dtreeCodeTemplate";
 import { getNeuralCodeTemplate } from "@/components/neural/neuralCodeTemplate";
 import { DTREE_DATASETS } from "@/data/dtreeProblems";
 
+import { isInequalitySupported } from "@/components/constraint/ac3Inequality";
+import { executeFineStep } from "@/components/constraint/ac3Engine";
+import { getBayesCodeTemplate } from "@/components/bayes/bayesCodeTemplate";
+import { computeRejectionSamplingBeliefs } from "@/components/bayes/bayesSampling";
+import { BAYES_NETWORKS } from "@/data/bayesProblems";
+
 describe("CSP & SLS Audit Fixes", () => {
   describe("1. Consistency for CSP True Domain Splitting & Backtracking", () => {
+    it("isInequalitySupported correctly prunes when constraint is named with unicode ≠", () => {
+      // B = "1", otherVar A has domain ["1"] -> A ≠ B is violated, NOT supported!
+      const supported = isInequalitySupported("A ≠ B", "A", "B", "B", "1", "A", { A: ["1"] });
+      expect(supported).toBe(false);
+
+      // B = "2", otherVar A has domain ["1"] -> A ≠ B is supported!
+      const supported2 = isInequalitySupported("A ≠ B", "A", "B", "B", "2", "A", { A: ["1"] });
+      expect(supported2).toBe(true);
+    });
+
+    it("executeFineStep prunes conflicting values when A is assigned and constraint is A ≠ B", () => {
+      const problem = CSP_PROBLEMS.simple1;
+      const domains = {
+        A: ["1"],
+        B: ["1", "2", "3", "4"],
+        C: ["1", "2", "3", "4"],
+      };
+      const constraint = problem.constraints.find((c) => c.variables.includes("A") && c.variables.includes("B"))!;
+      const arcQueue = [{ varName: "B", constraint }];
+
+      const res = executeFineStep(arcQueue, domains, problem);
+      // Value "1" should be pruned from B!
+      expect(res.updatedDomains.B).toEqual(["2", "3", "4"]);
+      expect(res.log).toContain("Pruned {1} from B");
+    });
     it("splits domain into disjoint subset halves instead of a single value", () => {
       const problem = CSP_PROBLEMS.simple1;
       const initialDomains = {
@@ -118,6 +149,30 @@ describe("CSP & SLS Audit Fixes", () => {
       expect(perceptronCode).toContain("Single-Layer Perceptron");
       expect(mlpCode).toContain("Multi-Layer Perceptron");
       expect(mlpCode).toContain("sigmoid");
+    });
+
+    it("getBayesCodeTemplate generates distinct reference code for ve, dsep, and sampling", () => {
+      const net = BAYES_NETWORKS.basicfirealarm;
+      const veCode = getBayesCodeTemplate(net, {}, "ve");
+      const dsepCode = getBayesCodeTemplate(net, {}, "dsep");
+      const sampCode = getBayesCodeTemplate(net, {}, "sampling");
+
+      expect(veCode).toContain("Variable Elimination");
+      expect(dsepCode).toContain("D-Separation");
+      expect(sampCode).toContain("Rejection Sampling");
+    });
+
+    it("computeRejectionSamplingBeliefs produces valid marginal probabilities consistent with evidence", () => {
+      const net = BAYES_NETWORKS.basicfirealarm;
+      const beliefs = computeRejectionSamplingBeliefs(net, { alarm: "T" }, 800);
+
+      // alarm is evidence -> P(alarm=T) must be 1.0
+      expect(beliefs.alarm?.T).toBe(1.0);
+      expect(beliefs.alarm?.F).toBe(0.0);
+      // tampering posterior should be approximate positive fraction
+      expect(beliefs.tampering?.T).toBeGreaterThan(0.4);
+      expect(beliefs.tampering?.T).toBeLessThan(0.85);
+      expect((beliefs.tampering?.T ?? 0) + (beliefs.tampering?.F ?? 0)).toBeCloseTo(1.0, 1);
     });
   });
 });

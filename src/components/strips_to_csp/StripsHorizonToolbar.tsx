@@ -18,8 +18,7 @@ interface StripsHorizonToolbarProps {
 }
 
 export function StripsHorizonToolbar(p: StripsHorizonToolbarProps) {
-  const minHorizon = p.problemId === "elevator" ? 3 : 4;
-  const isStepDisabled = p.horizonK >= 4 || (p.isSolved && p.horizonK >= minHorizon);
+  const isStepDisabled = p.horizonK >= 4;
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-secondary/30 border-b border-border text-xs">

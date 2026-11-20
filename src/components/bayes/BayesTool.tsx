@@ -10,8 +10,8 @@ import { StudioWorkspace } from "../workspace/StudioWorkspace";
 import { BAYES_PREBUILT_ITEMS, BAYES_ALGORITHM_ITEMS } from "./bayesWorkspaceData";
 
 export function BayesTool() {
-  const b = useBayesNetwork();
   const [algo, setAlgo] = useState("ve");
+  const b = useBayesNetwork(algo);
   const obsCount = Object.values(b.evidence).filter(Boolean).length;
 
   return (
@@ -26,7 +26,7 @@ export function BayesTool() {
       algorithmItems={BAYES_ALGORITHM_ITEMS}
       selectedAlgorithmId={algo}
       onSelectAlgorithmId={setAlgo}
-      activeLogMessage={`Observed ${obsCount} variables. Network initialized.`}
+      activeLogMessage={algo === "dsep" ? `D-Separation analyzer active for ${b.network.name}.` : algo === "sampling" ? `Rejection Sampling active with ${obsCount} observations.` : `Exact Variable Elimination active. Observed ${obsCount} variables.`}
       exportData={{ toolType: "bayes", problem: b.network, filename: `${b.network.id || "bayes"}-network` }}
       onImportProblem={(data) => {
         if (!data.problem || !Array.isArray(data.problem.nodes)) throw new Error("Invalid Bayesian network: missing nodes array");
@@ -41,7 +41,7 @@ export function BayesTool() {
           <BayesTabs codeTemplate={b.codeTemplate} tutorial={b.tutorial} network={b.network} evidence={b.evidence} />
         </div>
       }
-      codingSlot={<CodeSandbox title="Variable Elimination Code" initialCode={b.codeTemplate} algorithmName={algo.toUpperCase()} />}
+      codingSlot={<CodeSandbox title={algo === "dsep" ? "D-Separation Code" : algo === "sampling" ? "Rejection Sampling Code" : "Variable Elimination Code"} initialCode={b.codeTemplate} algorithmName={algo.toUpperCase()} />}
       theorySlot={<BayesTabs codeTemplate={b.codeTemplate} tutorial={b.tutorial} network={b.network} evidence={b.evidence} />}
       inspectorSlot={
         <div className="space-y-4">

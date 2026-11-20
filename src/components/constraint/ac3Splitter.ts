@@ -29,11 +29,13 @@ export function executeDomainSplit(
   const d1 = domain.slice(0, half);
   const d2 = domain.slice(half);
   const branchVal = d1.length === 1 ? d1[0] : `{${d1.join(", ")}}`;
+  const altBranchVal = d2.length === 1 ? d2[0] : `{${d2.join(", ")}}`;
   const newId = `split-${Date.now()}`;
   const backup: DomainBackup = {
     id: newId,
     domains: { ...domains },
     alternateBranch: { ...domains, [varName]: d2 },
+    altValue: altBranchVal,
   };
   const updatedDomains = { ...domains, [varName]: d1 };
   const newNode: SplitTreeNode = {
@@ -65,5 +67,7 @@ export function executeBacktrack(
     restoredDomains: restored,
     newArcs: createConstraintArcs(problem),
     log: `Backtracked to ${last.alternateBranch ? "alternate domain branch" : "previous domain state"}.`,
+    exploredAlternate: Boolean(last.alternateBranch),
+    alternateValue: last.altValue,
   };
 }

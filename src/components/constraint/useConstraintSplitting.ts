@@ -33,14 +33,37 @@ export function useConstraintSplitting(
       setDomains(res.restoredDomains);
       setArcQueue(res.newArcs);
       setLog(res.log);
-      setSplitHistory((prev) => prev.slice(0, res.remainingBackups.length));
-      setActiveSplitId(
-        res.remainingBackups.length > 0
-          ? res.remainingBackups[res.remainingBackups.length - 1].id
-          : null,
-      );
+      if (res.exploredAlternate && res.alternateValue) {
+        setSplitHistory((prev) => {
+          if (prev.length === 0) return prev;
+          const updated = [...prev];
+          const lastIdx = updated.length - 1;
+          updated[lastIdx] = { ...updated[lastIdx], value: res.alternateValue!, status: "active" };
+          return updated;
+        });
+      } else {
+        setSplitHistory((prev) => prev.slice(0, res.remainingBackups.length));
+        setActiveSplitId(
+          res.remainingBackups.length > 0
+            ? res.remainingBackups[res.remainingBackups.length - 1].id
+            : null,
+        );
+      }
     }
   };
+
+  const markCurrentSplitFailed = useCallback(() => {
+    setSplitHistory((prev) => {
+      if (prev.length === 0) return prev;
+      const updated = [...prev];
+      updated[updated.length - 1] = { ...updated[updated.length - 1], status: "failed" };
+      return updated;
+    });
+  }, []);
+
+  const markSplitsSolved = useCallback(() => {
+    setSplitHistory((prev) => prev.map((s) => ({ ...s, status: "solved" })));
+  }, []);
 
   const resetSplits = useCallback(() => {
     setSplitHistory([]);
@@ -55,5 +78,7 @@ export function useConstraintSplitting(
     performDomainSplit,
     backtrack,
     resetSplits,
+    markCurrentSplitFailed,
+    markSplitsSolved,
   };
 }

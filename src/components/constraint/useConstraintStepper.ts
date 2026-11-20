@@ -20,21 +20,26 @@ export function useConstraintStepper(
     s.setDomains(res.updatedDomains);
     s.setCurrentArc(res.currentArc);
     s.setLog(res.log);
-    const solved = isCspFullySolved(res.updatedDomains);
+    if (res.isWipeout) {
+      s.markCurrentSplitFailed();
+    }
+    const solved = isCspFullySolved(res.updatedDomains) && res.updatedQueue.length === 0;
     if (solved && !solvedRef.current) {
       solvedRef.current = true;
       confetti({ particleCount: 50, spread: 60 });
       s.setLog("CSP completely solved by AC alone!");
+      s.markSplitsSolved();
     }
     return !res.done;
   }, [s, problem]);
 
   const stepMacSearch = useCallback((): boolean => {
-    if (isCspFullySolved(s.domains)) {
+    if (isCspFullySolved(s.domains) && s.arcQueue.length === 0) {
       if (!solvedRef.current) {
         solvedRef.current = true;
         confetti({ particleCount: 60, spread: 70 });
         s.setLog("CSP solution found!");
+        s.markSplitsSolved();
       }
       return false;
     }

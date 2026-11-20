@@ -16,7 +16,7 @@ function slsSearch(problem, maxSteps = 100) {
     let conf = 0;
     problem.constraints.forEach(c => {
       const [v1, v2] = c.variables;
-      if (c.name.includes('!=') && assign[v1] === assign[v2]) conf++;
+      if ((c.name.includes('!=') || c.name.includes('≠')) && assign[v1] === assign[v2]) conf++;
     });
     return conf;
   }

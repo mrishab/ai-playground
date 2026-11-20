@@ -40,7 +40,7 @@ export function useConstraintTool() {
     fineStep,
     stepMacSearch,
     toggleAutoAC: () => setIsPlaying(!isPlaying),
-    isCSPFullySolved: isCspFullySolved(s.domains),
+    isCSPFullySolved: isCspFullySolved(s.domains) && s.arcQueue.length === 0,
     hasDomainWipeout: hasAnyWipeout(s.domains),
     codeTemplate: getConstraintCodeTemplate(probState.problem),
   };

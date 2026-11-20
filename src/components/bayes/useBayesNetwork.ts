@@ -2,11 +2,12 @@ import { useState, useEffect, useCallback } from "react";
 import { EvidenceMap, NetworkBeliefs } from "@/data/bayesProblems";
 import { TOOL_TUTORIALS } from "@/data/toolTutorials";
 import { computeBayesBeliefs } from "./bayesInference";
+import { computeRejectionSamplingBeliefs } from "./bayesSampling";
 import { useBayesDSep } from "./useBayesDSep";
 import { getBayesCodeTemplate } from "./bayesCodeTemplate";
 import { useBayesNetworkSelection } from "./useBayesNetworkSelection";
 
-export function useBayesNetwork() {
+export function useBayesNetwork(algo: string = "ve") {
   const netState = useBayesNetworkSelection();
   const tutorial = TOOL_TUTORIALS.bayes;
   const [evidence, setEvidence] = useState<EvidenceMap>({});
@@ -21,7 +22,13 @@ export function useBayesNetwork() {
   }, [netState.network, dsep.resetDSep]);
 
   useEffect(() => { initializeNetwork(); }, [initializeNetwork]);
-  useEffect(() => { setBeliefs(computeBayesBeliefs(netState.network, evidence)); }, [evidence, netState.network]);
+  useEffect(() => {
+    if (algo === "sampling") {
+      setBeliefs(computeRejectionSamplingBeliefs(netState.network, evidence));
+    } else {
+      setBeliefs(computeBayesBeliefs(netState.network, evidence));
+    }
+  }, [evidence, netState.network, algo]);
 
   const toggleEvidence = (nodeId: string) => {
     const node = netState.network.nodes.find((n) => n.id === nodeId);
@@ -40,6 +47,6 @@ export function useBayesNetwork() {
     ...dsep,
     initializeNetwork,
     toggleEvidence,
-    codeTemplate: getBayesCodeTemplate(netState.network, evidence),
+    codeTemplate: getBayesCodeTemplate(netState.network, evidence, algo),
   };
 }

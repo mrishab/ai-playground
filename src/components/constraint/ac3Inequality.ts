@@ -9,7 +9,11 @@ export function isInequalitySupported(
   otherVar: string,
   currentDomains: VariableDomains,
 ): boolean {
-  if (constraintName.includes("!=") || constraintName === "") {
+  if (
+    constraintName.includes("!=") ||
+    constraintName.includes("≠") ||
+    constraintName === ""
+  ) {
     return currentDomains[otherVar].some((v) => v !== valX);
   }
   if (constraintName.includes("<") && var0 === varX) {
