@@ -4,7 +4,7 @@ import { ConstraintCanvasCard } from "./ConstraintCanvasCard";
 import { ConstraintDomainsCard } from "./ConstraintDomainsCard";
 import { ConstraintSplitTreeCard } from "./ConstraintSplitTreeCard";
 import { ConstraintTabs } from "./ConstraintTabs";
-import { GraphBuilder } from "../graph_builder/GraphBuilder";
+import { getConstraintCodeTemplate } from "./constraintCodeTemplate";
 import { CodeSandbox } from "../CodeSandbox";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
 import { CSP_PREBUILT_ITEMS, CSP_ALGORITHM_ITEMS } from "./constraintWorkspaceData";
@@ -39,8 +39,7 @@ export function ConstraintTool() {
         isPlaying: c.isPlaying, onTogglePlay: c.toggleAutoAC, onReset: c.initializeCSP, speed: c.speed, setSpeed: c.setSpeed, isDone: c.isCSPFullySolved,
       }}
       animationSlot={<ConstraintCanvasCard c={c} />}
-      graphBuilderSlot={<GraphBuilder />}
-      codingSlot={<CodeSandbox title="AC-3 Solver Code" initialCode={c.codeTemplate} algorithmName="AC-3" />}
+      codingSlot={<CodeSandbox title="AC-3 Solver Code" initialCode={getConstraintCodeTemplate(c.problem, algo)} algorithmName={algo.toUpperCase()} />}
       theorySlot={<ConstraintTabs codeTemplate={c.codeTemplate} tutorial={c.tutorial} />}
       inspectorSlot={<ConstraintDomainsCard problem={c.problem} domains={c.domains} />}
       stateSlot={<ConstraintSplitTreeCard splitHistory={c.splitHistory} />}

@@ -22,16 +22,10 @@ export function useDTreeDatasetSelection() {
   };
 
   const handleResetDataset = () => {
-    setCustomDataset({
-      id: "blank",
-      name: "Empty Dataset",
-      description: "Reset empty decision tree dataset",
-      attributes: [],
-      target: "",
-      attributeValues: {},
-      examples: [],
-    });
-    setSelectedDatasetId("custom");
+    setCustomDataset(null);
+    if (selectedDatasetId === "custom") {
+      setSelectedDatasetId("playTennis");
+    }
   };
 
   const handleSelectDatasetId = (id: string) => {

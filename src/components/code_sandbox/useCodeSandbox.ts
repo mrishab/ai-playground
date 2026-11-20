@@ -1,7 +1,9 @@
 import { useClipboardCopy } from "@/hooks/useClipboardCopy";
+import { DEFAULT_ALGO_SNIPPETS } from "./codeSandboxSnippets";
 
 export function useCodeSandbox({
   initialCode,
+  algorithmName,
 }: {
   initialCode: string;
   algorithmName?: string;
@@ -9,11 +11,15 @@ export function useCodeSandbox({
   defaultOutput?: string;
 }) {
   const { isCopied, copy } = useClipboardCopy();
+  const key = (algorithmName || "").toLowerCase().replace(/[^a-z]/g, "");
+  const code = (!initialCode && key && DEFAULT_ALGO_SNIPPETS[key])
+    ? DEFAULT_ALGO_SNIPPETS[key]
+    : initialCode;
 
-  const handleCopy = () => copy(initialCode);
+  const handleCopy = () => copy(code);
 
   return {
-    code: initialCode,
+    code,
     setCode: () => {},
     output: "AI Playground is a visual builder app. Code writing is not supported.",
     isCopied,

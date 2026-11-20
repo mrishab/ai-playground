@@ -14,8 +14,8 @@ interface Props {
 
 export function ProblemImportModal({ text, setText, error, onChooseFile, onLoadLast, onApply, onClose }: Props) {
   return (
-    <div data-testid="import-modal" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-xs animate-in fade-in">
-      <div className="bg-card border border-border rounded-xl shadow-xl max-w-xl w-full p-4 flex flex-col gap-3 transition-[opacity,transform] animate-in zoom-in-95 slide-in-from-bottom-2 duration-200 ease-out">
+    <div data-testid="import-modal" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-xs animate-in fade-in overflow-y-auto">
+      <div className="bg-card border border-border rounded-xl shadow-xl max-w-xl w-full p-4 flex flex-col gap-3 my-auto max-h-[90vh] overflow-y-auto transition-[opacity,transform] animate-in zoom-in-95 slide-in-from-bottom-2 duration-200 ease-out">
         <div className="flex items-center justify-between border-b border-border pb-2.5">
           <div className="flex items-center gap-2">
             <Upload className="w-4 h-4 text-primary" />

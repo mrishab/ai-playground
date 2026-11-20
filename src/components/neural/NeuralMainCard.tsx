@@ -19,6 +19,7 @@ interface MainCardProps {
   selectedDatasetId: string;
   speed: number;
   setSpeed: (v: number) => void;
+  algo?: string;
 }
 
 export function NeuralMainCard(p: MainCardProps) {
@@ -32,6 +33,7 @@ export function NeuralMainCard(p: MainCardProps) {
         onReset={p.onReset}
         speed={p.speed}
         setSpeed={p.setSpeed}
+        disabled={p.points.length === 0}
       />
       <NeuralCanvasCard
         weightsRef={p.weightsRef}
@@ -40,6 +42,7 @@ export function NeuralMainCard(p: MainCardProps) {
         epoch={p.epoch}
         loss={p.loss}
         selectedDatasetId={p.selectedDatasetId}
+        algo={p.algo}
       />
     </Card>
   );

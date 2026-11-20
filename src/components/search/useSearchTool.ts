@@ -47,6 +47,6 @@ export function useSearchTool() {
     ...quiz,
     ...exec,
     tutorial: TOOL_TUTORIALS.search,
-    codeTemplate: getSearchCodeTemplate(g.graph),
+    codeTemplate: getSearchCodeTemplate(g.graph, algorithm),
   };
 }

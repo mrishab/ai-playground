@@ -2,24 +2,21 @@ import React from "react";
 import { StripsProblem } from "@/data/stripsProblems";
 import { StripsActionTransition } from "./StripsActionTransition";
 
-export function StripsTimeStepColumn({
-  t,
-  horizonK,
-  isSolved,
-  extractedPlan,
-  problem,
-}: {
+interface StripsTimeStepColumnProps {
   t: number;
   horizonK: number;
   isSolved: boolean;
   extractedPlan: string[];
   problem: StripsProblem;
-}) {
+  stepFluents?: Record<string, string>[];
+}
+
+export function StripsTimeStepColumn(p: StripsTimeStepColumnProps) {
   return (
     <div className="flex-1 min-w-[240px] max-w-[280px] flex flex-col items-center space-y-3 transition-opacity duration-300 ease-out">
       <div className="text-center">
         <span className="px-2.5 py-0.5 rounded-full bg-secondary font-mono text-[10px] text-muted-foreground border border-border">
-          Time Step t = {t}
+          Time Step t = {p.t}
         </span>
       </div>
 
@@ -27,8 +24,9 @@ export function StripsTimeStepColumn({
         <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">
           State Fluents
         </div>
-        {problem.variables.map((v) => {
-          const valText = t === 0 ? v.initial : t === horizonK && isSolved ? v.goal : `D={${v.domain.join(", ")}}`;
+        {p.problem.variables.map((v) => {
+          const solvedFluent = p.isSolved && p.stepFluents?.[p.t]?.[v.name];
+          const valText = solvedFluent || (p.t === 0 ? v.initial : p.t === p.horizonK && p.isSolved ? v.goal : `D={${v.domain.join(", ")}}`);
           return (
             <div
               key={v.name}
@@ -42,11 +40,11 @@ export function StripsTimeStepColumn({
         })}
       </div>
 
-      {t < horizonK && (
+      {p.t < p.horizonK && (
         <StripsActionTransition
-          t={t}
-          isSolved={isSolved}
-          actionText={extractedPlan[t]}
+          t={p.t}
+          isSolved={p.isSolved}
+          actionText={p.extractedPlan[p.t]}
         />
       )}
     </div>

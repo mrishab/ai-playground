@@ -23,6 +23,10 @@ export function BayesMarginalRow({
           <Badge variant="cyan" className="text-[10px] py-0">
             Observed: {observedVal}
           </Badge>
+        ) : node.type === "decision" ? (
+          <Badge variant="outline" className="text-[10px] py-0 text-amber-500 border-amber-500/40">
+            Decision Node
+          </Badge>
         ) : (
           <span className="text-[10px] text-muted-foreground">Marginal</span>
         )}

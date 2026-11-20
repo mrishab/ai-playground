@@ -1,15 +1,7 @@
-import { ProofNode, SLDStepSnapshot, SubstitutionMap } from "./deductionTypes";
+import { ProofNode, SLDStepSnapshot, SubstitutionMap, HornClause } from "./deductionTypes";
 
 export function cloneProofNode(node: ProofNode): ProofNode {
   return { ...node, children: node.children.map(cloneProofNode) };
-}
-
-export function bindGoalString(goal: string, sub: SubstitutionMap): string {
-  let bound = goal;
-  for (const [k, v] of Object.entries(sub)) {
-    bound = bound.replace(new RegExp(`\\b${k}\\b`, "g"), v);
-  }
-  return bound;
 }
 
 export function pushStep(
@@ -32,4 +24,15 @@ export function pushStep(
     answers: [...answers],
     log,
   });
+}
+
+export interface StepContext {
+  clauses: HornClause[];
+  steps: SLDStepSnapshot[];
+  answers: SubstitutionMap[];
+  seen: Set<string>;
+  root: ProofNode;
+  query: string;
+  qVars: string[];
+  vIdx: { current: number };
 }

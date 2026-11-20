@@ -1,14 +1,7 @@
-import {
-  CandidateGain,
-  ClassFrequencyMap,
-  DTreeExample,
-  AttributeSubsets,
-} from "./dtreeTypes";
+import { CandidateGain, ClassFrequencyMap, DTreeExample, AttributeSubsets, DTreeAlgorithm } from "./dtreeTypes";
+import { calculateGainRatio, calculateGiniReduction } from "./dtreeMetrics";
 
-export function calculateEntropy(
-  examples: DTreeExample[],
-  target: string,
-): number {
+export function calculateEntropy(examples: DTreeExample[], target: string): number {
   if (examples.length === 0) return 0;
   const counts: ClassFrequencyMap = {};
   for (const ex of examples) counts[ex[target]] = (counts[ex[target]] || 0) + 1;
@@ -20,11 +13,7 @@ export function calculateEntropy(
   return entropy;
 }
 
-export function calculateInformationGain(
-  examples: DTreeExample[],
-  attr: string,
-  target: string,
-): number {
+export function calculateInformationGain(examples: DTreeExample[], attr: string, target: string): number {
   const baseEntropy = calculateEntropy(examples, target);
   const subsets: AttributeSubsets = {};
   for (const ex of examples) {
@@ -34,10 +23,15 @@ export function calculateInformationGain(
   }
   let remainder = 0;
   for (const subset of Object.values(subsets)) {
-    remainder +=
-      (subset.length / examples.length) * calculateEntropy(subset, target);
+    remainder += (subset.length / examples.length) * calculateEntropy(subset, target);
   }
   return Math.max(0, baseEntropy - remainder);
+}
+
+export function computeCandidateMetric(examples: DTreeExample[], attr: string, target: string, algo: DTreeAlgorithm = "id3"): number {
+  if (algo === "c45") return calculateGainRatio(examples, attr, target);
+  if (algo === "cart") return calculateGiniReduction(examples, attr, target);
+  return calculateInformationGain(examples, attr, target);
 }
 
 export function computeCandidateGains(
@@ -45,12 +39,11 @@ export function computeCandidateGains(
   usedAttrs: string[],
   attributes: string[],
   target: string,
+  algo: DTreeAlgorithm = "id3",
 ): CandidateGain[] {
   const usedSet = new Set(usedAttrs);
-  const candidates = attributes.filter((a) => !usedSet.has(a));
-  const gains = candidates.map((a) => ({
-    attr: a,
-    gain: calculateInformationGain(examples, a, target),
-  }));
-  return gains.sort((a, b) => b.gain - a.gain);
+  return attributes
+    .filter((a) => !usedSet.has(a))
+    .map((a) => ({ attr: a, gain: computeCandidateMetric(examples, a, target, algo) }))
+    .sort((a, b) => b.gain - a.gain);
 }

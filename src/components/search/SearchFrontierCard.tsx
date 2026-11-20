@@ -49,6 +49,7 @@ export function SearchFrontierCard({
                 key={path.nodes.join("->")}
                 path={path}
                 isNext={idx === 0 && !isQuizMode}
+                algorithm={algorithm}
               />
             ))}
           </div>

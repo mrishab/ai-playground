@@ -17,6 +17,8 @@ export function WorkspacePrebuiltMenu({
   onSelect,
   onOpenGraphBuilder,
 }: WorkspacePrebuiltMenuProps) {
+  const hasSelected = items.some((item) => item.id === selectedId);
+
   return (
     <div className="flex items-center gap-1.5">
       <FolderGit2 className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
@@ -37,6 +39,11 @@ export function WorkspacePrebuiltMenu({
             {item.label}
           </option>
         ))}
+        {!hasSelected && selectedId && (
+          <option value={selectedId}>
+            {selectedId === "custom" || selectedId === "blank" ? "Custom / Reset Problem" : selectedId}
+          </option>
+        )}
         {onOpenGraphBuilder && (
           <option value="__custom_graph__">+ Build Custom Graph...</option>
         )}

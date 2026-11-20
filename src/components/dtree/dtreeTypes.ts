@@ -15,6 +15,7 @@ export interface TreeNode {
   prediction?: string;
   classCounts: ClassFrequencyMap;
   entropy: number;
+  gini?: number;
   children: { value: string; node: TreeNode }[];
   examples?: DTreeExample[];
   availableAttrs?: string[];
@@ -24,3 +25,5 @@ export interface CandidateGain {
   attr: string;
   gain: number;
 }
+
+export type DTreeAlgorithm = "id3" | "c45" | "cart";

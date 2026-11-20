@@ -44,6 +44,6 @@ export function useHillClimbing() {
     tutorial: TOOL_TUTORIALS.hill,
     ...s,
     stepSLS,
-    codeTemplate: getHillCodeTemplate(probState.problem),
+    codeTemplate: getHillCodeTemplate(probState.problem, cfg.algorithm),
   };
 }

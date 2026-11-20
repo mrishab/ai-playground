@@ -1,10 +1,11 @@
 import { SearchGraph } from "@/data/searchProblems";
-import { SearchPath } from "./searchTypes";
+import { AlgorithmType, SearchPath } from "./searchTypes";
 
 export function expandSuccessors(
   headNodeId: string,
   chosenPath: SearchPath,
   graph: SearchGraph,
+  algorithm?: AlgorithmType,
 ): SearchPath[] {
   const outgoing = graph.edges.filter((e) => e.from === headNodeId);
   const newPaths: SearchPath[] = [];
@@ -16,11 +17,12 @@ export function expandSuccessors(
     const nNode = nodeMap.get(edge.to);
     const nH = nNode ? nNode.h : 0;
     const cost = chosenPath.cost + edge.cost;
+    const f = algorithm === "best_first" ? nH : algorithm === "lcfs" ? cost : cost + nH;
     newPaths.push({
       nodes: [...chosenPath.nodes, edge.to],
       cost,
       h: nH,
-      f: cost + nH,
+      f,
     });
   }
 
