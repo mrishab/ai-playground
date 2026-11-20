@@ -1,9 +1,7 @@
 import React from "react";
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { SyntaxHighlightEditor } from "../components/ui/SyntaxHighlightEditor";
-import { CodeSandbox } from "../components/CodeSandbox";
-import { DeductionKbEditor } from "../components/deduction/DeductionKbEditor";
 import { SearchTool } from "../components/search/SearchTool";
 import { ConstraintTool } from "../components/constraint/ConstraintTool";
 import { HillTool } from "../components/hill/HillTool";
@@ -18,7 +16,7 @@ import { PlanningTool } from "../components/planning/PlanningTool";
 // Mock canvas-confetti
 vi.mock("canvas-confetti", () => ({ default: vi.fn() }));
 
-describe("Visual Builder: Removal of custom code writing and running", () => {
+describe("Visual Builder: Complete removal of coding sections and custom code writing", () => {
   it("1. SyntaxHighlightEditor defaults to strictly readOnly and blocks keystroke input", () => {
     const handleChange = vi.fn();
     render(<SyntaxHighlightEditor value="const a = 10;" onChange={handleChange} />);
@@ -35,116 +33,63 @@ describe("Visual Builder: Removal of custom code writing and running", () => {
     expect(handleChange).not.toHaveBeenCalled();
   });
 
-  it("2. CodeSandbox displays read-only badge, guidance notice, and copy action without run or reset buttons", async () => {
-    const writeTextMock = vi.fn().mockResolvedValue(undefined);
-    Object.assign(navigator, { clipboard: { writeText: writeTextMock } });
+  it("2. All 10 tools have completely deleted Coding Area and offer only visual panes", () => {
+    const toolEntries = [
+      { name: "SearchTool", component: <SearchTool /> },
+      { name: "ConstraintTool", component: <ConstraintTool /> },
+      { name: "HillTool", component: <HillTool /> },
+      { name: "DeductionTool", component: <DeductionTool /> },
+      { name: "BayesTool", component: <BayesTool /> },
+      { name: "DTreeTool", component: <DTreeTool /> },
+      { name: "NeuralTool", component: <NeuralTool /> },
+      { name: "StripsToCspTool", component: <StripsToCspTool /> },
+      { name: "RobotTool", component: <RobotTool /> },
+      { name: "PlanningTool", component: <PlanningTool /> },
+    ];
 
-    render(
-      <CodeSandbox
-        title="Test Algorithm Reference"
-        algorithmName="A* Search"
-        initialCode="function astar() { return true; }"
-        notes="Heuristic guidance"
-      />
-    );
+    toolEntries.forEach(({ component }) => {
+      const { unmount } = render(component);
 
-    // Read-only indicator and title
-    expect(screen.getByText(/Test Algorithm Reference/i)).toBeInTheDocument();
-    expect(screen.getByText(/Read-Only Reference/i)).toBeInTheDocument();
-    expect(screen.getByText(/A\* Search/i)).toBeInTheDocument();
+      // Verify Coding Area is completely deleted
+      expect(screen.queryByText(/Coding Area/i)).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /Coding Area/i })).not.toBeInTheDocument();
+      expect(screen.queryByText(/Run Code/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Read-Only Reference/i)).not.toBeInTheDocument();
 
-    // Guidance text
-    expect(
-      screen.getByText(/AI Playground is a visual builder app. Code writing and running are not supported./i)
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Heuristic guidance/i)).toBeInTheDocument();
+      // Verify default Animation Area pane is present
+      expect(screen.getByText(/Animation Area/i)).toBeInTheDocument();
+      expect(screen.getByText(/Log & Output/i)).toBeInTheDocument();
+      expect(screen.getByText(/Theory & Guide/i)).toBeInTheDocument();
 
-    // Absence of execution controls
-    expect(screen.queryByRole("button", { name: /Run Code/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /Reset/i })).not.toBeInTheDocument();
+      // Verify pane switching works to Log & Output
+      const logTab = screen.getByText(/Log & Output/i);
+      fireEvent.click(logTab);
+      expect(screen.getByText(/Execution Trace/i)).toBeInTheDocument();
 
-    // Copy action works
-    const copyBtn = screen.getByRole("button", { name: /Copy/i });
-    expect(copyBtn).toBeInTheDocument();
-    await act(async () => {
-      fireEvent.click(copyBtn);
+      // Verify pane switching works to Theory & Guide
+      const theoryTab = screen.getByText(/Theory & Guide/i);
+      fireEvent.click(theoryTab);
+      expect(screen.getByText(/Concepts/i)).toBeInTheDocument();
+
+      // Verify pane switching back to Animation Area
+      const animTab = screen.getByText(/Animation Area/i);
+      fireEvent.click(animTab);
+      expect(animTab).toBeInTheDocument();
+
+      // If Graph Building exists (SearchTool), verify switching to it
+      const gbTab = screen.queryByText(/Graph Building/i);
+      if (gbTab) {
+        fireEvent.click(gbTab);
+        expect(screen.getByText(/Solve in Animation/i)).toBeInTheDocument();
+        const animTabAgain = screen.getByText(/Animation Area/i);
+        fireEvent.click(animTabAgain);
+      }
+
+      unmount();
     });
-    expect(writeTextMock).toHaveBeenCalledWith("function astar() { return true; }");
   });
 
-  it("3. DeductionKbEditor is strictly read-only and displays Prolog reference badge", () => {
-    render(<DeductionKbEditor kbCode="light_on :- switch_up, power_ok." />);
-
-    expect(screen.getByText(/Knowledge Base \(Definite Clauses\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/Read-Only Reference/i)).toBeInTheDocument();
-    const textarea = screen.getByRole("textbox");
-    expect(textarea).toHaveAttribute("readonly");
-  });
-
-  it("4. All 10 tools have a consistent read-only algorithm code reference in their coding pane", () => {
-    // 1. Search
-    const { unmount: u1 } = render(<SearchTool />);
-    fireEvent.click(screen.getByText(/Coding Area/i));
-    expect(screen.getByText(/Search Algorithm Code/i)).toBeInTheDocument();
-    expect(screen.getByText(/Read-Only Reference/i)).toBeInTheDocument();
-    u1();
-
-    // 2. Constraint
-    const { unmount: u2 } = render(<ConstraintTool />);
-    fireEvent.click(screen.getByText(/Coding Area/i));
-    expect(screen.getByText(/AC-3 Solver Code/i)).toBeInTheDocument();
-    u2();
-
-    // 3. Hill
-    const { unmount: u3 } = render(<HillTool />);
-    fireEvent.click(screen.getByText(/Coding Area/i));
-    expect(screen.getByText(/SLS Algorithm Code/i)).toBeInTheDocument();
-    u3();
-
-    // 4. Deduction
-    const { unmount: u4 } = render(<DeductionTool />);
-    fireEvent.click(screen.getByText(/Coding Area/i));
-    expect(screen.getByText(/Knowledge Base \(Definite Clauses\)/i)).toBeInTheDocument();
-    u4();
-
-    // 5. Bayes
-    const { unmount: u5 } = render(<BayesTool />);
-    fireEvent.click(screen.getByText(/Coding Area/i));
-    expect(screen.getByText(/Variable Elimination Code/i)).toBeInTheDocument();
-    u5();
-
-    // 6. DTree
-    const { unmount: u6 } = render(<DTreeTool />);
-    fireEvent.click(screen.getByText(/Coding Area/i));
-    expect(screen.getByText(/ID3 Decision Tree Code/i)).toBeInTheDocument();
-    u6();
-
-    // 7. Neural
-    const { unmount: u7 } = render(<NeuralTool />);
-    fireEvent.click(screen.getByText(/Coding Area/i));
-    expect(screen.getByText(/Backpropagation Algorithm Code/i)).toBeInTheDocument();
-    u7();
-
-    // 8. Strips to CSP
-    const { unmount: u8 } = render(<StripsToCspTool />);
-    fireEvent.click(screen.getByText(/Coding Area/i));
-    expect(screen.getByText(/STRIPS to CSP Compiler Code/i)).toBeInTheDocument();
-    u8();
-
-    // 9. Robot
-    const { unmount: u9 } = render(<RobotTool />);
-    fireEvent.click(screen.getByText(/Coding Area/i));
-    expect(screen.getByText(/Robot Controller Code/i)).toBeInTheDocument();
-    u9();
-
-    // 10. Planning
-    const { unmount: u10 } = render(<PlanningTool />);
-    fireEvent.click(screen.getByText(/Coding Area/i));
-    expect(screen.getByText(/STRIPS Planner Code/i)).toBeInTheDocument();
-    u10();
-  });
-
-  it("5. None of the educational tabs across modules include 'Run Code' or sandbox execution tabs", () => {
+  it("3. None of the educational tabs across modules include 'Run Code' or sandbox execution tabs", () => {
     render(<SearchTool />);
     fireEvent.click(screen.getByText(/Theory & Guide/i));
     expect(screen.queryByText(/Run Algorithm Code/i)).not.toBeInTheDocument();

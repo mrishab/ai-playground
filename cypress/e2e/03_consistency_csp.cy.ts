@@ -80,11 +80,9 @@ describe("AI Playground Consistency Based CSP Solver Lab", () => {
       cy.contains("button", "Advance Arc").should("be.enabled");
     });
 
-    it("switches to Coding Area, Theory & Guide, and Log panes", () => {
-      // 1. Coding Area
-      cy.contains("button", "Coding Area").click({ force: true });
-      cy.contains("AC-3 Solver Code").should("be.visible");
-      cy.contains("AI Playground is a visual builder app").should("be.visible");
+    it("switches to Theory & Guide and Log panes without Coding Area", () => {
+      // 1. Coding Area does not exist
+      cy.contains("button", "Coding Area").should("not.exist");
 
       // 2. Theory & Guide
       cy.contains("button", "Theory & Guide").click({ force: true });

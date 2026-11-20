@@ -3,8 +3,6 @@ import { useStripsToCsp } from "./useStripsToCsp";
 import { StripsTemporalGrid } from "./StripsTemporalGrid";
 import { StripsPlanCard } from "./StripsPlanCard";
 import { StripsToCspTabs } from "./StripsToCspTabs";
-import { CodeSandbox } from "../CodeSandbox";
-import { getStripsCodeTemplate } from "./stripsCodeTemplate";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
 import { STRIPS_PREBUILT_ITEMS, STRIPS_ALGORITHM_ITEMS } from "./stripsWorkspaceData";
 
@@ -41,7 +39,6 @@ export function StripsToCspTool() {
           onTogglePlay={s.togglePlay} speed={s.speed} setSpeed={s.setSpeed}
         />
       }
-      codingSlot={<CodeSandbox title="STRIPS to CSP Compiler Code" initialCode={getStripsCodeTemplate(s.problem, s.horizonK, algo)} algorithmName={algo === "sat_plan" ? "SATPlan Reduction" : "STRIPS-to-CSP Compiler"} notes="Unfolding temporal horizons compiles planning into arc consistency constraints or propositional SAT clauses." />}
       theorySlot={<StripsToCspTabs problem={s.problem} horizonK={s.horizonK} tutorial={s.tutorial} />}
       inspectorSlot={<StripsPlanCard horizonK={s.horizonK} extractedPlan={s.extractedPlan} />}
     />

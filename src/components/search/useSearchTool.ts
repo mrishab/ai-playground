@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { TOOL_TUTORIALS } from "@/data/toolTutorials";
 import { AlgorithmType } from "./searchTypes";
 import { WorkspacePane } from "../workspace/workspaceTypes";
-import { getSearchCodeTemplate } from "./searchCodeTemplate";
 import { useSimulationTimer } from "@/hooks/useSimulationTimer";
 import { useSearchQuiz } from "./useSearchQuiz";
 import { useSearchExecution } from "./useSearchExecution";
@@ -47,6 +46,5 @@ export function useSearchTool() {
     ...quiz,
     ...exec,
     tutorial: TOOL_TUTORIALS.search,
-    codeTemplate: getSearchCodeTemplate(g.graph, algorithm),
   };
 }

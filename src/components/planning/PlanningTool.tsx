@@ -5,8 +5,6 @@ import { PlanningGoalCard } from "./PlanningGoalCard";
 import { PlanningPlanStepsQueue } from "./PlanningPlanStepsQueue";
 import { PlanningTabs } from "./PlanningTabs";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
-import { CodeSandbox } from "../CodeSandbox";
-import { getPlanningCodeTemplate } from "./planningCodeTemplate";
 import { PLANNING_PREBUILT_ITEMS, PLANNING_ALGORITHM_ITEMS } from "./planningWorkspaceData";
 
 export function PlanningTool() {
@@ -43,7 +41,6 @@ export function PlanningTool() {
           holdingBlock={d.holdingBlock} problem={d.problem} log={d.log} speed={d.speed} setSpeed={d.setSpeed}
         />
       }
-      codingSlot={<CodeSandbox title="STRIPS Planner Code" initialCode={getPlanningCodeTemplate(d.problem.id)} algorithmName={d.plannerType.toUpperCase()} />}
       theorySlot={<PlanningTabs tutorial={d.tutorial} />}
       inspectorSlot={<PlanningGoalCard problem={d.problem} />}
       stateSlot={<PlanningPlanStepsQueue planSteps={d.planSteps} currentStepIndex={d.currentStepIndex} />}

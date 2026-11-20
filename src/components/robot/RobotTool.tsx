@@ -6,8 +6,6 @@ import { RobotSettingsCard } from "./RobotSettingsCard";
 import { RobotPlanList } from "./RobotPlanList";
 import { RobotTabs } from "./RobotTabs";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
-import { CodeSandbox } from "../CodeSandbox";
-import { ROBOT_CODE_TEMPLATE } from "./robotCodeTemplate";
 import { ROBOT_PREBUILT_ITEMS, ROBOT_ALGORITHM_ITEMS } from "./robotWorkspaceData";
 
 export function RobotTool() {
@@ -38,7 +36,6 @@ export function RobotTool() {
           world={d.world} robotPose={d.robotPose} breadcrumbs={d.breadcrumbs} log={d.log} speed={d.speed} setSpeed={d.setSpeed}
         />
       }
-      codingSlot={<CodeSandbox title="Robot Controller Code" initialCode={ROBOT_CODE_TEMPLATE} algorithmName={d.algo === "wall_following" ? "Reactive Wall Following" : "Sense-Plan-Act"} />}
       theorySlot={<RobotTabs tutorial={d.tutorial} />}
       inspectorSlot={
         <div className="space-y-4">

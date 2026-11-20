@@ -3,7 +3,6 @@ import { TOOL_TUTORIALS } from "@/data/toolTutorials";
 import { TreeNode, CandidateGain, DTreeAlgorithm } from "./dtreeTypes";
 import { useDTreeActions } from "./useDTreeActions";
 import { useDTreeStepper } from "./useDTreeStepper";
-import { getDTreeCodeTemplate } from "./dtreeCodeTemplate";
 import { useDTreeDatasetSelection } from "./useDTreeDatasetSelection";
 
 export function useDTree(algo: DTreeAlgorithm = "id3") {
@@ -42,6 +41,5 @@ export function useDTree(algo: DTreeAlgorithm = "id3") {
     log,
     ...actions,
     ...stepper,
-    codeTemplate: getDTreeCodeTemplate(dsState.dataset, algo),
   };
 }

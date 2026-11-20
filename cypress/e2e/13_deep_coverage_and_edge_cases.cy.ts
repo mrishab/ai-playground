@@ -288,10 +288,8 @@ describe("13. AI Playground Deep Code Coverage and Comprehensive Edge Cases", ()
       cy.wait(600);
       cy.get('button[title="Pause"]').first().click({ force: true });
 
-      // Editable KB editor
-      cy.contains("button", "Coding Area").click({ force: true });
-      cy.get('textarea').first().type(" % custom fact", { force: true });
-      cy.contains("button", "Animation Area").click({ force: true });
+      // Coding Area is completely removed
+      cy.contains("button", "Coding Area").should("not.exist");
     });
 
     it("exercises Bayes VE stepper to completion, query selector, step back, play/pause, and D-Separation", () => {
@@ -442,12 +440,8 @@ describe("13. AI Playground Deep Code Coverage and Comprehensive Edge Cases", ()
       cy.contains("button", "Copy Trace").click({ force: true });
       cy.contains("button", "Animation Area").click({ force: true });
 
-      // 5. Coding Area: Copy button (triggers useClipboardCopy)
-      cy.contains("button", "Coding Area").click({ force: true });
-      cy.get('button[title="Copy code"]').click({ force: true });
-      cy.contains("button", "Copied").should("be.visible");
-      cy.get('textarea[aria-label="Read-only code reference"]').scrollTo("bottom", { ensureScrollable: false });
-      cy.get('textarea[aria-label="Read-only code reference"]').type("testKey", { force: true });
+      // 5. Coding Area is completely removed
+      cy.contains("button", "Coding Area").should("not.exist");
     });
 
     it("verifies problemIO library comprehensive edge cases directly in browser context", () => {

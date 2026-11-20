@@ -8,7 +8,6 @@ import { TutorialTheoryCards } from "../shared/TutorialTheoryCards";
 import { TutorialWalkthroughCards } from "../shared/TutorialWalkthroughCards";
 
 interface BayesTabsProps {
-  codeTemplate?: string;
   tutorial: ToolTutorialData;
   network: BayesNetwork;
   evidence: EvidenceMap;

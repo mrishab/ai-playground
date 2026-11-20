@@ -5,7 +5,6 @@ import { StandardTutorialTabs } from "../shared/StandardTutorialTabs";
 export function ConstraintTabs({
   tutorial,
 }: {
-  codeTemplate?: string;
   tutorial: ToolTutorialData;
 }) {
   return <StandardTutorialTabs tutorial={tutorial} />;

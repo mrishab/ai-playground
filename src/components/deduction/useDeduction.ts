@@ -49,7 +49,7 @@ export function useDeduction() {
 
   return {
     ...kbState, handleImportKB, handleResetKB, tutorial: TOOL_TUTORIALS.deduction,
-    kbCode, setKbCode, queryInput, setQueryInput: handleQueryChange, algo, setAlgo,
+    kbCode, queryInput, setQueryInput: handleQueryChange, algo, setAlgo,
     proofTree: stepper.currentStep ? stepper.currentStep.treeSnapshot : proofTree,
     answers: stepper.currentStep ? stepper.currentStep.answers : answers,
     log: stepper.currentStep ? stepper.currentStep.log : log,

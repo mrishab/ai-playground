@@ -1,7 +1,6 @@
 import React from "react";
 import { useDeduction } from "./useDeduction";
 import { DeductionQueryCard } from "./DeductionQueryCard";
-import { DeductionKbEditor } from "./DeductionKbEditor";
 import { ProofTreeCanvas } from "./ProofTreeCanvas";
 import { DeductionTabs } from "./DeductionTabs";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
@@ -38,8 +37,7 @@ export function DeductionTool() {
         isPlaying: d.stepper.isPlaying, onTogglePlay: togglePlay, speed: d.stepper.speed, setSpeed: d.stepper.setSpeed,
       }}
       animationSlot={<ProofTreeCanvas proofTree={d.proofTree} log={d.log} answers={d.answers} algo={d.algo} onSelectAlgo={d.setAlgo} onNextAnswer={nextAns} />}
-      codingSlot={<DeductionKbEditor kbCode={d.kbCode} onChange={d.setKbCode} />}
-      theorySlot={<DeductionTabs queryInput={d.queryInput} kbCode={d.kbCode} tutorial={d.tutorial} />}
+      theorySlot={<DeductionTabs tutorial={d.tutorial} />}
       inspectorSlot={
         <DeductionQueryCard
           queryInput={d.queryInput} onQueryChange={d.setQueryInput} sampleQueries={d.currentKB.sampleQueries}

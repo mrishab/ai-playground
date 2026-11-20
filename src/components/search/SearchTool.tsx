@@ -5,7 +5,6 @@ import { SearchFrontierCard } from "./SearchFrontierCard";
 import { SearchInspectorCard } from "./SearchInspectorCard";
 import { SearchTabs } from "./SearchTabs";
 import { GraphBuilder } from "../graph_builder/GraphBuilder";
-import { CodeSandbox } from "../CodeSandbox";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
 import { SEARCH_PREBUILT_ITEMS, SEARCH_ALGORITHM_ITEMS } from "./searchWorkspaceData";
 import { AlgorithmType } from "./searchTypes";
@@ -45,8 +44,7 @@ export function SearchTool() {
       }}
       animationSlot={<SearchCanvasCard t={t} />}
       graphBuilderSlot={<GraphBuilder initialGraph={t.graph} onGraphChange={t.handleCustomGraphChange} onSolveGraph={() => { t.setActivePane("animation"); t.initializeSearch(); }} />}
-      codingSlot={<CodeSandbox title="Search Algorithm Code" initialCode={t.codeTemplate} algorithmName={t.algorithm.toUpperCase()} />}
-      theorySlot={<SearchTabs codeTemplate={t.codeTemplate} tutorial={t.tutorial} graph={t.graph} />}
+      theorySlot={<SearchTabs tutorial={t.tutorial} />}
       inspectorSlot={<SearchInspectorCard node={t.inspectedNode} graph={t.graph} />}
       stateSlot={<SearchFrontierCard frontier={t.frontier} algorithm={t.algorithm} isQuizMode={t.isQuizMode} />}
     />

@@ -77,7 +77,7 @@ describe("AI Playground Consistent Workspace & Drag-and-Drop Graph Builder", () 
     expect(screen.getByTestId("gb-node-N4")).toBeInTheDocument();
   });
 
-  it("6. SearchTool seamlessly switches between Animation, Graph Building, and Coding panes", () => {
+  it("6. SearchTool seamlessly switches between Animation, Graph Building, Theory, and Log panes without Coding Area", () => {
     render(<SearchTool />);
 
     // 1. Initial Animation Area
@@ -94,71 +94,83 @@ describe("AI Playground Consistent Workspace & Drag-and-Drop Graph Builder", () 
     fireEvent.click(solveBtn);
     expect(screen.getByText(/Frontier Queue/i)).toBeInTheDocument();
 
-    // 4. Switch to Coding Area
-    const codingTab = screen.getByText(/Coding Area/i);
-    fireEvent.click(codingTab);
-    expect(screen.getByText(/Search Algorithm Code/i)).toBeInTheDocument();
+    // 4. Assert Coding Area does not exist
+    expect(screen.queryByText(/Coding Area/i)).not.toBeInTheDocument();
 
     // 5. Switch to Log & Output
     const logTab = screen.getByText(/Log & Output/i);
     fireEvent.click(logTab);
     expect(screen.getByText(/Execution Trace & Output Log/i)).toBeInTheDocument();
+
+    // 6. Switch to Theory & Guide
+    const theoryTab = screen.getByText(/Theory & Guide/i);
+    fireEvent.click(theoryTab);
+    expect(screen.getByText(/Concepts & Lessons/i)).toBeInTheDocument();
   });
 
-  it("7. ConstraintTool has consistent header, algorithms menu, and pane switching", () => {
+  it("7. ConstraintTool has consistent header, algorithms menu, and pane switching without Coding Area", () => {
     render(<ConstraintTool />);
     expect(screen.getByText(/Consistency Based CSP Solver/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Select CSP Problem/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Select Algorithm/i)).toBeInTheDocument();
 
-    const codingTab = screen.getByText(/Coding Area/i);
-    fireEvent.click(codingTab);
-    expect(screen.getByText(/AC-3 Solver Code/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Coding Area/i)).not.toBeInTheDocument();
+    const theoryTab = screen.getByText(/Theory & Guide/i);
+    fireEvent.click(theoryTab);
+    expect(screen.getByText(/Concepts & Lessons/i)).toBeInTheDocument();
   });
 
-  it("8. HillTool has consistent header, algorithm options, and Code area", () => {
+  it("8. HillTool has consistent header, algorithm options, and pane switching without Coding Area", () => {
     render(<HillTool />);
     expect(screen.getByText(/Stochastic Local Search/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Select SLS Problem/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Select Algorithm/i)).toBeInTheDocument();
 
-    const codingTab = screen.getByText(/Coding Area/i);
-    fireEvent.click(codingTab);
-    expect(screen.getByText(/SLS Algorithm Code/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Coding Area/i)).not.toBeInTheDocument();
+    const logTab = screen.getByText(/Log & Output/i);
+    fireEvent.click(logTab);
+    expect(screen.getByText(/Execution Trace & Output Log/i)).toBeInTheDocument();
   });
 
-  it("9. DeductionTool, BayesTool, and DTreeTool have uniform multi-pane structure", () => {
+  it("9. DeductionTool, BayesTool, and DTreeTool have uniform multi-pane structure without Coding Area", () => {
     const { unmount: u1 } = render(<DeductionTool />);
     expect(screen.getByText(/Definite Clause Deduction/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Select Knowledge Base/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Coding Area/i)).not.toBeInTheDocument();
     u1();
 
     const { unmount: u2 } = render(<BayesTool />);
     expect(screen.getByText(/Belief & Decision Networks Lab/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Select Network/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Coding Area/i)).not.toBeInTheDocument();
     u2();
 
     const { unmount: u3 } = render(<DTreeTool />);
     expect(screen.getByText(/Decision Tree Induction Lab/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Select Dataset/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Coding Area/i)).not.toBeInTheDocument();
     u3();
   });
 
-  it("10. NeuralTool, StripsToCspTool, RobotTool, PlanningTool render unified panes", () => {
+  it("10. NeuralTool, StripsToCspTool, RobotTool, PlanningTool render unified panes without Coding Area", () => {
     const { unmount: u1 } = render(<NeuralTool />);
     expect(screen.getByText(/Neural Network & Backprop Lab/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Coding Area/i)).not.toBeInTheDocument();
     u1();
 
     const { unmount: u2 } = render(<StripsToCspTool />);
     expect(screen.getByText(/STRIPS to CSP Planning/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Coding Area/i)).not.toBeInTheDocument();
     u2();
 
     const { unmount: u3 } = render(<RobotTool />);
     expect(screen.getByText(/Autonomous Robot Control Lab/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Coding Area/i)).not.toBeInTheDocument();
     u3();
 
     const { unmount: u4 } = render(<PlanningTool />);
     expect(screen.getByText(/STRIPS Planning Lab/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Coding Area/i)).not.toBeInTheDocument();
     u4();
   });
 

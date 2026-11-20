@@ -5,8 +5,6 @@ import { NeuralHyperparamsCard } from "./NeuralHyperparamsCard";
 import { NeuralLossCard } from "./NeuralLossCard";
 import { NeuralTabs } from "./NeuralTabs";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
-import { CodeSandbox } from "../CodeSandbox";
-import { getNeuralCodeTemplate } from "./neuralCodeTemplate";
 import { NEURAL_PREBUILT_ITEMS, NEURAL_ALGORITHM_ITEMS } from "./neuralWorkspaceData";
 
 export function NeuralTool() {
@@ -43,7 +41,6 @@ export function NeuralTool() {
           algo={algo}
         />
       }
-      codingSlot={<CodeSandbox title="Backpropagation Algorithm Code" initialCode={getNeuralCodeTemplate(d.points, algo)} algorithmName={algo === "perceptron" ? "Perceptron" : "Backprop (SGD)"} />}
       theorySlot={<NeuralTabs points={d.points} tutorial={d.tutorial} />}
       inspectorSlot={<NeuralHyperparamsCard learningRate={d.learningRate} onLearningRateChange={d.setLearningRate} momentum={d.momentum} onMomentumChange={d.setMomentum} />}
       stateSlot={<NeuralLossCard lossHistory={d.lossHistory} />}

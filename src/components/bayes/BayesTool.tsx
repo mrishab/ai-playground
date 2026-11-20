@@ -5,7 +5,6 @@ import { BayesMarginalsCard } from "./BayesMarginalsCard";
 import { BayesDecisionCard } from "./BayesDecisionCard";
 import { BayesDSeparationCard } from "./BayesDSeparationCard";
 import { BayesTabs } from "./BayesTabs";
-import { CodeSandbox } from "../CodeSandbox";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
 import { BAYES_PREBUILT_ITEMS, BAYES_ALGORITHM_ITEMS } from "./bayesWorkspaceData";
 
@@ -38,11 +37,10 @@ export function BayesTool() {
       animationSlot={
         <div className="space-y-4">
           <BayesCanvasCard network={b.network} evidence={b.evidence} beliefs={b.beliefs} observedCount={obsCount} onClearEvidence={b.initializeNetwork} onToggleEvidence={b.toggleEvidence} />
-          <BayesTabs codeTemplate={b.codeTemplate} tutorial={b.tutorial} network={b.network} evidence={b.evidence} />
+          <BayesTabs tutorial={b.tutorial} network={b.network} evidence={b.evidence} />
         </div>
       }
-      codingSlot={<CodeSandbox title={algo === "dsep" ? "D-Separation Code" : algo === "sampling" ? "Rejection Sampling Code" : "Variable Elimination Code"} initialCode={b.codeTemplate} algorithmName={algo.toUpperCase()} />}
-      theorySlot={<BayesTabs codeTemplate={b.codeTemplate} tutorial={b.tutorial} network={b.network} evidence={b.evidence} />}
+      theorySlot={<BayesTabs tutorial={b.tutorial} network={b.network} evidence={b.evidence} />}
       inspectorSlot={
         <div className="space-y-4">
           <BayesMarginalsCard network={b.network} evidence={b.evidence} beliefs={b.beliefs} />

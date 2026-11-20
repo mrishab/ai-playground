@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { TOOL_TUTORIALS } from "@/data/toolTutorials";
-import { getHillCodeTemplate } from "./hillCodeTemplate";
 import { useSimulationTimer } from "@/hooks/useSimulationTimer";
 import { useHillSettings } from "./useHillSettings";
 import { useHillState } from "./useHillState";
@@ -44,6 +43,5 @@ export function useHillClimbing() {
     tutorial: TOOL_TUTORIALS.hill,
     ...s,
     stepSLS,
-    codeTemplate: getHillCodeTemplate(probState.problem, cfg.algorithm),
   };
 }

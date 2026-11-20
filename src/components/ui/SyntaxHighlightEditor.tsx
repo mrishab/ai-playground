@@ -31,6 +31,12 @@ export function SyntaxHighlightEditor({
     }
   };
 
+  const blockEdit = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (readOnly && !e.ctrlKey && !e.metaKey && (e.key.length === 1 || e.key === "Enter" || e.key === "Backspace" || e.key === "Delete" || e.key === "Tab")) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className={`relative w-full ${className} bg-muted/40 overflow-hidden`}>
       <pre ref={preRef} aria-hidden="true" className="absolute inset-0 m-0 p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap break-words overflow-auto pointer-events-none select-none text-foreground">
@@ -38,19 +44,12 @@ export function SyntaxHighlightEditor({
         {value.endsWith("\n") && "\n"}
       </pre>
       <textarea
-        aria-label={ariaLabel}
-        value={value}
-        readOnly={readOnly}
-        aria-readonly={readOnly ? "true" : undefined}
-        tabIndex={0}
-        onChange={readOnly ? undefined : (e) => onChange?.(e.target.value)}
-        onKeyDown={(e) => { if (readOnly && !e.ctrlKey && !e.metaKey && e.key.length === 1) e.preventDefault(); }}
-        onScroll={handleScroll}
-        spellCheck={false}
-        placeholder={readOnly ? undefined : placeholder}
-        className={`absolute inset-0 w-full h-full m-0 p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap break-words bg-transparent text-transparent resize-none focus:outline-none selection:bg-primary/30 transition-colors duration-150 ${
-          readOnly ? "cursor-default caret-transparent" : "caret-foreground"
-        }`}
+        aria-label={ariaLabel} value={value} readOnly={readOnly} aria-readonly={readOnly ? "true" : undefined}
+        tabIndex={0} onChange={readOnly ? undefined : (e) => onChange?.(e.target.value)}
+        onKeyDown={blockEdit} onBeforeInput={(e) => { if (readOnly) e.preventDefault(); }}
+        onPaste={(e) => { if (readOnly) e.preventDefault(); }} onCut={(e) => { if (readOnly) e.preventDefault(); }}
+        onDrop={(e) => { if (readOnly) e.preventDefault(); }} onScroll={handleScroll} spellCheck={false} placeholder={readOnly ? undefined : placeholder}
+        className={`absolute inset-0 w-full h-full m-0 p-4 font-mono text-xs leading-relaxed whitespace-pre-wrap break-words bg-transparent text-transparent resize-none focus:outline-none selection:bg-primary/30 transition-colors duration-150 ${readOnly ? "cursor-default caret-transparent" : "caret-foreground"}`}
       />
     </div>
   );

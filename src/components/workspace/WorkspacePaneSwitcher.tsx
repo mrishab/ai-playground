@@ -1,5 +1,5 @@
 import React from "react";
-import { Activity, GitBranch, Code2, Terminal, BookOpen } from "lucide-react";
+import { Activity, GitBranch, Terminal, BookOpen } from "lucide-react";
 import { WorkspacePane } from "./workspaceTypes";
 
 interface WorkspacePaneSwitcherProps {
@@ -18,7 +18,6 @@ export function WorkspacePaneSwitcher({
     ...(hasGraphBuilder
       ? [{ id: "graph_builder" as WorkspacePane, label: "Graph Building", icon: <GitBranch className="w-3.5 h-3.5" /> }]
       : []),
-    { id: "coding", label: "Coding Area", icon: <Code2 className="w-3.5 h-3.5" /> },
     { id: "log", label: "Log & Output", icon: <Terminal className="w-3.5 h-3.5" /> },
     { id: "theory", label: "Theory & Guide", icon: <BookOpen className="w-3.5 h-3.5" /> },
   ];

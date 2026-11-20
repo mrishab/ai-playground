@@ -4,7 +4,6 @@ import { TOOL_TUTORIALS } from "@/data/toolTutorials";
 import { computeBayesBeliefs } from "./bayesInference";
 import { computeRejectionSamplingBeliefs } from "./bayesSampling";
 import { useBayesDSep } from "./useBayesDSep";
-import { getBayesCodeTemplate } from "./bayesCodeTemplate";
 import { useBayesNetworkSelection } from "./useBayesNetworkSelection";
 
 export function useBayesNetwork(algo: string = "ve") {
@@ -47,6 +46,5 @@ export function useBayesNetwork(algo: string = "ve") {
     ...dsep,
     initializeNetwork,
     toggleEvidence,
-    codeTemplate: getBayesCodeTemplate(netState.network, evidence, algo),
   };
 }

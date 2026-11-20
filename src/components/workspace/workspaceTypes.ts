@@ -1,6 +1,6 @@
 import React from "react";
 
-export type WorkspacePane = "animation" | "graph_builder" | "coding" | "log" | "theory";
+export type WorkspacePane = "animation" | "graph_builder" | "log" | "theory";
 
 export interface PrebuiltItem { id: string; label: string; description?: string; badge?: string; }
 export interface AlgorithmItem { id: string; label: string; description?: string; badge?: string; }
@@ -36,7 +36,6 @@ export interface StudioWorkspaceProps {
   controls?: WorkspaceControlsConfig;
   animationSlot: React.ReactNode;
   graphBuilderSlot?: React.ReactNode;
-  codingSlot?: React.ReactNode;
   logSlot?: React.ReactNode;
   theorySlot?: React.ReactNode;
   inspectorSlot?: React.ReactNode;

@@ -5,8 +5,6 @@ import { StandardTutorialTabs } from "@/components/shared/StandardTutorialTabs";
 export function DeductionTabs({
   tutorial,
 }: {
-  queryInput?: string;
-  kbCode?: string;
   tutorial: ToolTutorialData;
 }) {
   return <StandardTutorialTabs tutorial={tutorial} />;

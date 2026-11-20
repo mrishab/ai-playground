@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { TOOL_TUTORIALS } from "@/data/toolTutorials";
-import { getConstraintCodeTemplate } from "./constraintCodeTemplate";
 import { useSimulationTimer } from "@/hooks/useSimulationTimer";
 import { useConstraintState } from "./useConstraintState";
 import { useConstraintStepper } from "./useConstraintStepper";
@@ -42,6 +41,5 @@ export function useConstraintTool() {
     toggleAutoAC: () => setIsPlaying(!isPlaying),
     isCSPFullySolved: isCspFullySolved(s.domains) && s.arcQueue.length === 0,
     hasDomainWipeout: hasAnyWipeout(s.domains),
-    codeTemplate: getConstraintCodeTemplate(probState.problem),
   };
 }

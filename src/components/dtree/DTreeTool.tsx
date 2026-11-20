@@ -4,7 +4,6 @@ import { DTreeCanvasCard } from "./DTreeCanvasCard";
 import { DTreeGainRankingCard } from "./DTreeGainRankingCard";
 import { DTreeDatasetTable } from "./DTreeDatasetTable";
 import { DTreeTabs } from "./DTreeTabs";
-import { CodeSandbox } from "../CodeSandbox";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
 import { DTREE_PREBUILT_ITEMS, DTREE_ALGORITHM_ITEMS } from "./dtreeWorkspaceData";
 import { DTreeAlgorithm } from "./dtreeTypes";
@@ -37,8 +36,7 @@ export function DTreeTool() {
           tree={d.tree} log={d.log} speed={d.speed} setSpeed={d.setSpeed} algo={algo}
         />
       }
-      codingSlot={<CodeSandbox title="ID3 Decision Tree Code" initialCode={d.codeTemplate} algorithmName={algo.toUpperCase()} />}
-      theorySlot={<DTreeTabs codeTemplate={d.codeTemplate} tutorial={d.tutorial} />}
+      theorySlot={<DTreeTabs tutorial={d.tutorial} />}
       inspectorSlot={<DTreeGainRankingCard candidateGains={d.candidateGains} algo={algo} />}
       stateSlot={<DTreeDatasetTable dataset={d.dataset} />}
     />

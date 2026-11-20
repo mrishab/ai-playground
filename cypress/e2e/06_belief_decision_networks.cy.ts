@@ -62,11 +62,9 @@ describe("AI Playground Belief & Decision Networks Lab", () => {
       cy.contains("Active Factor Pool").should("be.visible");
     });
 
-    it("switches to Coding Area, Theory & Guide, and Log panes", () => {
-      // 1. Coding Area
-      cy.contains("button", "Coding Area").click({ force: true });
-      cy.contains("Variable Elimination Code").should("be.visible");
-      cy.contains("AI Playground is a visual builder app").should("be.visible");
+    it("switches to Theory & Guide and Log panes without Coding Area", () => {
+      // 1. Coding Area does not exist
+      cy.contains("button", "Coding Area").should("not.exist");
 
       // 2. Theory & Guide
       cy.contains("button", "Theory & Guide").click({ force: true });

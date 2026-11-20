@@ -70,11 +70,9 @@ describe("AI Playground Definite Clause Deduction Lab", () => {
       cy.get('button[title="Step Back"]').first().click({ force: true });
     });
 
-    it("switches to Coding Area (KB Editor), Theory & Guide, and Log panes", () => {
-      // 1. Coding Area (KB Editor)
-      cy.contains("button", "Coding Area").click({ force: true });
-      cy.contains("Knowledge Base (Definite Clauses)").should("be.visible");
-      cy.get("textarea").should("be.visible");
+    it("switches to Theory & Guide and Log panes without Coding Area", () => {
+      // 1. Coding Area does not exist
+      cy.contains("button", "Coding Area").should("not.exist");
 
       // 2. Theory & Guide
       cy.contains("button", "Theory & Guide").click({ force: true });

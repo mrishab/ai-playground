@@ -10,14 +10,12 @@ interface WorkspaceLayoutProps extends StudioWorkspaceProps {
 }
 
 export function WorkspaceLayout(props: WorkspaceLayoutProps) {
-  const { currentPane, setCurrentPane, animationSlot, graphBuilderSlot, codingSlot, logSlot, theorySlot, inspectorSlot, stateSlot, logHistory } = props;
+  const { currentPane, setCurrentPane, animationSlot, graphBuilderSlot, logSlot, theorySlot, inspectorSlot, stateSlot, logHistory } = props;
 
   const renderMainPane = () => {
     switch (currentPane) {
       case "graph_builder":
         return graphBuilderSlot || <GraphBuilderPlaceholder />;
-      case "coding":
-        return codingSlot || animationSlot;
       case "log":
         return logSlot || <WorkspaceLogView log={props.activeLogMessage} history={logHistory} statsBadges={props.statsBadges} />;
       case "theory":
@@ -28,7 +26,7 @@ export function WorkspaceLayout(props: WorkspaceLayoutProps) {
     }
   };
 
-  const isFullWidthPane = currentPane === "coding" || currentPane === "log" || currentPane === "theory";
+  const isFullWidthPane = currentPane === "log" || currentPane === "theory";
 
   return (
     <div className="space-y-4">
