@@ -22,11 +22,16 @@ export function getCptIndex(
   node: BayesNode,
   cpt: BayesCPT,
   parentConfig: ParentConfig,
-  outcomeIdx: number,
+  outcomeIdx: number = 0,
   network: BayesNetwork,
 ): number {
   let idx = 0;
-  let multiplier = node.outcomes.length > 0 ? node.outcomes.length : 2;
+  let multiplier =
+    node.type === "utility"
+      ? 1
+      : node.outcomes.length > 0
+        ? node.outcomes.length
+        : 2;
   const nodeMap = new Map(network.nodes.map((n) => [n.id, n]));
   for (let i = cpt.parents.length - 1; i >= 0; i--) {
     const pId = cpt.parents[i];
@@ -37,5 +42,5 @@ export function getCptIndex(
     idx += pOutcomes.indexOf(pVal) * multiplier;
     multiplier *= pOutcomes.length;
   }
-  return idx + outcomeIdx;
+  return idx + (node.type === "utility" ? 0 : outcomeIdx);
 }

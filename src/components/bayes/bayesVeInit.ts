@@ -7,7 +7,7 @@ export function createInitialVeFactors(network: BayesNetwork): VeFactor[] {
   const nodeMap = new Map(network.nodes.map((n) => [n.id, n]));
   for (const cpt of network.cpts) {
     const node = nodeMap.get(cpt.target);
-    if (!node || node.type === "utility") continue;
+    if (!node || node.type === "utility" || node.type === "decision" || cpt.table.length === 0) continue;
     const outcomes = node.outcomes.length > 0 ? node.outcomes : ["true", "false"];
     const configs = getParentConfigs(cpt.parents, network);
     const table: VeFactorRow[] = [];
