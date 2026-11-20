@@ -4,7 +4,7 @@ import { matchFact, matchRuleArgs } from "./sldMatcher";
 import { cloneProofNode, bindGoalString, pushStep } from "./sldStepHelper";
 
 export function generateSLDSteps(queryInput: string, kbCode: string): SLDStepSnapshot[] {
-  const cleanQuery = queryInput.trim().replace(/\.$/, "");
+  const cleanQuery = queryInput.trim().replace(/^(\?-|\?)\s*/, "").replace(/\.$/, "").trim();
   const { rules, facts } = parseHornClauses(kbCode);
   const steps: SLDStepSnapshot[] = [];
   const foundAnswers: SubstitutionMap[] = [];

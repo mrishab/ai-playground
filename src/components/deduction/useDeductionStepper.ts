@@ -41,7 +41,26 @@ export function useDeductionStepper() {
     setStepIndex((idx) => (idx < steps.length - 1 ? idx + 1 : idx));
   }, 1050 - speed);
 
+  const resetStepper = useCallback(() => {
+    setSteps([]);
+    setStepIndex(-1);
+    setIsPlaying(false);
+  }, []);
+
   const currentStep = stepIndex >= 0 && stepIndex < steps.length ? steps[stepIndex] : null;
 
-  return { steps, stepIndex, currentStep, isPlaying, speed, setSpeed, initSteps, stepForward, stepBack, togglePlay };
+  return {
+    steps,
+    stepIndex,
+    setStepIndex,
+    currentStep,
+    isPlaying,
+    speed,
+    setSpeed,
+    initSteps,
+    stepForward,
+    stepBack,
+    togglePlay,
+    resetStepper,
+  };
 }

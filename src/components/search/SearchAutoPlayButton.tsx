@@ -19,7 +19,7 @@ export function SearchAutoPlayButton({
       size="sm"
       onClick={onTogglePlay}
       disabled={disabled}
-      className="gap-1.5 font-semibold h-8"
+      className="gap-1.5 font-semibold h-8 min-w-[124px] justify-center transition-colors duration-150"
     >
       {isPlaying ? (
         <Pause className="h-3.5 w-3.5 fill-current" />

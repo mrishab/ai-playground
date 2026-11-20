@@ -24,6 +24,7 @@ export function ConstraintGraphEdges({
             key={cIdx}
             v1={vars[0]}
             v2={vars[1]}
+            constraint={c}
             isCur={currentArc?.constraint === c}
           />
         );

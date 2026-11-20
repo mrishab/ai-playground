@@ -31,7 +31,7 @@ export function DeductionTool() {
         d.handleImportKB(data.problem);
       }}
       onResetProblem={d.handleResetKB}
-      statsBadges={[{ label: "Answers", value: d.answers.length, variant: "success" }, { label: "Steps", value: Math.max(0, d.stepper.stepIndex), variant: "cyan" }]}
+      statsBadges={[{ label: "Answers", value: d.answers.length, variant: "success" }, { label: "Steps", value: d.stepper.stepIndex >= 0 ? `${d.stepper.stepIndex + 1}/${d.stepper.steps.length}` : 0, variant: "cyan" }]}
       controls={{
         onStep: () => d.stepper.stepForward(d.queryInput, d.kbCode), stepLabel: "Advance", onStepBack: d.stepper.stepBack, hasStepBack: d.stepper.stepIndex > 0,
         isPlaying: d.stepper.isPlaying, onTogglePlay: () => d.stepper.togglePlay(d.queryInput, d.kbCode), speed: d.stepper.speed, setSpeed: d.stepper.setSpeed,

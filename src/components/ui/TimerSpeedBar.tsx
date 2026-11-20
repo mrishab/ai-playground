@@ -16,7 +16,7 @@ export function TimerSpeedBar({
   speed,
   setSpeed,
   min = 100,
-  max = 950,
+  max = 1000,
   step = 50,
   label = "Speed",
   className = "w-32",

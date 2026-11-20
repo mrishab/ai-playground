@@ -16,7 +16,7 @@ export function StripsTimeStepColumn({
   problem: StripsProblem;
 }) {
   return (
-    <div className="flex-1 flex flex-col items-center space-y-3 transition-opacity duration-300 ease-out">
+    <div className="flex-1 min-w-[240px] max-w-[280px] flex flex-col items-center space-y-3 transition-opacity duration-300 ease-out">
       <div className="text-center">
         <span className="px-2.5 py-0.5 rounded-full bg-secondary font-mono text-[10px] text-muted-foreground border border-border">
           Time Step t = {t}
@@ -27,21 +27,19 @@ export function StripsTimeStepColumn({
         <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">
           State Fluents
         </div>
-        {problem.variables.map((v) => (
-          <div
-            key={v.name}
-            className="p-1.5 rounded bg-secondary/30 text-[11px] font-mono flex items-center justify-between"
-          >
-            <span className="text-muted-foreground">{v.name}:</span>
-            <span className="font-bold text-primary">
-              {t === 0
-                ? v.initial
-                : t === horizonK && isSolved
-                  ? v.goal
-                  : `D={${v.domain.join(",")}}`}
-            </span>
-          </div>
-        ))}
+        {problem.variables.map((v) => {
+          const valText = t === 0 ? v.initial : t === horizonK && isSolved ? v.goal : `D={${v.domain.join(", ")}}`;
+          return (
+            <div
+              key={v.name}
+              className="p-1.5 rounded bg-secondary/30 text-[11px] font-mono flex items-center justify-between gap-1.5"
+              title={`${v.name}: ${valText}`}
+            >
+              <span className="text-muted-foreground shrink-0">{v.name}:</span>
+              <span className="font-bold text-primary break-words text-right">{valText}</span>
+            </div>
+          );
+        })}
       </div>
 
       {t < horizonK && (

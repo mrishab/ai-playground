@@ -34,7 +34,7 @@ export function ExerciseFiltersHeader({
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
-        <div className="relative w-full sm:w-72">
+        <div className="relative w-full sm:w-80">
           <Search className="h-4 w-4 text-muted-foreground absolute left-3 top-2.5" />
           <input
             aria-label="Search exercises"

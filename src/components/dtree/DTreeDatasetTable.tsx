@@ -13,16 +13,16 @@ export function DTreeDatasetTable({ dataset }: { dataset: DTreeDataset }) {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-4 pt-1">
-        <div className="max-h-56 overflow-y-auto border border-border/40 rounded-lg">
-          <table className="w-full text-[11px] text-left">
+        <div className="max-h-56 overflow-auto border border-border/40 rounded-lg">
+          <table className="min-w-full w-full text-[11px] text-left">
             <thead className="bg-secondary/50 font-semibold border-b border-border/40 text-muted-foreground sticky top-0">
               <tr>
                 {dataset.attributes.map((a) => (
-                  <th key={a} className="p-1.5">
+                  <th key={a} className="p-1.5 whitespace-nowrap">
                     {a}
                   </th>
                 ))}
-                <th className="p-1.5 text-primary">{dataset.target}</th>
+                <th className="p-1.5 text-primary whitespace-nowrap min-w-[70px]">{dataset.target}</th>
               </tr>
             </thead>
             <tbody>
@@ -32,11 +32,11 @@ export function DTreeDatasetTable({ dataset }: { dataset: DTreeDataset }) {
                   className="border-b border-border/20 hover:bg-secondary/20 font-mono transition-colors duration-150"
                 >
                   {dataset.attributes.map((a) => (
-                    <td key={a} className="p-1.5 text-muted-foreground">
+                    <td key={a} className="p-1.5 text-muted-foreground whitespace-nowrap">
                       {ex[a]}
                     </td>
                   ))}
-                  <td className="p-1.5 font-bold text-foreground">
+                  <td className="p-1.5 font-bold text-foreground whitespace-nowrap">
                     {ex[dataset.target]}
                   </td>
                 </tr>

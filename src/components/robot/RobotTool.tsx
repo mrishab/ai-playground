@@ -35,7 +35,11 @@ export function RobotTool() {
       }}
       onResetProblem={d.handleResetWorld}
       statsBadges={[{ label: "Plan Steps", value: `${d.currentPlanIndex}/${d.world.plan.length}`, variant: isComplete ? "success" : "cyan" }, { label: "Status", value: isComplete ? "Goal Reached" : "Navigating", variant: isComplete ? "success" : "outline" }]}
-      controls={{ onReset: d.initializeWorld, speed: d.speed, setSpeed: d.setSpeed }}
+      controls={{
+        onStep: d.stepSimulation, stepLabel: "Advance", isPlaying: d.isPlaying,
+        onTogglePlay: () => d.setIsPlaying(!d.isPlaying), onReset: d.initializeWorld,
+        speed: d.speed, setSpeed: d.setSpeed, isDone: isComplete,
+      }}
       animationSlot={
         <RobotCanvasCard
           isPlaying={d.isPlaying} onTogglePlay={() => d.setIsPlaying(!d.isPlaying)}

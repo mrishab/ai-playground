@@ -34,7 +34,7 @@ export function StripsTemporalGrid(p: StripsTemporalGridProps) {
         setSpeed={p.setSpeed}
       />
       <div className="p-6 bg-canvas overflow-x-auto min-h-[340px]">
-        <div className="flex items-start gap-4 min-w-[550px]">
+        <div className="flex items-start gap-4 min-w-max pb-2">
           {Array.from({ length: p.horizonK + 1 }).map((_, t) => (
             <StripsTimeStepColumn
               key={t}

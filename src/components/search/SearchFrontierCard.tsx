@@ -13,11 +13,13 @@ import { SearchFrontierItem } from "./SearchFrontierItem";
 interface SearchFrontierCardProps {
   frontier: SearchPath[];
   algorithm: AlgorithmType;
+  isQuizMode?: boolean;
 }
 
 export function SearchFrontierCard({
   frontier,
   algorithm,
+  isQuizMode = false,
 }: SearchFrontierCardProps) {
   return (
     <Card className="border-border/80 shadow-sm">
@@ -27,11 +29,11 @@ export function SearchFrontierCard({
             Frontier Queue
           </CardTitle>
           <Badge variant="outline" className="text-[10px]">
-            Priority: {algorithm.toUpperCase()}
+            {isQuizMode ? "Quiz Active" : `Priority: ${algorithm.toUpperCase()}`}
           </Badge>
         </div>
         <CardDescription className="text-xs">
-          Active paths waiting to be expanded
+          {isQuizMode ? "Next expansion hidden for quiz" : "Active paths waiting to be expanded"}
         </CardDescription>
       </CardHeader>
 
@@ -46,7 +48,7 @@ export function SearchFrontierCard({
               <SearchFrontierItem
                 key={path.nodes.join("->")}
                 path={path}
-                isNext={idx === 0}
+                isNext={idx === 0 && !isQuizMode}
               />
             ))}
           </div>

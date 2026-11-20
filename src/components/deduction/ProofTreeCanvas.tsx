@@ -22,10 +22,10 @@ export function ProofTreeCanvas({
         </span>
         {proofTree && (
           <Badge
-            variant={proofTree.status === "success" ? "success" : "destructive"}
+            variant={proofTree.status === "success" ? "success" : proofTree.status === "active" ? "cyan" : "destructive"}
             className="text-[10px]"
           >
-            {proofTree.status === "success" ? "Goal Proved" : "Failed"}
+            {proofTree.status === "success" ? "Goal Proved" : proofTree.status === "active" ? "In Progress" : "Failed"}
           </Badge>
         )}
       </div>
@@ -47,8 +47,7 @@ export function ProofTreeCanvas({
           </div>
         ) : (
           <div className="text-center text-xs text-muted-foreground py-12">
-            Enter a query above and click "Prove Query" to visualize the SLD
-            proof tree.
+            Enter a query in the Interactive Query Goal panel and click &quot;Prove Query&quot; to visualize the SLD proof tree.
           </div>
         )}
       </div>

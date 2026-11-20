@@ -34,7 +34,11 @@ export function PlanningTool() {
       }}
       onResetProblem={d.handleResetProblem}
       statsBadges={[{ label: "Steps", value: `${d.currentStepIndex}/${d.planSteps.length}`, variant: isGoalAchieved ? "success" : "cyan" }, { label: "Goal", value: isGoalAchieved ? "Achieved" : "In Progress", variant: isGoalAchieved ? "success" : "warning" }]}
-      controls={{ onReset: d.initializeBlocks, speed: d.speed, setSpeed: d.setSpeed }}
+      controls={{
+        onStep: d.stepExecution, stepLabel: "Advance", isPlaying: d.isExecuting,
+        onTogglePlay: () => d.setIsExecuting(!d.isExecuting), onReset: d.initializeBlocks,
+        speed: d.speed, setSpeed: d.setSpeed, isDone: isGoalAchieved,
+      }}
       animationSlot={
         <PlanningCanvasCard
           isExecuting={d.isExecuting} onToggleExecute={() => d.setIsExecuting(!d.isExecuting)}

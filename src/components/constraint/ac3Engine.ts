@@ -30,6 +30,9 @@ export function executeFineStep(
     domains,
   );
 
+  const otherVar = arc.constraint.variables.find((v) => v !== varName) || arc.constraint.variables[0] || "";
+  const constraintExpr = arc.constraint.name || (arc.constraint.variables.length === 2 ? `${arc.constraint.variables[0]} ≠ ${arc.constraint.variables[1]}` : otherVar);
+
   if (pruned.length > 0) {
     const updatedDomains = { ...domains, [varName]: remaining };
     if (remaining.length === 0) {
@@ -40,7 +43,7 @@ export function executeFineStep(
       updatedQueue: [...queueCopy, ...newArcsToAdd],
       updatedDomains,
       currentArc: arc,
-      log: `Pruned {${pruned.join(", ")}} from ${varName}. Added ${newArcsToAdd.length} dependent arcs back to queue.`,
+      log: `Pruned {${pruned.join(", ")}} from ${varName} via ${constraintExpr}. Added ${newArcsToAdd.length} dependent arcs back to queue.`,
       isWipeout: false,
       done: false,
     };
@@ -50,7 +53,7 @@ export function executeFineStep(
     updatedQueue: queueCopy,
     updatedDomains: domains,
     currentArc: arc,
-    log: `Arc (${varName}, ${arc.constraint.name}) is consistent. No values pruned.`,
+    log: `Arc (${varName}, ${otherVar} [${constraintExpr}]) is consistent. No values pruned.`,
     isWipeout: false,
     done: false,
   };

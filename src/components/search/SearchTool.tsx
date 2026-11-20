@@ -48,7 +48,7 @@ export function SearchTool() {
       codingSlot={<CodeSandbox title="Search Algorithm Code" initialCode={t.codeTemplate} algorithmName={t.algorithm.toUpperCase()} />}
       theorySlot={<SearchTabs codeTemplate={t.codeTemplate} tutorial={t.tutorial} graph={t.graph} />}
       inspectorSlot={<SearchInspectorCard node={t.inspectedNode} graph={t.graph} />}
-      stateSlot={<SearchFrontierCard frontier={t.frontier} algorithm={t.algorithm} />}
+      stateSlot={<SearchFrontierCard frontier={t.frontier} algorithm={t.algorithm} isQuizMode={t.isQuizMode} />}
     />
   );
 }

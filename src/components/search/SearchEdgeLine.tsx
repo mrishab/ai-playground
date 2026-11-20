@@ -13,8 +13,11 @@ export function SearchEdgeLine({
   cost,
   inPath,
 }: SearchEdgeLineProps) {
-  const midX = (fromNode.x + toNode.x) / 2;
-  const midY = (fromNode.y + toNode.y) / 2;
+  const dx = toNode.x - fromNode.x;
+  const dy = toNode.y - fromNode.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const badgeX = (fromNode.x + toNode.x) / 2 + (-dy / len) * 12;
+  const badgeY = (fromNode.y + toNode.y) / 2 + (dx / len) * 12;
 
   return (
     <g>
@@ -30,8 +33,8 @@ export function SearchEdgeLine({
         markerEnd={inPath ? "url(#arrowhead-path)" : "url(#arrowhead)"}
       />
       <rect
-        x={midX - 12}
-        y={midY - 9}
+        x={badgeX - 12}
+        y={badgeY - 9}
         width="24"
         height="18"
         rx="4"
@@ -39,8 +42,8 @@ export function SearchEdgeLine({
         strokeWidth="1"
       />
       <text
-        x={midX}
-        y={midY + 3.5}
+        x={badgeX}
+        y={badgeY + 3.5}
         textAnchor="middle"
         className="fill-muted-foreground font-semibold font-mono text-[10px]"
       >

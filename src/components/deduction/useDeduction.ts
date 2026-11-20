@@ -21,6 +21,7 @@ export function useDeduction() {
     setQueryInput(imported.sampleQueries?.[0] || "");
     setProofTree(null);
     setAnswers([]);
+    stepper.resetStepper();
     setLog(`Imported knowledge base "${imported.name || "Custom KB"}".`);
   };
 
@@ -30,6 +31,7 @@ export function useDeduction() {
     setQueryInput("");
     setProofTree(null);
     setAnswers([]);
+    stepper.resetStepper();
     setLog("Knowledge base reset to empty.");
   };
 
@@ -38,10 +40,19 @@ export function useDeduction() {
     setQueryInput(kbState.currentKB.sampleQueries?.[0] || "");
     setProofTree(null);
     setAnswers([]);
+    stepper.resetStepper();
     setLog(`Loaded knowledge base "${kbState.currentKB.name || "Knowledge Base"}".`);
   }, [kbState.selectedKBId, kbState.currentKB]);
 
+  const handleQueryChange = (q: string) => {
+    setQueryInput(q);
+    stepper.resetStepper();
+    setProofTree(null);
+    setAnswers([]);
+  };
+
   const runProof = () => {
+    stepper.resetStepper();
     const res = runDeductionProof(queryInput, kbCode);
     setLog(res.log);
     setProofTree(res.root);
@@ -49,11 +60,18 @@ export function useDeduction() {
   };
 
   return {
-    ...kbState, handleImportKB, handleResetKB, tutorial: TOOL_TUTORIALS.deduction,
-    kbCode, setKbCode, queryInput, setQueryInput,
+    ...kbState,
+    handleImportKB,
+    handleResetKB,
+    tutorial: TOOL_TUTORIALS.deduction,
+    kbCode,
+    setKbCode,
+    queryInput,
+    setQueryInput: handleQueryChange,
     proofTree: stepper.currentStep ? stepper.currentStep.treeSnapshot : proofTree,
     answers: stepper.currentStep ? stepper.currentStep.answers : answers,
     log: stepper.currentStep ? stepper.currentStep.log : log,
-    runProof, stepper,
+    runProof,
+    stepper,
   };
 }

@@ -31,7 +31,7 @@ function prove(
 }
 
 export function executeSLDProof(queryInput: string, kbCode: string) {
-  const cleanQuery = queryInput.trim().replace(/\.$/, "");
+  const cleanQuery = queryInput.trim().replace(/^(\?-|\?)\s*/, "").replace(/\.$/, "").trim();
   const { rules, facts } = parseHornClauses(kbCode);
   const foundAnswers: SubstitutionMap[] = [];
   return {
