@@ -1,5 +1,5 @@
 import { ProofNode, HornFact, SubstitutionMap } from "./deductionTypes";
-import { matchFact } from "./sldMatcher";
+import { matchFact } from "./sldLegacyMatcher";
 
 export function tryMatchFact(
   node: ProofNode,

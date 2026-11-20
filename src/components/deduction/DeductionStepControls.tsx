@@ -1,5 +1,5 @@
 import React from "react";
-import { Play, Pause, StepForward, RotateCcw } from "lucide-react";
+import { Play, Pause, StepForward, RotateCcw, FastForward } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { TimerSpeedBar } from "../ui/TimerSpeedBar";
 
@@ -12,6 +12,7 @@ export interface DeductionStepControlsProps {
   onTogglePlay: () => void;
   speed: number;
   setSpeed: (v: number) => void;
+  onNextAnswer?: () => void;
 }
 
 export function DeductionStepControls(p: DeductionStepControlsProps) {
@@ -29,6 +30,12 @@ export function DeductionStepControls(p: DeductionStepControlsProps) {
           <StepForward className="h-3.5 w-3.5" />
           Step
         </Button>
+        {p.onNextAnswer && (
+          <Button variant="outline" size="sm" onClick={p.onNextAnswer} title="Next Answer" className="gap-1 h-8 px-2 text-xs font-medium">
+            <FastForward className="h-3.5 w-3.5 text-primary" />
+            Next Ans
+          </Button>
+        )}
       </div>
       {p.totalSteps > 0 && (
         <span className="text-[11px] font-mono text-muted-foreground ml-1 shrink-0">

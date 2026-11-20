@@ -1,37 +1,58 @@
-import { HornFact, SubstitutionMap } from "./deductionTypes";
+import { GoalAtom, HornClause, SubstitutionMap } from "./deductionTypes";
 
-export function matchFact(pred: string, args: string[], facts: HornFact[]) {
-  for (const fact of facts) {
-    if (fact.pred !== pred || fact.args.length !== args.length) continue;
-    let matches = true;
-    const sub: SubstitutionMap = {};
-    for (let i = 0; i < args.length; i++) {
-      if (!args[i]) continue;
-      if (args[i][0] === args[i][0].toUpperCase() && args[i].length > 0) {
-        sub[args[i]] = fact.args[i];
-      } else if (args[i] !== fact.args[i]) {
-        matches = false;
-        break;
-      }
-    }
-    if (matches) return { matched: true, sub, fact };
-  }
-  return { matched: false, sub: {}, fact: null };
+export const isVariable = (t: string): boolean => /^[A-Z_]/.test(t);
+
+export function walk(term: string, sub: SubstitutionMap): string {
+  let curr = term;
+  while (isVariable(curr) && sub[curr] !== undefined) curr = sub[curr];
+  return curr;
 }
 
-export function matchRuleArgs(headArgs: string[], args: string[]) {
-  let matches = true;
-  const sub: SubstitutionMap = {};
-  for (let i = 0; i < args.length; i++) {
-    if (!args[i] || !headArgs[i]) continue;
-    if (args[i][0] === args[i][0].toUpperCase() && args[i].length > 0)
-      sub[args[i]] = headArgs[i];
-    else if (headArgs[i][0] === headArgs[i][0].toUpperCase())
-      sub[headArgs[i]] = args[i];
-    else if (args[i] !== headArgs[i]) {
-      matches = false;
-      break;
-    }
+export function unifyTerms(t1: string, t2: string, sub: SubstitutionMap): SubstitutionMap | null {
+  const u = walk(t1, sub);
+  const v = walk(t2, sub);
+  if (u === v) return sub;
+  if (isVariable(u)) return { ...sub, [u]: v };
+  if (isVariable(v)) return { ...sub, [v]: u };
+  return null;
+}
+
+export function unifyAtoms(a1: GoalAtom, a2: GoalAtom, sub: SubstitutionMap): SubstitutionMap | null {
+  if (a1.pred !== a2.pred || a1.args.length !== a2.args.length) return null;
+  let s: SubstitutionMap | null = { ...sub };
+  for (let i = 0; i < a1.args.length; i++) {
+    s = unifyTerms(a1.args[i], a2.args[i], s);
+    if (!s) return null;
   }
-  return { matches, sub };
+  return s;
+}
+
+export function substituteAtom(atom: GoalAtom, sub: SubstitutionMap): GoalAtom {
+  return { pred: atom.pred, args: atom.args.map((a) => walk(a, sub)) };
+}
+
+export function standardizeApart(clause: HornClause, idx: number): HornClause {
+  const ren = (t: string) => (isVariable(t) ? `${t}_${idx}` : t);
+  const renAtom = (a: GoalAtom): GoalAtom => ({
+    pred: a.pred,
+    args: a.args.map(ren),
+    raw: a.args.length > 0 ? `${a.pred}(${a.args.map(ren).join(", ")})` : a.pred,
+  });
+  return { head: renAtom(clause.head), body: clause.body.map(renAtom), rawText: clause.rawText };
+}
+
+export function evaluateDif(a: string, b: string, sub: SubstitutionMap): { ok: boolean; deferred?: [string, string] } {
+  const u = walk(a, sub);
+  const v = walk(b, sub);
+  if (!isVariable(u) && !isVariable(v)) return { ok: u !== v };
+  if (isVariable(u) && isVariable(v) && u === v) return { ok: false };
+  return { ok: true, deferred: [u, v] };
+}
+
+export function checkDifConstraints(constrs: [string, string][], sub: SubstitutionMap): boolean {
+  return constrs.every(([a, b]) => {
+    const u = walk(a, sub);
+    const v = walk(b, sub);
+    return !((!isVariable(u) && !isVariable(v) && u === v) || (isVariable(u) && isVariable(v) && u === v));
+  });
 }
