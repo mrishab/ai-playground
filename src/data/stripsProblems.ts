@@ -48,7 +48,7 @@ export const STRIPS_PROBLEMS: StripsProblemMap = {
         type: "boolean",
         domain: ["true", "false"],
         initial: "false",
-        goal: "true",
+        goal: "false",
       },
       {
         name: "userHasCoffee",

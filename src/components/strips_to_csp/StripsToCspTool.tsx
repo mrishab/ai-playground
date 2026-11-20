@@ -3,15 +3,14 @@ import { useStripsToCsp } from "./useStripsToCsp";
 import { StripsTemporalGrid } from "./StripsTemporalGrid";
 import { StripsPlanCard } from "./StripsPlanCard";
 import { StripsToCspTabs } from "./StripsToCspTabs";
-import { GraphBuilder } from "../graph_builder/GraphBuilder";
 import { CodeSandbox } from "../CodeSandbox";
 import { getStripsCodeTemplate } from "./stripsCodeTemplate";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
 import { STRIPS_PREBUILT_ITEMS, STRIPS_ALGORITHM_ITEMS } from "./stripsWorkspaceData";
 
 export function StripsToCspTool() {
-  const s = useStripsToCsp();
   const [algo, setAlgo] = useState("bounded_csp");
+  const s = useStripsToCsp(algo);
 
   return (
     <StudioWorkspace
@@ -32,18 +31,17 @@ export function StripsToCspTool() {
         s.handleImportProblem(data.problem);
       }}
       onResetProblem={s.handleResetProblem}
-      statsBadges={[{ label: "Current Horizon", value: s.horizonK, variant: "cyan" }, { label: "Plan Length", value: s.extractedPlan.length, variant: s.isSolved ? "success" : "outline" }]}
+      statsBadges={[{ label: "Horizon", value: s.horizonK, variant: "cyan" }, { label: "Plan", value: s.extractedPlan.length, variant: s.isSolved ? "success" : "outline" }]}
       controls={{ onReset: s.resetHorizon, speed: s.speed, setSpeed: s.setSpeed }}
       animationSlot={
         <StripsTemporalGrid
           horizonK={s.horizonK} setHorizonK={s.setHorizonK} isSolved={s.isSolved}
-          extractedPlan={s.extractedPlan} problem={s.problem} log={s.log}
+          extractedPlan={s.extractedPlan} stepFluents={s.stepFluents} problem={s.problem} log={s.log}
           onStepForward={s.stepForward} onReset={s.resetHorizon} isPlaying={s.isPlaying}
           onTogglePlay={s.togglePlay} speed={s.speed} setSpeed={s.setSpeed}
         />
       }
-      graphBuilderSlot={<GraphBuilder />}
-      codingSlot={<CodeSandbox title="STRIPS to CSP Compiler Code" initialCode={getStripsCodeTemplate(s.problem, s.horizonK)} algorithmName="STRIPS-to-CSP Compiler" notes="Unfolding temporal horizons compiles planning into arc consistency constraints." />}
+      codingSlot={<CodeSandbox title="STRIPS to CSP Compiler Code" initialCode={getStripsCodeTemplate(s.problem, s.horizonK, algo)} algorithmName={algo === "sat_plan" ? "SATPlan Reduction" : "STRIPS-to-CSP Compiler"} notes="Unfolding temporal horizons compiles planning into arc consistency constraints or propositional SAT clauses." />}
       theorySlot={<StripsToCspTabs problem={s.problem} horizonK={s.horizonK} tutorial={s.tutorial} />}
       inspectorSlot={<StripsPlanCard horizonK={s.horizonK} extractedPlan={s.extractedPlan} />}
     />

@@ -1,10 +1,11 @@
 import { RobotWorld, RobotPose } from "@/data/robotProblems";
-import { computeNextRobotStep } from "./robotController";
+import { computeNextRobotStep, RobotControlOptions } from "./robotController";
 
 export function advanceRobotSimulation(
   world: RobotWorld,
   currentPlanIndex: number,
   robotPose: RobotPose,
+  options?: RobotControlOptions,
 ) {
   const targetLocName = world.plan[currentPlanIndex];
   const targetLoc = world.locations.find((l) => l.name === targetLocName);
@@ -30,6 +31,7 @@ export function advanceRobotSimulation(
     robotPose,
     targetLoc,
     world,
+    options,
   );
   return {
     arrived: false,
