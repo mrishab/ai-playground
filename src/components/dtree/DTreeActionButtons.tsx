@@ -9,32 +9,21 @@ interface DTreeActionButtonsProps {
   isPlaying: boolean;
   onTogglePlay: () => void;
   canStep: boolean;
-  algo?: string;
 }
 
 export function DTreeActionButtons(p: DTreeActionButtonsProps) {
-  const algoLabel = (p.algo || "id3").toUpperCase();
   return (
     <div className="flex items-center gap-1.5">
       <Button variant="outline" size="sm" onClick={p.onStepId3} disabled={!p.canStep} className="gap-1 h-8 text-xs font-medium">
         <StepForward className="h-3.5 w-3.5" />
-        Step ({algoLabel})
+        Step (ID3)
       </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={p.onTogglePlay}
-        disabled={!p.canStep}
-        className="gap-1 h-8 px-2.5 text-xs font-medium transition-colors duration-150"
-        title={p.isPlaying ? "Pause auto-build" : "Play (Auto-Build)"}
-        aria-label={p.isPlaying ? "Pause auto-build" : "Play (Auto-Build)"}
-      >
-        {p.isPlaying ? <Pause className="h-3.5 w-3.5 text-primary fill-primary" /> : <Play className="h-3.5 w-3.5 fill-current" />}
-        <span>{p.isPlaying ? "Pause" : "Play (Auto-Build)"}</span>
+      <Button variant="outline" size="sm" onClick={p.onTogglePlay} disabled={!p.canStep} className="h-8 px-2 transition-colors duration-150" title={p.isPlaying ? "Pause auto-split" : "Auto-split tree"}>
+        {p.isPlaying ? <Pause className="h-3.5 w-3.5 text-primary fill-primary" /> : <Play className="h-3.5 w-3.5" />}
       </Button>
       <Button variant="default" size="sm" onClick={p.onAutoBuild} className="gap-1.5 h-8 font-semibold">
         <FastForward className="h-3.5 w-3.5 fill-current" />
-        Auto-Build Full Tree ({algoLabel})
+        Auto-Build Full Tree (ID3)
       </Button>
       <Button variant="ghost" size="sm" onClick={p.onReset} className="gap-1 h-8 text-xs text-muted-foreground hover:text-foreground transition-colors duration-150">
         <RotateCcw className="h-3.5 w-3.5" />

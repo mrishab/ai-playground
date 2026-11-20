@@ -42,7 +42,6 @@ export interface StudioWorkspaceProps {
   inspectorSlot?: React.ReactNode;
   stateSlot?: React.ReactNode;
   activeLogMessage?: string;
-  logHistory?: string[];
   statsBadges?: StatBadge[];
   activePane?: WorkspacePane;
   onPaneChange?: (p: WorkspacePane) => void;

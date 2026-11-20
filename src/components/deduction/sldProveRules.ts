@@ -1,5 +1,5 @@
 import { ProofNode, HornRule, HornFact, SubstitutionMap } from "./deductionTypes";
-import { matchRuleArgs } from "./sldLegacyMatcher";
+import { matchRuleArgs } from "./sldMatcher";
 import { proveRuleBody } from "./sldProveBody";
 
 export function tryMatchRules(

@@ -23,18 +23,6 @@ export interface HornFact {
   args: string[];
 }
 
-export interface GoalAtom {
-  pred: string;
-  args: string[];
-  raw?: string;
-}
-
-export interface HornClause {
-  head: GoalAtom;
-  body: GoalAtom[];
-  rawText: string;
-}
-
 export interface SLDStepSnapshot {
   stepNumber: number;
   subgoal: string;

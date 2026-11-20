@@ -3,7 +3,7 @@ import { NEURAL_DATASETS, NeuralDataset, DataPoint } from "@/data/neuralProblems
 import { TOOL_TUTORIALS } from "@/data/toolTutorials";
 import { useNeuralTraining } from "./useNeuralTraining";
 
-export function useNeuralNetwork(algo: string = "mlp_sgd") {
+export function useNeuralNetwork() {
   const [selectedDatasetId, setSelectedDatasetId] = useState<string>("xor");
   const [customDataset, setCustomDataset] = useState<NeuralDataset | null>(null);
 
@@ -12,38 +12,38 @@ export function useNeuralNetwork(algo: string = "mlp_sgd") {
   const tutorial = TOOL_TUTORIALS.neural;
 
   const [points, setPoints] = useState<DataPoint[]>(() => [...NEURAL_DATASETS.xor.points]);
-  const [learningRate, setLearningRate] = useState<number>(0.8);
-  const [momentum, setMomentum] = useState<number>(0.8);
+  const [learningRate, setLearningRate] = useState<number>(0.3);
+  const [momentum, setMomentum] = useState<number>(0.5);
 
-  const training = useNeuralTraining(points, learningRate, momentum, algo);
+  const training = useNeuralTraining(points, learningRate, momentum);
 
   const handleImportDataset = (imported: NeuralDataset) => {
     setCustomDataset(imported);
     setSelectedDatasetId("custom");
-    setPoints(imported.points || []);
     training.resetTraining();
+    setPoints(imported.points || []);
   };
 
   const handleResetDataset = () => {
     setCustomDataset({ id: "blank", name: "Empty", description: "Reset empty neural dataset", points: [] });
     setSelectedDatasetId("custom");
-    setPoints([]);
     training.resetTraining();
+    setPoints([]);
   };
 
   const handleSelectDatasetId = (id: string) => {
     setSelectedDatasetId(id);
+    training.resetTraining();
     if (id !== "custom" && NEURAL_DATASETS[id]) {
       setCustomDataset(NEURAL_DATASETS[id]);
       setPoints([...NEURAL_DATASETS[id].points]);
     }
-    training.resetTraining();
   };
 
   const resetNetwork = useCallback(() => {
+    training.resetTraining();
     const ds = selectedDatasetId === "custom" && customDataset ? customDataset : NEURAL_DATASETS[selectedDatasetId] || NEURAL_DATASETS.xor;
     setPoints([...(ds.points || [])]);
-    training.resetTraining();
   }, [selectedDatasetId, customDataset, training.resetTraining]);
 
   return {

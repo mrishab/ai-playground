@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { BayesNetwork, EvidenceMap } from "@/data/bayesProblems";
 import { VeStepSnapshot } from "./bayesVeTypes";
 import { generateVeSteps } from "./bayesVeEngine";
@@ -11,22 +11,6 @@ export function useBayesVe(network: BayesNetwork, evidence: EvidenceMap) {
   const [stepIndex, setStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(600);
-
-  useEffect(() => {
-    const valid = network.nodes.some((n) => n.id === queryVar && n.type === "chance");
-    if (!valid) {
-      const fallback = network.nodes.find((n) => n.type === "chance" && !evidence[n.id])?.id
-        || network.nodes.find((n) => n.type === "chance")?.id
-        || network.nodes[0]?.id || "";
-      setQueryVar(fallback);
-      setStepIndex(0);
-    }
-  }, [network, queryVar, evidence]);
-
-  const handleSetQueryVar = useCallback((v: string) => {
-    setQueryVar(v);
-    setStepIndex(0);
-  }, []);
 
   const safeStepIndex = Math.min(stepIndex, Math.max(0, steps.length - 1));
 
@@ -58,18 +42,5 @@ export function useBayesVe(network: BayesNetwork, evidence: EvidenceMap) {
 
   const currentStep = steps[safeStepIndex] || null;
 
-  return {
-    queryVar,
-    setQueryVar: handleSetQueryVar,
-    steps,
-    stepIndex: safeStepIndex,
-    currentStep,
-    isPlaying,
-    speed,
-    setSpeed,
-    stepForward,
-    stepBack,
-    togglePlay,
-    reset,
-  };
+  return { queryVar, setQueryVar, steps, stepIndex: safeStepIndex, currentStep, isPlaying, speed, setSpeed, stepForward, stepBack, togglePlay, reset };
 }

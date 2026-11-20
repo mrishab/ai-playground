@@ -11,7 +11,6 @@ export function NeuralCanvasCard({
   epoch,
   loss,
   selectedDatasetId,
-  algo,
 }: {
   weightsRef: React.MutableRefObject<NeuralWeights>;
   points: DataPoint[];
@@ -19,7 +18,6 @@ export function NeuralCanvasCard({
   epoch: number;
   loss: number;
   selectedDatasetId: string;
-  algo?: string;
 }) {
   return (
     <div className="space-y-0">
@@ -29,9 +27,12 @@ export function NeuralCanvasCard({
         onAddPoint={onAddPoint}
         epoch={epoch}
         selectedDatasetId={selectedDatasetId}
-        algo={algo}
       />
-      <NeuralMetricsFooter epoch={epoch} loss={loss} pointCount={points.length} />
+      <NeuralMetricsFooter
+        epoch={epoch}
+        loss={loss}
+        pointCount={points.length}
+      />
     </div>
   );
 }

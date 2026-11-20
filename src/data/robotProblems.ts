@@ -124,9 +124,9 @@ export const ROBOT_WORLDS: RobotWorldMap = {
       },
     ],
     robot: {
-      x: 100,
-      y: 250,
-      angle: 0,
+      x: 290,
+      y: 220,
+      angle: 270,
     },
     plan: ["goal"],
   },

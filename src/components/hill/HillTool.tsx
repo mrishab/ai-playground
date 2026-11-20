@@ -4,6 +4,7 @@ import { HillMainCard } from "./HillMainCard";
 import { HillParamsCard } from "./HillParamsCard";
 import { HillBatchStatsCard } from "./HillBatchStatsCard";
 import { HillTabs } from "./HillTabs";
+import { GraphBuilder } from "../graph_builder/GraphBuilder";
 import { CodeSandbox } from "../CodeSandbox";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
 import { HILL_PREBUILT_ITEMS, HILL_ALGORITHM_ITEMS } from "./hillWorkspaceData";
@@ -37,6 +38,7 @@ export function HillTool() {
         onTogglePlay: () => h.setIsPlaying(!h.isPlaying), onReset: h.initializeAssignment, speed: h.speed, setSpeed: h.setSpeed, isDone: h.conflicts === 0,
       }}
       animationSlot={<HillMainCard h={h} />}
+      graphBuilderSlot={<GraphBuilder />}
       codingSlot={<CodeSandbox title="SLS Algorithm Code" initialCode={h.codeTemplate} algorithmName={h.algorithm.toUpperCase()} />}
       theorySlot={<HillTabs codeTemplate={h.codeTemplate} tutorial={h.tutorial} />}
       inspectorSlot={<HillParamsCard algorithm={h.algorithm} randomWalkProb={h.randomWalkProb} setRandomWalkProb={h.setRandomWalkProb} temperature={h.temperature} setTemperature={h.setTemperature} tabuTenure={h.tabuTenure} setTabuTenure={h.setTabuTenure} speed={h.speed} setSpeed={h.setSpeed} />}

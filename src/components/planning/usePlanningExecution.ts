@@ -13,7 +13,6 @@ export function usePlanningExecution(
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
   const [planSteps, setPlanSteps] = useState<ActionStep[]>([]);
-  const [isUnsolvable, setIsUnsolvable] = useState<boolean>(false);
   const [speed, setSpeed] = useState<number>(600);
 
   const initializeBlocks = useCallback(() => {
@@ -22,16 +21,15 @@ export function usePlanningExecution(
     // react-doctor-disable-next-line react-doctor/no-adjust-state-on-prop-change
     setCurrentStepIndex(0);
     world.resetWorld();
-    const { steps, log, isUnsolvable: unsolvable } = initPlanState(problem, plannerType);
+    const { steps, log } = initPlanState(problem);
     setPlanSteps(steps);
-    setIsUnsolvable(unsolvable);
     world.setLog(log);
-  }, [problem, plannerType, world.resetWorld, world.setLog]);
+  }, [problem, world.resetWorld, world.setLog]);
 
   useEffect(() => {
     // react-doctor-disable-next-line react-doctor/no-pass-live-state-to-parent
     initializeBlocks();
-  }, [initializeBlocks]);
+  }, [initializeBlocks, plannerType]);
 
   const stepExecution = useCallback(() => {
     if (currentStepIndex >= planSteps.length) {
@@ -43,11 +41,7 @@ export function usePlanningExecution(
     world.applyStep(planSteps[currentStepIndex]);
     const nextIdx = currentStepIndex + 1;
     setCurrentStepIndex(nextIdx);
-    if (nextIdx === planSteps.length) {
-      setIsExecuting(false);
-      world.setLog("Goal configuration reached! Plan execution complete.");
-      firePlanningConfetti(70, 80);
-    }
+    if (nextIdx === planSteps.length) firePlanningConfetti();
   }, [currentStepIndex, planSteps, world.applyStep, world.setLog]);
 
   useSimulationTimer(isExecuting, currentStepIndex < planSteps.length, stepExecution, 1050 - speed);
@@ -57,7 +51,6 @@ export function usePlanningExecution(
     isExecuting,
     setIsExecuting,
     planSteps,
-    isUnsolvable,
     speed,
     setSpeed,
     initializeBlocks,

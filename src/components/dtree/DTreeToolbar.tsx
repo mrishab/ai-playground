@@ -17,7 +17,6 @@ interface DTreeToolbarProps {
   onSplit: (attr: string) => void;
   speed: number;
   setSpeed: (v: number) => void;
-  algo?: string;
 }
 
 export function DTreeToolbar(props: DTreeToolbarProps) {
@@ -30,7 +29,6 @@ export function DTreeToolbar(props: DTreeToolbarProps) {
         isPlaying={props.isPlaying}
         onTogglePlay={props.onTogglePlay}
         canStep={props.canStep}
-        algo={props.algo}
       />
       <TimerSpeedBar speed={props.speed} setSpeed={props.setSpeed} />
       <DTreeSplitControl
@@ -38,7 +36,6 @@ export function DTreeToolbar(props: DTreeToolbarProps) {
         selectedSplitAttr={props.selectedSplitAttr}
         setSelectedSplitAttr={props.setSelectedSplitAttr}
         onSplit={props.onSplit}
-        algo={props.algo}
       />
     </div>
   );

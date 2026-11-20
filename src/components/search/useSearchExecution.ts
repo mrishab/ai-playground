@@ -15,8 +15,7 @@ export function useSearchExecution(
     const start =
       graph.nodes.find((n) => n.id === graph.startNode) || graph.nodes[0];
     const h = start?.h || 0;
-    const f = algorithm === "best_first" ? h : algorithm === "lcfs" ? 0 : h;
-    s.setFrontier(start ? [{ nodes: [start.id], cost: 0, h, f }] : []);
+    s.setFrontier(start ? [{ nodes: [start.id], cost: 0, h, f: h }] : []);
     s.setExpanded([]);
     s.setCurrentNode(null);
     s.setCurrentPath([]);

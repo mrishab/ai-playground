@@ -12,12 +12,7 @@ interface WorkspaceLogViewProps {
 
 export function WorkspaceLogView({ log, history, statsBadges }: WorkspaceLogViewProps) {
   const [copied, setCopied] = React.useState(false);
-  const logRef = React.useRef<HTMLDivElement>(null);
   const fullLog = history && history.length > 0 ? history.join("\n") : log || "No execution logs recorded yet.";
-
-  React.useEffect(() => {
-    if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
-  }, [fullLog]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(fullLog);
@@ -51,7 +46,7 @@ export function WorkspaceLogView({ log, history, statsBadges }: WorkspaceLogView
         </div>
       )}
 
-      <div ref={logRef} className="rounded-xl border border-border bg-muted/40 p-4 font-mono text-xs text-foreground h-80 overflow-y-auto whitespace-pre-wrap leading-relaxed">
+      <div className="rounded-xl border border-border bg-muted/40 p-4 font-mono text-xs text-foreground h-80 overflow-y-auto whitespace-pre-wrap leading-relaxed">
         {fullLog}
       </div>
     </Card>

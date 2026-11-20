@@ -37,7 +37,7 @@ export function executeSearchStep(
   }
 
   const newExpanded = [...expanded, headNodeId];
-  const newPaths = expandSuccessors(headNodeId, chosenPath, graph, algorithm);
+  const newPaths = expandSuccessors(headNodeId, chosenPath, graph);
   const updated = algorithm === "dfs" ? [...newPaths, ...currentFrontier] : [...currentFrontier, ...newPaths];
   const updatedFrontier = orderFrontier(updated, algorithm);
   const isDone = updatedFrontier.length === 0;

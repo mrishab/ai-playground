@@ -1,16 +1,15 @@
-import { computeCandidateMetric } from "./dtreeMath";
-import { DTreeExample, DTreeAlgorithm } from "./dtreeTypes";
+import { calculateInformationGain } from "./dtreeMath";
+import { DTreeExample } from "./dtreeTypes";
 
 export function findBestSplitAttr(
   examples: DTreeExample[],
   availableAttrs: string[],
   target: string,
-  algo: DTreeAlgorithm = "id3",
 ) {
   let bestAttr = availableAttrs[0];
   let maxGain = -1;
   for (const attr of availableAttrs) {
-    const g = computeCandidateMetric(examples, attr, target, algo);
+    const g = calculateInformationGain(examples, attr, target);
     if (g > maxGain) {
       maxGain = g;
       bestAttr = attr;

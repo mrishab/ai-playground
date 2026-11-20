@@ -10,17 +10,8 @@ export function multiplyFactorList(factors: VeFactor[], name: string): VeFactor 
   return current;
 }
 
-export function normalizeQueryFactor(
-  factor: VeFactor,
-  queryVar: string,
-  outcomes?: string[],
-): Record<string, number> {
+export function normalizeQueryFactor(factor: VeFactor, queryVar: string): Record<string, number> {
   const result: Record<string, number> = {};
-  if (outcomes) {
-    outcomes.forEach((o) => {
-      result[o] = 0;
-    });
-  }
   let total = 0;
   for (const r of factor.table) {
     const val = r.assignment[queryVar] || "default";
@@ -30,10 +21,6 @@ export function normalizeQueryFactor(
   if (total > 0) {
     for (const k of Object.keys(result)) {
       result[k] = Number((result[k] / total).toFixed(4));
-    }
-  } else if (outcomes && outcomes.length > 0) {
-    for (const k of outcomes) {
-      result[k] = Number((1 / outcomes.length).toFixed(4));
     }
   }
   return result;

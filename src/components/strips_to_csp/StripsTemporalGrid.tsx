@@ -9,7 +9,6 @@ interface StripsTemporalGridProps {
   setHorizonK: (k: number) => void;
   isSolved: boolean;
   extractedPlan: string[];
-  stepFluents?: Record<string, string>[];
   problem: StripsProblem;
   log: string;
   onStepForward: () => void;
@@ -33,7 +32,6 @@ export function StripsTemporalGrid(p: StripsTemporalGridProps) {
         isSolved={p.isSolved}
         speed={p.speed}
         setSpeed={p.setSpeed}
-        problemId={p.problem.id}
       />
       <div className="p-6 bg-canvas overflow-x-auto min-h-[340px]">
         <div className="flex items-start gap-4 min-w-max pb-2">
@@ -45,7 +43,6 @@ export function StripsTemporalGrid(p: StripsTemporalGridProps) {
               isSolved={p.isSolved}
               extractedPlan={p.extractedPlan}
               problem={p.problem}
-              stepFluents={p.stepFluents}
             />
           ))}
         </div>

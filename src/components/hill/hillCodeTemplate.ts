@@ -1,12 +1,8 @@
 import { CSPProblem } from "@/data/cspProblems";
-import { getTabuSnippet, getAnnealingSnippet } from "./hillSnippets";
 
-export function getHillCodeTemplate(problem: CSPProblem, algorithm: string = "min_conflicts"): string {
-  if (algorithm === "tabu") return getTabuSnippet(problem);
-  if (algorithm === "annealing") return getAnnealingSnippet(problem);
-
-  return `// Stochastic Local Search: ${algorithm === "greedy" ? "Greedy Descent" : "Min-Conflicts"}
-function slsSearch(problem, maxSteps = 100) {
+export function getHillCodeTemplate(problem: CSPProblem): string {
+  return `// Stochastic Local Search: Min-Conflicts
+function minConflicts(problem, maxSteps = 100) {
   const assignment = {};
   problem.variables.forEach(v => {
     assignment[v.name] = v.domain[Math.floor(Math.random() * v.domain.length)];
@@ -21,19 +17,33 @@ function slsSearch(problem, maxSteps = 100) {
     return conf;
   }
 
+  const history = [];
   for (let step = 0; step < maxSteps; step++) {
     const conflicts = countConflicts(assignment);
-    if (conflicts === 0) return { success: true, steps: step, assignment };
+    history.push({ step, conflicts });
+    if (conflicts === 0) {
+      return { success: true, steps: step, assignment, history };
+    }
 
     const target = problem.variables[Math.floor(Math.random() * problem.variables.length)];
-    let bestVal = assignment[target.name], minC = 999;
+    let bestVal = assignment[target.name];
+    let minC = 999;
+
     target.domain.forEach(val => {
-      const c = countConflicts({ ...assignment, [target.name]: val });
-      if (c < minC) { minC = c; bestVal = val; }
+      const test = { ...assignment, [target.name]: val };
+      const c = countConflicts(test);
+      if (c < minC) {
+        minC = c;
+        bestVal = val;
+      }
     });
     assignment[target.name] = bestVal;
   }
-  return { success: false, assignment };
+
+  return { success: false, assignment, history };
 }
+
+const res = minConflicts(${JSON.stringify(problem)});
+return JSON.stringify(res, null, 2);
 `;
 }

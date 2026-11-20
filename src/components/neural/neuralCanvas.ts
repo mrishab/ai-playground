@@ -1,9 +1,7 @@
 import { DataPoint } from "@/data/neuralProblems";
 import { NeuralWeights, forwardPass } from "./neuralMath";
 
-export function renderNeuralCanvas(
-  canvas: HTMLCanvasElement, weights: NeuralWeights, points: DataPoint[], algo: string = "mlp_sgd",
-) {
+export function renderNeuralCanvas(canvas: HTMLCanvasElement, weights: NeuralWeights, points: DataPoint[]) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
   const { width, height } = canvas;
@@ -15,7 +13,7 @@ export function renderNeuralCanvas(
     for (let py = 0; py < height; py += step) {
       const x = (px / width) * 2 - 1;
       const y = -((py / height) * 2 - 1);
-      const { output } = forwardPass(x, y, weights, algo);
+      const { output } = forwardPass(x, y, weights);
       const r = Math.floor(output * 220 + 20);
       const b = Math.floor((1 - output) * 220 + 20);
 

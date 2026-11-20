@@ -2,7 +2,6 @@ import React from "react";
 import { StudioWorkspaceProps, WorkspacePane } from "./workspaceTypes";
 import { WorkspaceBottomDock } from "./WorkspaceBottomDock";
 import { WorkspaceLogView } from "./WorkspaceLogView";
-import { GraphBuilderPlaceholder } from "./GraphBuilderPlaceholder";
 
 interface WorkspaceLayoutProps extends StudioWorkspaceProps {
   currentPane: WorkspacePane;
@@ -10,16 +9,16 @@ interface WorkspaceLayoutProps extends StudioWorkspaceProps {
 }
 
 export function WorkspaceLayout(props: WorkspaceLayoutProps) {
-  const { currentPane, setCurrentPane, animationSlot, graphBuilderSlot, codingSlot, logSlot, theorySlot, inspectorSlot, stateSlot, logHistory } = props;
+  const { currentPane, setCurrentPane, animationSlot, graphBuilderSlot, codingSlot, logSlot, theorySlot, inspectorSlot, stateSlot } = props;
 
   const renderMainPane = () => {
     switch (currentPane) {
       case "graph_builder":
-        return graphBuilderSlot || <GraphBuilderPlaceholder />;
+        return graphBuilderSlot || animationSlot;
       case "coding":
         return codingSlot || animationSlot;
       case "log":
-        return logSlot || <WorkspaceLogView log={props.activeLogMessage} history={logHistory} statsBadges={props.statsBadges} />;
+        return logSlot || <WorkspaceLogView log={props.activeLogMessage} statsBadges={props.statsBadges} />;
       case "theory":
         return theorySlot || animationSlot;
       case "animation":

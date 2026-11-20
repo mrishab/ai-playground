@@ -2,14 +2,12 @@ import React from "react";
 import { GitFork } from "lucide-react";
 import { Button } from "../ui/Button";
 import { CandidateGain } from "./dtreeTypes";
-import { getMetricLabel } from "./dtreeMetrics";
 
 interface DTreeSplitControlProps {
   candidateGains: CandidateGain[];
   selectedSplitAttr: string;
   setSelectedSplitAttr: (attr: string) => void;
   onSplit: (attr: string) => void;
-  algo?: string;
 }
 
 export function DTreeSplitControl({
@@ -17,10 +15,8 @@ export function DTreeSplitControl({
   selectedSplitAttr,
   setSelectedSplitAttr,
   onSplit,
-  algo = "id3",
 }: DTreeSplitControlProps) {
   if (candidateGains.length === 0) return null;
-  const { shortName } = getMetricLabel(algo);
 
   return (
     <div className="flex items-center gap-1.5">
@@ -33,11 +29,16 @@ export function DTreeSplitControl({
       >
         {candidateGains.map((cg) => (
           <option key={cg.attr} value={cg.attr}>
-            {cg.attr} ({shortName}: {cg.gain.toFixed(4)})
+            {cg.attr} (Gain: {cg.gain.toFixed(3)})
           </option>
         ))}
       </select>
-      <Button variant="accent" size="sm" onClick={() => onSplit(selectedSplitAttr)} className="gap-1 h-8 text-xs">
+      <Button
+        variant="accent"
+        size="sm"
+        onClick={() => onSplit(selectedSplitAttr)}
+        className="gap-1 h-8 text-xs"
+      >
         <GitFork className="h-3.5 w-3.5" />
         Split
       </Button>

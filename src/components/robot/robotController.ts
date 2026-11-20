@@ -1,17 +1,10 @@
 import { RobotWorld, RobotPose } from "@/data/robotProblems";
-import { computeSensorWhiskers, isWallCollision } from "./robotSensors";
-
-export interface RobotControlOptions {
-  algo?: string;
-  steeringGain?: number;
-  obstacleSensitivity?: number;
-}
+import { computeMinWallDist, isWallCollision } from "./robotSensors";
 
 export function computeNextRobotStep(
   robotPose: RobotPose,
   targetLoc: { x: number; y: number },
   world: RobotWorld,
-  options: RobotControlOptions = {},
 ): {
   newPose: RobotPose;
   sensorWhiskers: { left: number; front: number; right: number };
@@ -24,35 +17,24 @@ export function computeNextRobotStep(
   while (angleDiff > 180) angleDiff -= 360;
   while (angleDiff < -180) angleDiff += 360;
 
-  const sensorWhiskers = computeSensorWhiskers(robotPose, world.walls);
-  const gain = options.steeringGain ?? 1.0;
-  const thresh = options.obstacleSensitivity ?? 30;
+  const minFrontDist = computeMinWallDist(
+    robotPose.x,
+    robotPose.y,
+    world.walls,
+  );
+  const sensorWhiskers = {
+    front: Math.round(minFrontDist),
+    left: Math.round(minFrontDist * 1.2),
+    right: Math.round(minFrontDist * 0.9),
+  };
 
-  let steerStep: number;
-  if (options.algo === "wall_following") {
-    if (sensorWhiskers.front < thresh) {
-      steerStep = (sensorWhiskers.right < sensorWhiskers.left ? -25 : 25) * gain;
-    } else if (sensorWhiskers.right < thresh * 1.5) {
-      const error = sensorWhiskers.right - thresh;
-      steerStep = Math.max(-25, Math.min(25, error * 0.8 * gain));
-    } else if (sensorWhiskers.left < thresh * 1.5) {
-      const error = sensorWhiskers.left - thresh;
-      steerStep = Math.max(-25, Math.min(25, -error * 0.8 * gain));
-    } else {
-      steerStep = Math.sign(angleDiff) * Math.min(15 * gain, Math.abs(angleDiff));
-    }
-  } else {
-    steerStep = Math.sign(angleDiff) * Math.min(15 * gain, Math.abs(angleDiff));
-    if (sensorWhiskers.front < thresh) {
-      steerStep = (sensorWhiskers.right < sensorWhiskers.left ? -30 : 30) * gain;
-    }
-  }
+  let steerStep = Math.sign(angleDiff) * Math.min(15, Math.abs(angleDiff));
+  if (minFrontDist < 25) steerStep = 30;
 
   const newAngle = (((robotPose.angle + steerStep) % 360) + 360) % 360;
   const rad = (newAngle * Math.PI) / 180;
-  const speed = 8;
-  const newX = Math.max(15, Math.min(585, robotPose.x + speed * Math.cos(rad)));
-  const newY = Math.max(15, Math.min(345, robotPose.y + speed * Math.sin(rad)));
+  const newX = robotPose.x + 8 * Math.cos(rad);
+  const newY = robotPose.y + 8 * Math.sin(rad);
 
   const tooClose = isWallCollision(newX, newY, world.walls, 10);
 

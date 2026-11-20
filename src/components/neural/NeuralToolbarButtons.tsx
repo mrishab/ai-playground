@@ -8,14 +8,12 @@ interface ButtonsProps {
   onStep1: () => void;
   onStep10: () => void;
   onReset: () => void;
-  disabled?: boolean;
 }
 
 export function NeuralToolbarButtons(p: ButtonsProps) {
-  const isTrainDisabled = p.disabled || false;
   return (
     <div className="flex items-center gap-2">
-      <Button variant="default" size="sm" onClick={p.onStep1} disabled={p.isPlaying || isTrainDisabled} className="gap-1.5 h-8 font-semibold">
+      <Button variant="default" size="sm" onClick={p.onStep1} disabled={p.isPlaying} className="gap-1.5 h-8 font-semibold">
         <SkipForward className="h-3.5 w-3.5" />
         Step (1 Epoch)
       </Button>
@@ -24,14 +22,13 @@ export function NeuralToolbarButtons(p: ButtonsProps) {
         variant={p.isPlaying ? "destructive" : "secondary"}
         size="sm"
         onClick={p.onTogglePlay}
-        disabled={isTrainDisabled}
         className="gap-1.5 h-8 font-semibold"
       >
         {p.isPlaying ? <Pause className="h-3.5 w-3.5 fill-current" /> : <Play className="h-3.5 w-3.5 fill-current" />}
         {p.isPlaying ? "Pause" : "Auto Train"}
       </Button>
 
-      <Button variant="outline" size="sm" onClick={p.onStep10} disabled={p.isPlaying || isTrainDisabled} className="gap-1.5 h-8 text-xs">
+      <Button variant="outline" size="sm" onClick={p.onStep10} disabled={p.isPlaying} className="gap-1.5 h-8 text-xs">
         +10 Epochs
       </Button>
 

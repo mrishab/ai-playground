@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRobotSimulation } from "./useRobotSimulation";
 import { RobotCanvasCard } from "./RobotCanvasCard";
 import { RobotTelemetryCard } from "./RobotTelemetryCard";
-import { RobotSettingsCard } from "./RobotSettingsCard";
 import { RobotPlanList } from "./RobotPlanList";
 import { RobotTabs } from "./RobotTabs";
+import { GraphBuilder } from "../graph_builder/GraphBuilder";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
 import { CodeSandbox } from "../CodeSandbox";
 import { ROBOT_CODE_TEMPLATE } from "./robotCodeTemplate";
@@ -12,13 +12,22 @@ import { ROBOT_PREBUILT_ITEMS, ROBOT_ALGORITHM_ITEMS } from "./robotWorkspaceDat
 
 export function RobotTool() {
   const d = useRobotSimulation();
+  const [algo, setAlgo] = useState("sense_plan_act");
   const isComplete = d.currentPlanIndex >= d.world.plan.length;
 
   return (
     <StudioWorkspace
-      title="Autonomous Robot Control Lab" category={d.tutorial.badge} description={d.world.description}
-      prebuiltLabel="Robot World" prebuiltItems={ROBOT_PREBUILT_ITEMS} selectedPrebuiltId={d.selectedWorldId} onSelectPrebuiltId={d.setSelectedWorldId}
-      algorithmItems={ROBOT_ALGORITHM_ITEMS} selectedAlgorithmId={d.algo} onSelectAlgorithmId={d.setAlgo} activeLogMessage={d.log}
+      title="Autonomous Robot Control Lab"
+      category={d.tutorial.badge}
+      description={d.world.description}
+      prebuiltLabel="Robot World"
+      prebuiltItems={ROBOT_PREBUILT_ITEMS}
+      selectedPrebuiltId={d.selectedWorldId}
+      onSelectPrebuiltId={d.setSelectedWorldId}
+      algorithmItems={ROBOT_ALGORITHM_ITEMS}
+      selectedAlgorithmId={algo}
+      onSelectAlgorithmId={setAlgo}
+      activeLogMessage={d.log}
       exportData={{ toolType: "robot", problem: d.world, filename: `${d.world.id || "robot"}-world` }}
       onImportProblem={(data) => {
         if (!data.problem || (!Array.isArray(data.problem.locations) && !data.problem.robot)) throw new Error("Invalid robot world: missing locations or robot pose");
@@ -38,14 +47,10 @@ export function RobotTool() {
           world={d.world} robotPose={d.robotPose} breadcrumbs={d.breadcrumbs} log={d.log} speed={d.speed} setSpeed={d.setSpeed}
         />
       }
-      codingSlot={<CodeSandbox title="Robot Controller Code" initialCode={ROBOT_CODE_TEMPLATE} algorithmName={d.algo === "wall_following" ? "Reactive Wall Following" : "Sense-Plan-Act"} />}
+      graphBuilderSlot={<GraphBuilder />}
+      codingSlot={<CodeSandbox title="Robot Controller Code" initialCode={ROBOT_CODE_TEMPLATE} algorithmName="Sense-Plan-Act" />}
       theorySlot={<RobotTabs tutorial={d.tutorial} />}
-      inspectorSlot={
-        <div className="space-y-4">
-          <RobotTelemetryCard sensorWhiskers={d.sensorWhiskers} robotPose={d.robotPose} />
-          <RobotSettingsCard steeringGain={d.steeringGain} setSteeringGain={d.setSteeringGain} obstacleSensitivity={d.obstacleSensitivity} setObstacleSensitivity={d.setObstacleSensitivity} />
-        </div>
-      }
+      inspectorSlot={<RobotTelemetryCard sensorWhiskers={d.sensorWhiskers} robotPose={d.robotPose} />}
       stateSlot={<RobotPlanList plan={d.world.plan} currentPlanIndex={d.currentPlanIndex} />}
     />
   );

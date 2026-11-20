@@ -14,9 +14,9 @@ export function ProofBranchItem({ child }: { child: ProofNode }) {
       </div>
       {child.children.length > 0 && (
         <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-          {child.children.map((subg, j) => (
+          {child.children.map((subg) => (
             <span
-              key={`${subg.goal}-${j}`}
+              key={subg.goal}
               className="px-2.5 py-1 rounded bg-secondary/60 text-foreground/80 font-mono text-[11px] border border-border"
             >
               {subg.goal}

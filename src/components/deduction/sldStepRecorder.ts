@@ -1,58 +1,54 @@
-import { ProofNode, SubstitutionMap, SLDStepSnapshot, GoalAtom } from "./deductionTypes";
-import { parseHornClauses, parseAtom, formatAtom } from "./sldParser";
-import { checkDifConstraints, evaluateDif, standardizeApart, unifyAtoms, walk } from "./sldMatcher";
-import { pushStep, StepContext } from "./sldStepHelper";
-
-function stepDFS(goals: GoalAtom[], sub: SubstitutionMap, constrs: [string, string][], depth: number, ctx: StepContext): boolean {
-  if (depth > 25) return false;
-  if (goals.length === 0) {
-    if (!checkDifConstraints(constrs, sub)) return false;
-    const ans: SubstitutionMap = {};
-    for (const v of ctx.qVars) ans[v] = walk(v, sub);
-    const key = JSON.stringify(ans);
-    if (!ctx.seen.has(key)) {
-      ctx.seen.add(key);
-      ctx.answers.push(ans);
-      ctx.root.status = "success";
-      pushStep(ctx.steps, ctx.root, ctx.answers, ctx.query, "Goal proved", `Proved: ${ctx.query}`);
-    }
-    return true;
-  }
-  const [curr, ...rest] = goals;
-  if (curr.pred === "dif" && curr.args.length === 2) {
-    const res = evaluateDif(curr.args[0], curr.args[1], sub);
-    if (!res.ok) return false;
-    return stepDFS(rest, sub, res.deferred ? [...constrs, res.deferred] : constrs, depth + 1, ctx);
-  }
-  let anySol = false;
-  for (const cl of ctx.clauses) {
-    if (cl.head.pred !== curr.pred || cl.head.args.length !== curr.args.length) continue;
-    const ren = standardizeApart(cl, ctx.vIdx.current++);
-    const uni = unifyAtoms(curr, ren.head, sub);
-    if (!uni || !checkDifConstraints(constrs, uni)) continue;
-    const action = ren.body.length === 0 ? "Matched fact" : "Unify rule";
-    pushStep(ctx.steps, ctx.root, ctx.answers, formatAtom(curr), action, `${action}: ${ren.rawText}`, ren.rawText);
-    const ok = stepDFS([...ren.body, ...rest], uni, constrs, depth + 1, ctx);
-    if (ok) anySol = true;
-    else pushStep(ctx.steps, ctx.root, ctx.answers, formatAtom(curr), "Backtrack", `Branch failed for ${formatAtom(curr)}. Backtracking to choice point...`);
-  }
-  return anySol;
-}
+import { ProofNode, SubstitutionMap, SLDStepSnapshot } from "./deductionTypes";
+import { parseHornClauses } from "./sldParser";
+import { matchFact, matchRuleArgs } from "./sldMatcher";
+import { cloneProofNode, bindGoalString, pushStep } from "./sldStepHelper";
 
 export function generateSLDSteps(queryInput: string, kbCode: string): SLDStepSnapshot[] {
   const cleanQuery = queryInput.trim().replace(/^(\?-|\?)\s*/, "").replace(/\.$/, "").trim();
-  const { clauses } = parseHornClauses(kbCode);
-  const qAtom = parseAtom(cleanQuery);
-  const qVars = Array.from(new Set(cleanQuery.match(/\b[A-Z_][a-zA-Z0-9_]*\b/g) || []));
+  const { rules, facts } = parseHornClauses(kbCode);
+  const steps: SLDStepSnapshot[] = [];
+  const foundAnswers: SubstitutionMap[] = [];
   const root: ProofNode = { id: `0-${cleanQuery}`, goal: cleanQuery, children: [], status: "active" };
-  const ctx: StepContext = { clauses, steps: [], answers: [], seen: new Set(), root, query: cleanQuery, qVars, vIdx: { current: 0 } };
 
-  pushStep(ctx.steps, root, ctx.answers, cleanQuery, "Select goal", `Selected query goal: ${cleanQuery}`);
-  stepDFS([qAtom], {}, [], 0, ctx);
-  const ok = ctx.answers.length > 0;
-  root.status = ok ? "success" : "failed";
-  const finalAction = ok ? "Resolution complete" : "Resolution failed";
-  const finalMsg = ok ? `Proved: ${cleanQuery}. Found ${ctx.answers.length} answer(s).` : `Query failed: "${cleanQuery}" could not be proven from current KB.`;
-  pushStep(ctx.steps, root, ctx.answers, cleanQuery, finalAction, finalMsg);
-  return ctx.steps;
+  pushStep(steps, root, foundAnswers, cleanQuery, "Select goal", `Selected query goal: ${cleanQuery}`);
+
+  function resolve(node: ProofNode, depth: number): boolean {
+    const [pred, argsStr] = node.goal.match(/^(\w+)(?:\((.*)\))?$/)?.slice(1) || [node.goal, ""];
+    const args = argsStr ? argsStr.split(",").map((s) => s.trim()) : [];
+    const factRes = matchFact(pred, args, facts);
+    if (factRes.matched && factRes.fact) {
+      node.status = "success";
+      node.ruleMatched = `${factRes.fact.pred}(${factRes.fact.args.join(", ")})`;
+      const subStr = Object.entries(factRes.sub).map(([k, v]) => `${k}=${v}`).join(", ") || "Direct Match";
+      node.substitution = subStr;
+      if (depth === 0) foundAnswers.push(factRes.sub);
+      pushStep(steps, root, foundAnswers, node.goal, "Matched fact", `Fact match: ${node.ruleMatched}`, node.ruleMatched, subStr);
+      return true;
+    }
+    for (const rule of rules) {
+      if (rule.headPred !== pred || rule.headArgs.length !== args.length) continue;
+      const { matches, sub } = matchRuleArgs(rule.headArgs, args);
+      if (!matches) continue;
+      const subStr = Object.entries(sub).map(([k, v]) => `${k}=${v}`).join(", ");
+      pushStep(steps, root, foundAnswers, node.goal, "Unify rule", `Rule matched: ${rule.head}`, rule.head, subStr);
+      node.children = rule.body.map((b, i) => ({
+        id: `${depth + 1}-${bindGoalString(b, sub)}-${i}`, goal: bindGoalString(b, sub), children: [], status: "active" as const
+      }));
+      pushStep(steps, root, foundAnswers, node.goal, "Derive subgoals", `Derived: ${rule.body.join(", ")}`, rule.head);
+      if (node.children.every((child) => resolve(child, depth + 1))) {
+        node.status = "success";
+        node.ruleMatched = `${rule.head} <- ${rule.body.join(" & ")}`;
+        node.substitution = subStr || "true";
+        if (depth === 0) foundAnswers.push(sub);
+        pushStep(steps, root, foundAnswers, node.goal, "Goal proved", `Proved: ${node.goal}`, rule.head, subStr);
+        return true;
+      }
+    }
+    node.status = "failed";
+    pushStep(steps, root, foundAnswers, node.goal, "Resolution failed", `Failed: ${node.goal}`);
+    return false;
+  }
+
+  resolve(root, 0);
+  return steps;
 }

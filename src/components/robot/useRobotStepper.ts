@@ -4,12 +4,10 @@ import { useSimulationTimer } from "@/hooks/useSimulationTimer";
 import { advanceRobotSimulation } from "./robotStepHandler";
 import { applyRobotStep } from "./robotStepApply";
 import { useRobotPoseState } from "./useRobotPoseState";
-import { RobotControlOptions } from "./robotController";
 
 export function useRobotStepper(
   world: RobotWorld,
   poseState: ReturnType<typeof useRobotPoseState>,
-  controlOptions?: RobotControlOptions,
 ) {
   const [currentPlanIndex, setCurrentPlanIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -25,12 +23,11 @@ export function useRobotStepper(
       world,
       currentPlanIndex,
       poseState.robotPose,
-      controlOptions,
     );
     if (res) {
       applyRobotStep(res, poseState, setCurrentPlanIndex, setIsPlaying);
     }
-  }, [world, currentPlanIndex, poseState, controlOptions]);
+  }, [world, currentPlanIndex, poseState]);
 
   const interval = Math.max(30, Math.round((1050 - speed) / 4));
   useSimulationTimer(isPlaying, currentPlanIndex < world.plan.length, stepSimulation, interval);

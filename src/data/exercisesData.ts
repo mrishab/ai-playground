@@ -100,8 +100,8 @@ export const EXERCISES_DATA: ExerciseItem[] = [
       {
         q: "How does Lowest-Cost-First (Uniform Cost / Dijkstra) order its frontier?",
         solution:
-          "It always selects the path with the smallest cumulative path cost g(p) from the start node. Edge costs must be non-negative (c >= 0) to guarantee that the first path found to the goal is optimal.",
-        hint: "What cost function g(n) is minimized, and why must edge weights be non-negative?",
+          "It always selects the path with the smallest cumulative path cost g(p) from the start node.",
+        hint: "What cost function g(n) is minimized?",
       },
     ],
     toolId: "search",
@@ -259,8 +259,8 @@ export const EXERCISES_DATA: ExerciseItem[] = [
       {
         q: "What role does temperature T play in Simulated Annealing?",
         solution:
-          "Temperature controls the probability of accepting worse moves (exp(-delta / T)). High T allows widespread exploration to escape local minima; cooling T gradually focuses search into greedy convergence. With a sufficiently slow (logarithmic) cooling schedule, SA is guaranteed to converge asymptotically to a global optimum.",
-        hint: "How does the temperature schedule affect convergence to a global optimum?",
+          "Temperature controls the probability of accepting worse moves (exp(-delta / T)). High T allows widespread exploration to escape local minima; cooling T gradually focuses search into greedy convergence.",
+        hint: "How does annealing in metallurgy relate to optimization?",
       },
     ],
     toolId: "hill",
@@ -445,7 +445,7 @@ export const EXERCISES_DATA: ExerciseItem[] = [
       {
         q: "What is the Frame Problem in classical planning?",
         solution:
-          "The challenge of representing what propositions do NOT change when an action occurs. In STRIPS-to-CSP, Explanatory Frame Axioms solve this by stating that a state proposition changes truth value between time t and t+1 if and only if an action occurred at time t that caused the change (via its Add or Delete effects).",
+          "The challenge of representing what propositions do NOT change when an action occurs. In STRIPS-to-CSP, Explanatory Frame Axioms explicitly state that a proposition changes if and only if an action that affects it occurred.",
         hint: "If the robot moves to the hallway, what happens to the coffee color?",
       },
       {

@@ -7,7 +7,7 @@ export const EXERCISE_ALGORITHMS: Record<string, ExerciseStepData> = {
       { step: 1, label: "Sample Proximity Sensors", detail: "Read 8 sonar/laser distance sensors. Lowest reading 1.4m at front-left sensor.", stateBadge: "Sensors Active", queueOrFrontier: "Sensors: [1.4m, 2.1m, 3.0m]", metric: "Clearance: 1.4m" },
       { step: 2, label: "Synthesize Repulsive Vector", detail: "Middle-layer controller calculates obstacle repulsion vector away from front-left obstacle.", stateBadge: "Vector Calc", queueOrFrontier: "Repulsion: (-0.4, -0.6)", metric: "Avoidance Heading: +25°" },
       { step: 3, label: "Combine Goal & Avoidance Vectors", detail: "Fuses target waypoint attraction with repulsive vector to compute target heading.", stateBadge: "Heading Blend", queueOrFrontier: "Target Heading: +18°", metric: "Velocity: 0.5 m/s" },
-      { step: 4, label: "Execute Wheel Actuation", detail: "Low-layer controller sets left wheel = 0.55 m/s, right wheel = 0.45 m/s. Robot advances.", stateBadge: "Motor Drive", queueOrFrontier: "Wheels: (0.55, 0.45)", metric: "Pose: (4.2, 5.8, 18°)" },
+      { step: 4, label: "Execute Wheel Actuation", detail: "Low-layer controller sets left wheel = 0.45 m/s, right wheel = 0.55 m/s. Robot advances.", stateBadge: "Motor Drive", queueOrFrontier: "Wheels: (0.45, 0.55)", metric: "Pose: (4.2, 5.8, 18°)" },
     ],
     questionSteps: {
       0: [
@@ -70,16 +70,16 @@ export const EXERCISE_ALGORITHMS: Record<string, ExerciseStepData> = {
       ],
       2: [
         { step: 1, label: "Cumulative Path Cost g(p)", detail: "Compute exact accumulated edge cost g(p) = sum of all arc costs from start.", stateBadge: "Cost g(p)", queueOrFrontier: "g(A)=1, g(B)=4", metric: "Cumulative" },
-        { step: 2, label: "Priority Queue Head Selection", detail: "Lowest-Cost-First (Dijkstra) always pops path with smallest g(p), assuming non-negative edge weights.", stateBadge: "Min g(p)", queueOrFrontier: "Pop: min g(p)", metric: "Priority Queue" },
-        { step: 3, label: "Uniform Contour Expansion", detail: "Search boundary expands outwards along contours of equal cumulative cost (non-negative edge weights ensure monotonically non-decreasing path costs).", stateBadge: "Cost Contours", metric: "Monotone g" },
-        { step: 4, label: "Guaranteed Cost Optimality", detail: "With non-negative edge weights, the first goal popped is guaranteed to have minimal path cost across varying weights.", stateBadge: "Optimal Cost", metric: "Optimal g*" },
+        { step: 2, label: "Priority Queue Head Selection", detail: "Lowest-Cost-First (Dijkstra) always pops path with smallest g(p).", stateBadge: "Min g(p)", queueOrFrontier: "Pop: min g(p)", metric: "Priority Queue" },
+        { step: 3, label: "Uniform Contour Expansion", detail: "Search boundary expands outwards along contours of equal cumulative cost.", stateBadge: "Cost Contours", metric: "Monotone g" },
+        { step: 4, label: "Guaranteed Cost Optimality", detail: "First goal popped is guaranteed to have minimal path cost across varying weights.", stateBadge: "Optimal Cost", metric: "Optimal g*" },
       ],
     },
   },
   "3.C": {
     algorithmName: "Heuristic Search: Greedy & A*",
     steps: [
-      { step: 1, label: "Compute Heuristic h(n)", detail: "Evaluated heuristic estimate h(n) from start node to goal.", stateBadge: "Heuristic Calc", queueOrFrontier: "h(start) = 4", metric: "f = 0 + 4" },
+      { step: 1, label: "Compute Heuristic h(n)", detail: "Evaluated heuristic estimate h(n) from start node to goal.", stateBadge: "Heuristic Calc", queueOrFrontier: "h(start) = 6", metric: "f = 0 + 6" },
       { step: 2, label: "Evaluate f(n) = g(n) + h(n)", detail: "A* scores candidate paths combining path cost g with heuristic estimate h.", stateBadge: "f-Evaluation", queueOrFrontier: "Frontier: [A(f=5), B(f=7)]", metric: "Best f: 5" },
       { step: 3, label: "Guided Goal Traversal", detail: "Heuristic pulls search directly toward target, pruning branches pointing away.", stateBadge: "Goal Directed", metric: "Expansions Saved" },
       { step: 4, label: "Optimal Goal Extraction", detail: "Popped goal from priority queue. Admissible heuristic ensures optimal path.", stateBadge: "A* Optimal", queueOrFrontier: "Path: Start->A->Goal", metric: "Cost: 5" },
@@ -211,7 +211,7 @@ export const EXERCISE_ALGORITHMS: Record<string, ExerciseStepData> = {
         { step: 1, label: "Compute Conflict Delta", detail: "Calculate change in conflicts: delta = new_conflicts - current_conflicts.", stateBadge: "Delta Calc", metric: "delta = cost change" },
         { step: 2, label: "Accept Downhill Moves", detail: "If delta <= 0 (move improves or maintains cost), move is accepted with probability 1.0.", stateBadge: "Greedy Step", metric: "P(accept) = 1.0" },
         { step: 3, label: "Probabilistic Uphill Moves", detail: "If delta > 0, move is accepted with probability P = exp(-delta / Temperature).", stateBadge: "Metropolis", metric: "P = exp(-d/T)" },
-        { step: 4, label: "Cooling Temperature Schedule", detail: "High T escapes local minima early. As T cools toward 0, uphill acceptance approaches 0; with a sufficiently slow cooling schedule, SA converges asymptotically to a global optimum.", stateBadge: "Annealing", metric: "T decays to 0" },
+        { step: 4, label: "Cooling Temperature Schedule", detail: "High T escapes local minima early; low T freezes search into global optimum.", stateBadge: "Annealing", metric: "T decays to 0" },
       ],
     },
   },
@@ -219,8 +219,8 @@ export const EXERCISE_ALGORITHMS: Record<string, ExerciseStepData> = {
     algorithmName: "SLD Definite Clause Resolution",
     steps: [
       { step: 1, label: "Initialize Goal Resolvent", detail: "Set top-level goal from query: ?- live(w1). Resolvent contains single subgoal.", stateBadge: "Query Goal", queueOrFrontier: "?- live(w1)", metric: "Subgoals: 1" },
-      { step: 2, label: "Select Clause in KB", detail: "Found rule: live(W) <- connected_to(W, P) & live(P). Head unifies with MGU {W/w1}: live(w1) <- connected_to(w1, P) & live(P).", stateBadge: "MGU Unify", queueOrFrontier: "Clause: live(w1) <- connected_to(w1, P) & live(P)", metric: "Unified W/w1" },
-      { step: 3, label: "Substitute Rule Body & Unify P", detail: "Replaced goal with body subgoals ?- connected_to(w1, P) & live(P), explicitly unifying connected_to(w1, P) with KB fact connected_to(w1, p1) where P = p1.", stateBadge: "Resolvent", queueOrFrontier: "?- connected_to(w1, p1) & live(p1)", metric: "Unified P/p1" },
+      { step: 2, label: "Select Clause in KB", detail: "Found rule: live(W) <- connected_to(W, P) & live(P). Clause head unifies with MGU {W/w1}.", stateBadge: "MGU Unify", queueOrFrontier: "Clause: live(w1) <- ...", metric: "Unified" },
+      { step: 3, label: "Substitute Rule Body", detail: "Replaced goal with body subgoals: ?- connected_to(w1, P) & live(P).", stateBadge: "Resolvent", queueOrFrontier: "?- connected_to(w1, p1) & live(p1)", metric: "Subgoals: 2" },
       { step: 4, label: "Derive Empty Clause (Box)", detail: "Resolved all subgoals against axioms. Derived empty clause. Proof successful!", stateBadge: "Proof Succeeded", queueOrFrontier: "Box []", metric: "Proved True" },
     ],
     questionSteps: {
@@ -266,7 +266,7 @@ export const EXERCISE_ALGORITHMS: Record<string, ExerciseStepData> = {
     steps: [
       { step: 1, label: "Initialize Factors from CPTs", detail: "Created initial factors f1(B), f2(E), f3(A, B, E), f4(J, A), f5(M, A).", stateBadge: "Factor Pool", queueOrFrontier: "Pool: 5 factors", metric: "CPTs loaded" },
       { step: 2, label: "Observe Evidence J=true", detail: "Restricted factor f4(J, A) by fixing J=true: reduced to f4_obs(A).", stateBadge: "Restricting", queueOrFrontier: "Evidence: J=true", metric: "Variables: A" },
-      { step: 3, label: "Multiply Factors Containing A", detail: "Pointwise product: f_prod(A, B, E, M) = f3(A, B, E) * f4_obs(A) * f5(M, A).", stateBadge: "Pointwise Product", queueOrFrontier: "Product over {A, B, E, M}", metric: "Joined on A" },
+      { step: 3, label: "Multiply Factors Containing A", detail: "Pointwise product: f_prod(A, B, E) = f3(A, B, E) * f4_obs(A) * f5(M, A).", stateBadge: "Pointwise Product", queueOrFrontier: "Product over {A, B, E, M}", metric: "Joined on A" },
       { step: 4, label: "Sum Out Hidden Variable A", detail: "Marginalize A: f_new(B, E, M) = sum_A f_prod(A, B, E, M). Variable A eliminated!", stateBadge: "Summing Out", queueOrFrontier: "A eliminated", metric: "Remaining: B, E, M" },
     ],
     questionSteps: {
@@ -311,9 +311,9 @@ export const EXERCISE_ALGORITHMS: Record<string, ExerciseStepData> = {
     algorithmName: "Backpropagation & Gradient Descent",
     steps: [
       { step: 1, label: "Forward Pass Activations", detail: "Fed input (0, 1) through hidden layer: h = sigmoid(W1 * x + b1). Output y_hat = 0.62.", stateBadge: "Forward Pass", metric: "y_hat = 0.62" },
-      { step: 2, label: "Compute Output Error", detail: "Target y = 1. Output error delta_out = (y - y_hat) * dSigmoid(y_hat) = 0.090.", stateBadge: "Output Error", metric: "delta_out = 0.090" },
+      { step: 2, label: "Compute Output Error", detail: "Target y = 1. Output error delta_out = (y - y_hat) * dSigmoid(y_hat) = 0.089.", stateBadge: "Output Error", metric: "delta_out = 0.089" },
       { step: 3, label: "Backpropagate Hidden Gradients", detail: "Propagated delta backwards using chain rule: delta_h = (delta_out * W2) * dSigmoid(h).", stateBadge: "Backpropagation", metric: "Chain Rule" },
-      { step: 4, label: "Update Weights & Loss Drops", detail: "Adjusted weights W <- W + lr * delta * activations. Loss decreased from 0.144 to 0.128.", stateBadge: "Weights Updated", metric: "ΔLoss: -0.016" },
+      { step: 4, label: "Update Weights & Loss Drops", detail: "Adjusted weights W <- W + lr * delta * activations. Loss decreased from 0.144 to 0.128.", stateBadge: "Weights Updated", metric: "Loss: -0.016" },
     ],
     questionSteps: {
       0: [
@@ -334,10 +334,9 @@ export const EXERCISE_ALGORITHMS: Record<string, ExerciseStepData> = {
     algorithmName: "STRIPS Blocks World Plan Execution",
     steps: [
       { step: 1, label: "Initial Blocks World State", detail: "State: on(C, A), ontable(A), ontable(B), clear(C), clear(B), handempty.", stateBadge: "Initial State", metric: "Arm: Empty" },
-      { step: 2, label: "Action: Unstack(C, A)", detail: "Preconditions clear(C), on(C, A), handempty hold. Del on(C, A), handempty. Add holding(C), clear(A).", stateBadge: "Unstack", queueOrFrontier: "Holding: Block C", metric: "Clear: A" },
-      { step: 3, label: "Action: Putdown(C)", detail: "Placed C on table. Preconditions holding(C) hold. Del holding(C). Add ontable(C), clear(C), handempty.", stateBadge: "Putdown", queueOrFrontier: "Table: A, B, C", metric: "Arm: Empty" },
-      { step: 4, label: "Action: Pickup(A)", detail: "Preconditions ontable(A), clear(A), handempty hold. Del ontable(A), clear(A), handempty. Add holding(A).", stateBadge: "Pickup", queueOrFrontier: "Holding: Block A", metric: "Arm: Holding(A)" },
-      { step: 5, label: "Action: Stack(A, B)", detail: "Stacked A onto B. Preconditions holding(A), clear(B) hold. Del holding(A), clear(B). Add on(A, B), clear(A), handempty.", stateBadge: "Stack", queueOrFrontier: "on(A, B)", metric: "Goal Achieved" },
+      { step: 2, label: "Action: Unstack(C, A)", detail: "Preconditions clear(C) & on(C, A) hold. Del on(C, A), Add holding(C).", stateBadge: "Unstack", queueOrFrontier: "Holding: Block C", metric: "Arm: Holding(C)" },
+      { step: 3, label: "Action: Putdown(C)", detail: "Placed C on table. Add ontable(C), clear(C), handempty. Clears block A.", stateBadge: "Putdown", queueOrFrontier: "Table: A, B, C", metric: "Clear: A, B, C" },
+      { step: 4, label: "Action: Stack(A, B)", detail: "Picked up A and stacked onto B. Preconditions and Add/Delete lists satisfied.", stateBadge: "Stack", queueOrFrontier: "on(A, B)", metric: "Goal Achieved" },
     ],
     questionSteps: {
       0: [
@@ -358,15 +357,15 @@ export const EXERCISE_ALGORITHMS: Record<string, ExerciseStepData> = {
     algorithmName: "STRIPS to CSP Horizon Unfolding",
     steps: [
       { step: 1, label: "Test Horizon k=0", detail: "Tested goal conditions against initial propositions at t=0. Unsatisfied.", stateBadge: "Horizon k=0", metric: "Unsatisfiable" },
-      { step: 2, label: "Unfold Horizon k=1", detail: "Created action variables A0 and explanatory frame axioms connecting S0 to S1. Goal still unsatisfied.", stateBadge: "Horizon k=1", metric: "Unsatisfiable" },
+      { step: 2, label: "Unfold Horizon k=1", detail: "Created action variables A0 and frame axioms S0 -> S1. Goal still unsatisfied.", stateBadge: "Horizon k=1", metric: "Unsatisfiable" },
       { step: 3, label: "Unfold Horizon k=2", detail: "Added action transitions A1 and mutex constraints. CSP solver found no satisfying model.", stateBadge: "Horizon k=2", metric: "Unsatisfiable" },
-      { step: 4, label: "Satisfying Plan at k=3", detail: "Unfolded to k=3. CSP solver satisfied all explanatory frame axioms and goal clauses with plan length 3.", stateBadge: "Horizon k=3", metric: "Plan Length: 3" },
+      { step: 4, label: "Satisfying Plan at k=3", detail: "Unfolded to k=3. CSP solver satisfied all frame axioms and goal clauses with plan length 3.", stateBadge: "Horizon k=3", metric: "Plan Length: 3" },
     ],
     questionSteps: {
       0: [
         { step: 1, label: "The Persistence Challenge", detail: "When robot moves from Hallway to Office, how to represent that Coffee remains Hot?", stateBadge: "Persistence", metric: "Non-effects" },
         { step: 2, label: "Naive Frame Axioms Blowup", detail: "Naive logic requires writing an axiom for every proposition unaffected by every action.", stateBadge: "Axiom Explosion", metric: "O(Actions * Props)" },
-        { step: 3, label: "Explanatory Frame Axioms", detail: "Explanatory frame axioms state that state changes value iff an action causing that change occurred: P_(t+1) = val <-> (Action_t in Causes(val)) or (P_t = val & Action_t not in Changes(val)).", stateBadge: "Explanatory Axiom", metric: "Change iff Cause" },
+        { step: 3, label: "Explanatory Frame Axioms", detail: "State changes from true to false iff an action occurred that had it in its Delete list.", stateBadge: "Explanatory Axiom", metric: "Change iff Cause" },
         { step: 4, label: "Compact CSP Encoding", detail: "Explanatory frame axioms allow encoding state persistence as compact binary CSP constraints.", stateBadge: "Compact CSP", metric: "Solves Frame Problem" },
       ],
       1: [
