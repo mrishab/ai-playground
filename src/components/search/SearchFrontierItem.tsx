@@ -1,13 +1,15 @@
 import React from "react";
 import { Badge } from "../ui/Badge";
-import { SearchPath } from "./searchTypes";
+import { AlgorithmType, SearchPath } from "./searchTypes";
 
 interface SearchFrontierItemProps {
   path: SearchPath;
   isNext: boolean;
+  algorithm?: AlgorithmType;
 }
 
-export function SearchFrontierItem({ path, isNext }: SearchFrontierItemProps) {
+export function SearchFrontierItem({ path, isNext, algorithm }: SearchFrontierItemProps) {
+  const isBestFirst = algorithm === "best_first";
   return (
     <div
       className={`p-2.5 rounded-lg border text-xs transition-colors duration-200 ease-out ${
@@ -33,7 +35,7 @@ export function SearchFrontierItem({ path, isNext }: SearchFrontierItemProps) {
         <span>g = {(path.cost ?? 0).toFixed(1)}</span>
         <span>h = {(path.h ?? 0).toFixed(1)}</span>
         <span className="font-bold text-foreground">
-          f = {(path.f ?? 0).toFixed(1)}
+          {isBestFirst ? `f = h = ${(path.h ?? 0).toFixed(1)}` : `f = ${(path.f ?? 0).toFixed(1)}`}
         </span>
       </div>
     </div>

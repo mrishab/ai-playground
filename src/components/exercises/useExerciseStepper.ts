@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { getExerciseStepsA } from "./exerciseStepsA";
 import { getExerciseQuestionSteps } from "./exerciseStepsB";
 import { useSimulationTimer } from "@/hooks/useSimulationTimer";
@@ -8,11 +8,9 @@ export function useExerciseStepper(
   sampleId?: string,
   exerciseId?: string,
   questionIdx?: number | null,
+  branch?: string | number,
 ) {
-  const base = useMemo(
-    () => getExerciseStepsA(toolId, sampleId, exerciseId),
-    [toolId, sampleId, exerciseId],
-  );
+  const base = useMemo(() => getExerciseStepsA(toolId, sampleId, exerciseId), [toolId, sampleId, exerciseId]);
   const steps = useMemo(() => {
     if (exerciseId != null && questionIdx != null) {
       return getExerciseQuestionSteps(exerciseId, questionIdx) || base.steps;
@@ -24,22 +22,22 @@ export function useExerciseStepper(
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(600);
 
-  const stepForward = useCallback(() => {
-    setStepIndex((idx) => (idx >= steps.length - 1 ? idx : idx + 1));
-  }, [steps.length]);
-  const stepBack = useCallback(() => setStepIndex((idx) => Math.max(0, idx - 1)), []);
+  useEffect(() => {
+    setStepIndex(0);
+    setIsPlaying(false);
+  }, [toolId, sampleId, exerciseId, questionIdx, branch, steps]);
+
+  const stepForward = useCallback(() => setStepIndex((i) => (i >= steps.length - 1 ? i : i + 1)), [steps.length]);
+  const stepBack = useCallback(() => setStepIndex((i) => Math.max(0, i - 1)), []);
   const togglePlay = useCallback(() => {
-    setStepIndex((idx) => (idx >= steps.length - 1 ? 0 : idx));
+    setStepIndex((i) => (i >= steps.length - 1 ? 0 : i));
     setIsPlaying((p) => !p);
   }, [steps.length]);
   const reset = useCallback(() => { setStepIndex(0); setIsPlaying(false); }, []);
 
   useSimulationTimer(isPlaying, stepIndex < steps.length - 1, stepForward, 1050 - speed);
 
-  const name =
-    questionIdx != null
-      ? `Q${questionIdx + 1} Logic: ${base.algorithmName}`
-      : base.algorithmName;
+  const name = questionIdx != null ? `Q${questionIdx + 1} Logic: ${base.algorithmName}` : base.algorithmName;
 
   return {
     algorithmName: name,
@@ -55,3 +53,5 @@ export function useExerciseStepper(
     reset,
   };
 }
+
+
