@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace Universal Problem Export, Reset, and Import (XML & JSON)", () => {
+describe("AI Playground Universal Problem Export, Reset, and Import (XML & JSON)", () => {
   beforeEach(() => {
     cy.visit("/");
   });
@@ -19,7 +19,7 @@ describe("AIspace Universal Problem Export, Reset, and Import (XML & JSON)", () 
     // 1A. Export GraphBuilder as XML
     cy.get('[data-testid="gb-export-xml"]').click({ force: true });
     cy.window().then((win: any) => {
-      expect(win.__lastExportedProblem).to.contain("<aispace-problem");
+      expect(win.__lastExportedProblem).to.contain("<ai-playground-problem");
       expect(win.__lastExportedProblem).to.contain("<?xml");
     });
 
@@ -38,7 +38,7 @@ describe("AIspace Universal Problem Export, Reset, and Import (XML & JSON)", () 
     // 1B. Export GraphBuilder as JSON -> Reset -> Import JSON
     cy.get('[data-testid="gb-export-json"]').click({ force: true });
     cy.window().then((win: any) => {
-      expect(win.__lastExportedProblem).to.contain('"format": "aispace-problem"');
+      expect(win.__lastExportedProblem).to.contain('"format": "ai-playground-problem"');
     });
 
     cy.get('[data-testid="gb-reset-btn"]').click({ force: true });
@@ -65,7 +65,7 @@ describe("AIspace Universal Problem Export, Reset, and Import (XML & JSON)", () 
     cy.get('[data-testid="export-xml-btn"]').click({ force: true });
     cy.get('[data-testid="exported-modal"]').should("be.visible");
     cy.get('[data-testid="last-exported-output"]').invoke("val").then((xmlVal: any) => {
-      expect(xmlVal).to.contain("<aispace-problem");
+      expect(xmlVal).to.contain("<ai-playground-problem");
       expect(xmlVal).to.contain('toolType="search"');
       cy.get('[data-testid="close-exported-modal"]').click({ force: true });
 
@@ -92,7 +92,7 @@ describe("AIspace Universal Problem Export, Reset, and Import (XML & JSON)", () 
     cy.get('[data-testid="export-json-btn"]').click({ force: true });
     cy.get('[data-testid="exported-modal"]').should("be.visible");
     cy.get('[data-testid="last-exported-output"]').invoke("val").then((jsonVal: any) => {
-      expect(jsonVal).to.contain('"format": "aispace-problem"');
+      expect(jsonVal).to.contain('"format": "ai-playground-problem"');
       cy.get('[data-testid="close-exported-modal"]').click({ force: true });
 
       cy.get('[data-testid="reset-problem-btn"]').click({ force: true });

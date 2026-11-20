@@ -20,7 +20,7 @@ vi.mock("canvas-confetti", () => ({
   default: vi.fn(),
 }));
 
-describe("AIspace Studio Comprehensive Verification Suite", () => {
+describe("AI Playground Comprehensive Verification Suite", () => {
   it("1. OverviewView renders all 10 tools and branding", () => {
     const onSelect = vi.fn();
     render(<OverviewView onSelectTool={onSelect} />);

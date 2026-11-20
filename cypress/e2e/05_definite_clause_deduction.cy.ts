@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace Definite Clause Deduction Lab", () => {
+describe("AI Playground Definite Clause Deduction Lab", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.contains("button", "Definite Clause Deduction").click({ force: true });

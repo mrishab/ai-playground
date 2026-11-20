@@ -25,7 +25,7 @@ export function useNeuralNetwork() {
   };
 
   const handleResetDataset = () => {
-    setCustomDataset({ id: "blank", name: "Empty", description: "Reset", points: [] });
+    setCustomDataset({ id: "blank", name: "Empty", description: "Reset empty neural dataset", points: [] });
     setSelectedDatasetId("custom");
     training.resetTraining();
     setPoints([]);

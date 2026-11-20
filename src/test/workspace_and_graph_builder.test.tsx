@@ -19,7 +19,7 @@ import { SearchGraph } from "../data/searchProblems";
 // Mock canvas-confetti
 vi.mock("canvas-confetti", () => ({ default: vi.fn() }));
 
-describe("AIspace Consistent Workspace & Drag-and-Drop Graph Builder", () => {
+describe("AI Playground Consistent Workspace & Drag-and-Drop Graph Builder", () => {
   it("1. GraphBuilder renders canvas, toolbar, node presets, and summary footer", () => {
     render(<GraphBuilder />);
 

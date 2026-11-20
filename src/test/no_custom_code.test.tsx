@@ -55,7 +55,7 @@ describe("Visual Builder: Removal of custom code writing and running", () => {
 
     // Guidance text
     expect(
-      screen.getByText(/The AI Space is a visual builder app. Code writing and running are not supported./i)
+      screen.getByText(/AI Playground is a visual builder app. Code writing and running are not supported./i)
     ).toBeInTheDocument();
     expect(screen.getByText(/Heuristic guidance/i)).toBeInTheDocument();
 

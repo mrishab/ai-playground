@@ -38,7 +38,7 @@ describe("Universal Problem I/O (JSON & XML)", () => {
     const original = SEARCH_GRAPHS.vancouver;
     const xml = exportProblemXml(original, "search");
     expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
-    expect(xml).toContain('<aispace-problem');
+    expect(xml).toContain('<ai-playground-problem');
 
     const { toolType, problem } = parseProblemXml(xml);
     expect(toolType).toBe("search");
@@ -226,7 +226,7 @@ describe("Universal Problem I/O (JSON & XML)", () => {
     });
   });
 
-  it("infers toolType from root tag in standard AIspace XML without explicit toolType attribute", () => {
+  it("infers toolType from root tag in standard AI Playground XML without explicit toolType attribute", () => {
     const searchXml = `<search-graph><id>grid</id></search-graph>`;
     const bayesXml = `<bayes><id>alarm</id></bayes>`;
     const cspXml = `<csp><id>queens</id></csp>`;

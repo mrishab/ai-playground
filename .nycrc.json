@@ -1,0 +1,25 @@
+{
+  "report-dir": "coverage",
+  "reporter": [
+    "text",
+    "text-summary",
+    "html",
+    "json-summary",
+    "lcov"
+  ],
+  "include": [
+    "src/**"
+  ],
+  "exclude": [
+    "coverage/**",
+    "cypress/**",
+    "src/test/**",
+    "**/*.d.ts",
+    "**/*Types.ts",
+    "**/*types.ts",
+    "**/*.css",
+    "*.config.*",
+    "dist/**"
+  ],
+  "all": false
+}

@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace Neural Network & Backprop Lab", () => {
+describe("AI Playground Neural Network & Backprop Lab", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.contains("button", "Neural Networks").click({ force: true });
@@ -79,7 +79,7 @@ describe("AIspace Neural Network & Backprop Lab", () => {
       // 1. Coding Area
       cy.contains("button", "Coding Area").click({ force: true });
       cy.contains("Backpropagation Algorithm Code").should("be.visible");
-      cy.contains("The AI Space is a visual builder app").should("be.visible");
+      cy.contains("AI Playground is a visual builder app").should("be.visible");
 
       // 2. Theory & Guide
       cy.contains("button", "Theory & Guide").click({ force: true });

@@ -15,7 +15,7 @@ export function useCodeSandbox({
   return {
     code: initialCode,
     setCode: () => {},
-    output: "The AI Space is a visual builder app. Code writing is not supported.",
+    output: "AI Playground is a visual builder app. Code writing is not supported.",
     isCopied,
     isRunning: false,
     hasError: false,

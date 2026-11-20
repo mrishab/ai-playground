@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace Consistency Based CSP Solver Lab", () => {
+describe("AI Playground Consistency Based CSP Solver Lab", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.contains("button", "Consistency for CSP").click({ force: true });
@@ -33,9 +33,19 @@ describe("AIspace Consistency Based CSP Solver Lab", () => {
       cy.contains("Variable Domains").should("be.visible");
       cy.contains("Arc Queue").should("be.visible");
 
+      // Step AC-3 multiple times to test arc pruning and dependent arcs
+      for (let i = 0; i < 6; i++) {
+        cy.contains("button", "Advance Arc").click({ force: true });
+      }
+
       // Switch to MAC (Maintaining Arc Consistency)
       cy.get('select[aria-label="Select Algorithm"]').select("mac");
       cy.get('select[aria-label="Select Algorithm"]').should("have.value", "mac");
+
+      // Advance MAC arcs and search step
+      for (let i = 0; i < 5; i++) {
+        cy.contains("button", /Advance Arc|Step MAC/).click({ force: true });
+      }
 
       // Switch to Domain Splitting
       cy.get('select[aria-label="Select Algorithm"]').select("split");
@@ -74,7 +84,7 @@ describe("AIspace Consistency Based CSP Solver Lab", () => {
       // 1. Coding Area
       cy.contains("button", "Coding Area").click({ force: true });
       cy.contains("AC-3 Solver Code").should("be.visible");
-      cy.contains("The AI Space is a visual builder app").should("be.visible");
+      cy.contains("AI Playground is a visual builder app").should("be.visible");
 
       // 2. Theory & Guide
       cy.contains("button", "Theory & Guide").click({ force: true });

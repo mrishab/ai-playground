@@ -4,6 +4,7 @@
     "lib": ["ES2020", "dom"],
     "types": ["cypress"],
     "skipLibCheck": true,
+    "noEmit": true,
     "moduleResolution": "bundler",
     "strict": true
   },

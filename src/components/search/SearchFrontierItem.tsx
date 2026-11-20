@@ -30,10 +30,10 @@ export function SearchFrontierItem({ path, isNext }: SearchFrontierItemProps) {
         )}
       </div>
       <div className="flex items-center justify-between text-[11px] text-muted-foreground font-mono">
-        <span>g = {path.cost.toFixed(1)}</span>
-        <span>h = {path.h.toFixed(1)}</span>
+        <span>g = {(path.cost ?? 0).toFixed(1)}</span>
+        <span>h = {(path.h ?? 0).toFixed(1)}</span>
         <span className="font-bold text-foreground">
-          f = {path.f.toFixed(1)}
+          f = {(path.f ?? 0).toFixed(1)}
         </span>
       </div>
     </div>

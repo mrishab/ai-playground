@@ -21,7 +21,7 @@ describe("Problem Export, Reset, and Import UI Integration", () => {
     // Modal with exported JSON appears
     expect(screen.getByTestId("exported-modal")).toBeInTheDocument();
     const output = screen.getByTestId("last-exported-output") as HTMLTextAreaElement;
-    expect(output.value).toContain('"format": "aispace-problem"');
+    expect(output.value).toContain('"format": "ai-playground-problem"');
     expect(output.value).toContain('"toolType": "search"');
     expect(output.value).toContain("Vancouver Travel Map");
 
@@ -35,7 +35,7 @@ describe("Problem Export, Reset, and Import UI Integration", () => {
     expect(screen.getByTestId("exported-modal")).toBeInTheDocument();
     const xmlOutput = screen.getByTestId("last-exported-output") as HTMLTextAreaElement;
     expect(xmlOutput.value).toContain('<?xml version="1.0" encoding="UTF-8"?>');
-    expect(xmlOutput.value).toContain('<aispace-problem');
+    expect(xmlOutput.value).toContain('<ai-playground-problem');
     expect(xmlOutput.value).toContain('toolType="search"');
   });
 
@@ -148,7 +148,7 @@ describe("Problem Export, Reset, and Import UI Integration", () => {
 
     // Check window.__lastExportedProblem
     const exportedXml = (window as any).__lastExportedProblem;
-    expect(exportedXml).toContain("<aispace-problem");
+    expect(exportedXml).toContain("<ai-playground-problem");
 
     // 2. Reset GraphBuilder Canvas
     const resetBtn = screen.getByTestId("gb-reset-btn");

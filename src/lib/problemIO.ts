@@ -1,6 +1,6 @@
 /**
  * Problem I/O: Universal XML and JSON Serialization & Deserialization
- * Supports all AIspace problem formats: Search graphs, CSPs, Bayes nets,
+ * Supports all AI Playground problem formats: Search graphs, CSPs, Bayes nets,
  * DTree datasets, Neural sets, Planning worlds, Robot worlds, Deduction KBs, Strips problems.
  */
 
@@ -150,23 +150,23 @@ function deserializeNode(element: Element): any {
 }
 
 /**
- * Serialize problem data to standard AIspace XML string.
+ * Serialize problem data to standard AI Playground XML string.
  */
 export function exportProblemXml(problem: any, toolType = "generic"): string {
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-  xml += `<aispace-problem version="1.0" toolType="${escapeXml(toolType)}">\n`;
+  xml += `<ai-playground-problem version="1.0" toolType="${escapeXml(toolType)}">\n`;
   xml += `  <toolType type="string">${escapeXml(toolType)}</toolType>\n`;
   xml += serializeValue(problem, "problem", "  ");
-  xml += `</aispace-problem>\n`;
+  xml += `</ai-playground-problem>\n`;
   return xml;
 }
 
 /**
- * Serialize problem data to formatted AIspace JSON string.
+ * Serialize problem data to formatted AI Playground JSON string.
  */
 export function exportProblemJson(problem: any, toolType = "generic"): string {
   const payload = {
-    format: "aispace-problem",
+    format: "ai-playground-problem",
     version: "1.0",
     toolType,
     problem,
@@ -199,7 +199,7 @@ const ROOT_TAG_TOOL_MAP: Record<string, string> = {
 };
 
 /**
- * Parse an AIspace XML problem string back to object.
+ * Parse an AI Playground XML problem string back to object.
  */
 export function parseProblemXml(xmlString: string): { toolType?: string; problem: any } {
   const parser = getDOMParser();
@@ -224,12 +224,12 @@ export function parseProblemXml(xmlString: string): { toolType?: string; problem
 }
 
 /**
- * Parse an AIspace JSON problem string back to object.
+ * Parse an AI Playground JSON problem string back to object.
  */
 export function parseProblemJson(jsonString: string): { toolType?: string; problem: any } {
   const parsed = JSON.parse(jsonString);
   if (parsed && typeof parsed === "object") {
-    if (parsed.format === "aispace-problem" && parsed.problem !== undefined) {
+    if (parsed.format === "ai-playground-problem" && parsed.problem !== undefined) {
       return { toolType: parsed.toolType, problem: parsed.problem };
     }
     if (parsed.problem !== undefined) {

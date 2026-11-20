@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace Belief & Decision Networks Lab", () => {
+describe("AI Playground Belief & Decision Networks Lab", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.contains("button", "Belief & Decision Networks").click({ force: true });
@@ -66,7 +66,7 @@ describe("AIspace Belief & Decision Networks Lab", () => {
       // 1. Coding Area
       cy.contains("button", "Coding Area").click({ force: true });
       cy.contains("Variable Elimination Code").should("be.visible");
-      cy.contains("The AI Space is a visual builder app").should("be.visible");
+      cy.contains("AI Playground is a visual builder app").should("be.visible");
 
       // 2. Theory & Guide
       cy.contains("button", "Theory & Guide").click({ force: true });

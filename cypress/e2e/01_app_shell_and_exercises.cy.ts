@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace App Shell, Theme, Navigation, Overview, and Exercises", () => {
+describe("AI Playground App Shell, Theme, Navigation, Overview, and Exercises", () => {
   beforeEach(() => {
     cy.visit("/");
   });
@@ -8,7 +8,7 @@ describe("AIspace App Shell, Theme, Navigation, Overview, and Exercises", () => 
   describe("1. Shell and Global Controls", () => {
     it("renders brand, toggles dark/light theme, and verifies class changes", () => {
       // Navbar brand check
-      cy.contains("AIspace Studio").should("be.visible");
+      cy.contains("AI Playground").should("be.visible");
       cy.contains("Interactive AI Algorithm Lab").should("be.visible");
 
       // Verify initial dark mode class on root container
@@ -37,7 +37,7 @@ describe("AIspace App Shell, Theme, Navigation, Overview, and Exercises", () => 
       cy.contains("Graph Searching Lab").should("be.visible");
 
       // Return to overview via brand click
-      cy.contains("AIspace Studio").click({ force: true });
+      cy.contains("AI Playground").click({ force: true });
       cy.contains("Interactive Artificial Intelligence").should("be.visible");
 
       // Open command palette via Ctrl+K keyboard shortcut
@@ -101,7 +101,7 @@ describe("AIspace App Shell, Theme, Navigation, Overview, and Exercises", () => 
       cy.contains("Neural Network & Backprop Lab").should("be.visible");
 
       // Return to overview
-      cy.contains("AIspace Studio").click({ force: true });
+      cy.contains("AI Playground").click({ force: true });
 
       // Click on Decision Trees card
       cy.contains("h3", "Decision Trees").click({ force: true });

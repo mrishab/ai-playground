@@ -14,7 +14,7 @@ export function CodeSandboxOutput({
         <div className="flex items-center gap-2">
           <Info className="h-3.5 w-3.5 text-primary shrink-0" />
           <span className="text-[11px] leading-relaxed">
-            The AI Space is a visual builder app. Code writing and running are not supported. Experiment with algorithms using the visual canvas and interactive controls.
+            AI Playground is a visual builder app. Code writing and running are not supported. Experiment with algorithms using the visual canvas and interactive controls.
           </span>
         </div>
       </div>

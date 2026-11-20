@@ -37,7 +37,7 @@ export function NavbarBrand({
         </div>
         <div className="flex flex-col">
           <span className="font-bold text-sm tracking-tight text-foreground">
-            AIspace Studio
+            AI Playground
           </span>
           <span className="text-[10px] text-muted-foreground hidden sm:inline leading-none">
             Interactive AI Algorithm Lab

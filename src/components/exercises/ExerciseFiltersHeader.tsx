@@ -28,7 +28,7 @@ export function ExerciseFiltersHeader({
         </div>
         <p className="text-xs sm:text-sm text-muted-foreground">
           Extracted directly from David Poole and Alan Mackworth's curriculum on
-          AISpace. Test your theoretical understanding with guided questions and
+          AI Playground. Test your theoretical understanding with guided questions and
           verify using visual simulation tools.
         </p>
       </div>

@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace Stochastic Local Search (SLS) Lab", () => {
+describe("AI Playground Stochastic Local Search (SLS) Lab", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.contains("button", "SLS for CSP").click({ force: true });
@@ -23,24 +23,41 @@ describe("AIspace Stochastic Local Search (SLS) Lab", () => {
   });
 
   describe("2. Building Expectations of Solutions (Algorithm & Hyperparameters)", () => {
-    it("selects SLS algorithm variants and configures parameters", () => {
+    it("selects SLS algorithm variants, configures parameters, and steps execution", () => {
       // Default algorithm is min_conflicts
       cy.get('select[aria-label="Select Algorithm"]').should("have.value", "min_conflicts");
+      cy.contains("button", "Next Step").click({ force: true });
+      cy.contains("Conflicts").should("be.visible");
 
-      // Switch to Random Walk
+      // Switch to Random Walk and step
       cy.get('select[aria-label="Select Algorithm"]').select("random_walk");
       cy.get('select[aria-label="Select Algorithm"]').should("have.value", "random_walk");
       cy.contains("Random Walk Prob").should("be.visible");
+      cy.contains("button", "Next Step").click({ force: true });
+      cy.contains("button", "Next Step").click({ force: true });
 
-      // Switch to Simulated Annealing
+      // Switch to Simulated Annealing and step
       cy.get('select[aria-label="Select Algorithm"]').select("annealing");
       cy.get('select[aria-label="Select Algorithm"]').should("have.value", "annealing");
       cy.contains("Temperature").should("be.visible");
+      cy.contains("button", "Next Step").click({ force: true });
+      cy.contains("button", "Next Step").click({ force: true });
 
-      // Switch to Tabu Search
+      // Switch to Tabu Search and step
       cy.get('select[aria-label="Select Algorithm"]').select("tabu");
       cy.get('select[aria-label="Select Algorithm"]').should("have.value", "tabu");
       cy.contains("Tabu Tenure").should("be.visible");
+      cy.contains("button", "Next Step").click({ force: true });
+      cy.contains("button", "Next Step").click({ force: true });
+
+      // Switch to Greedy Descent and step
+      cy.get('select[aria-label="Select Algorithm"]').select("greedy");
+      cy.get('select[aria-label="Select Algorithm"]').should("have.value", "greedy");
+      cy.contains("button", "Next Step").click({ force: true });
+      cy.contains("button", "Next Step").click({ force: true });
+
+      // Switch back to min_conflicts
+      cy.get('select[aria-label="Select Algorithm"]').select("min_conflicts");
     });
   });
 
@@ -75,7 +92,7 @@ describe("AIspace Stochastic Local Search (SLS) Lab", () => {
       // 1. Coding Area
       cy.contains("button", "Coding Area").click({ force: true });
       cy.contains("SLS Algorithm Code").should("be.visible");
-      cy.contains("The AI Space is a visual builder app").should("be.visible");
+      cy.contains("AI Playground is a visual builder app").should("be.visible");
 
       // 2. Theory & Guide
       cy.contains("button", "Theory & Guide").click({ force: true });

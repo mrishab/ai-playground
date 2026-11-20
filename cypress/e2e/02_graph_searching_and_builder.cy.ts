@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace Graph Searching & Graph Builder Lab", () => {
+describe("AI Playground Graph Searching & Graph Builder Lab", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.contains("button", "Graph Searching").click({ force: true });
@@ -144,7 +144,7 @@ describe("AIspace Graph Searching & Graph Builder Lab", () => {
       // 1. Coding Area
       cy.contains("button", "Coding Area").click({ force: true });
       cy.contains("Search Algorithm Code").should("be.visible");
-      cy.contains("The AI Space is a visual builder app").should("be.visible");
+      cy.contains("AI Playground is a visual builder app").should("be.visible");
 
       // 2. Theory & Guide
       cy.contains("button", "Theory & Guide").click({ force: true });

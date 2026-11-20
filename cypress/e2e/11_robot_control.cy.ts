@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace Autonomous Robot Control Lab", () => {
+describe("AI Playground Autonomous Robot Control Lab", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.contains("button", "Robot Control").click({ force: true });
@@ -65,7 +65,7 @@ describe("AIspace Autonomous Robot Control Lab", () => {
       // 1. Coding Area
       cy.contains("button", "Coding Area").click({ force: true });
       cy.contains("Robot Controller Code").should("be.visible");
-      cy.contains("The AI Space is a visual builder app").should("be.visible");
+      cy.contains("AI Playground is a visual builder app").should("be.visible");
 
       // 2. Theory & Guide
       cy.contains("button", "Theory & Guide").click({ force: true });

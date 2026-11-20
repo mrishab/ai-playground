@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace Decision Tree Induction Lab", () => {
+describe("AI Playground Decision Tree Induction Lab", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.contains("button", "Decision Trees").click({ force: true });

@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace STRIPS to CSP Planning Lab", () => {
+describe("AI Playground STRIPS to CSP Planning Lab", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.contains("button", "STRIPS to CSP").click({ force: true });
@@ -62,7 +62,7 @@ describe("AIspace STRIPS to CSP Planning Lab", () => {
       // 1. Coding Area
       cy.contains("button", "Coding Area").click({ force: true });
       cy.contains("STRIPS to CSP Compiler Code").should("be.visible");
-      cy.contains("The AI Space is a visual builder app").should("be.visible");
+      cy.contains("AI Playground is a visual builder app").should("be.visible");
 
       // 2. Theory & Guide
       cy.contains("button", "Theory & Guide").click({ force: true });

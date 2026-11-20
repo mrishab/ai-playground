@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("AIspace STRIPS Planning (Blocks World) Lab", () => {
+describe("AI Playground STRIPS Planning (Blocks World) Lab", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.contains("button", "STRIPS Planning").click({ force: true });
@@ -13,13 +13,18 @@ describe("AIspace STRIPS Planning (Blocks World) Lab", () => {
       cy.contains("TABLE").should("be.visible");
       cy.contains("Goal Specification").should("be.visible");
 
-      // Switch to Simple Block Swap
+      // Switch to Simple Block Swap and step through its plan
       cy.get('select[aria-label="Select Blocks World Problem"]').select("simpleSwap");
       cy.contains("Simple Two-Block Swap").should("be.visible");
+      cy.contains("button", "Step Action").click({ force: true });
+      cy.contains("button", "Step Action").click({ force: true });
 
-      // Switch to 5-Block Tower Stacking
+      // Switch to 5-Block Tower Stacking and step through its plan
       cy.get('select[aria-label="Select Blocks World Problem"]').select("fiveBlocks");
       cy.contains("Five Blocks Tower").should("be.visible");
+      cy.contains("button", "Step Action").click({ force: true });
+      cy.contains("button", "Step Action").click({ force: true });
+      cy.contains("button", "Step Action").click({ force: true });
     });
   });
 
@@ -67,7 +72,7 @@ describe("AIspace STRIPS Planning (Blocks World) Lab", () => {
       // 1. Coding Area
       cy.contains("button", "Coding Area").click({ force: true });
       cy.contains("STRIPS Planner Code").should("be.visible");
-      cy.contains("The AI Space is a visual builder app").should("be.visible");
+      cy.contains("AI Playground is a visual builder app").should("be.visible");
 
       // 2. Theory & Guide
       cy.contains("button", "Theory & Guide").click({ force: true });
