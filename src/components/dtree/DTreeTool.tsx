@@ -4,27 +4,21 @@ import { DTreeCanvasCard } from "./DTreeCanvasCard";
 import { DTreeGainRankingCard } from "./DTreeGainRankingCard";
 import { DTreeDatasetTable } from "./DTreeDatasetTable";
 import { DTreeTabs } from "./DTreeTabs";
-import { GraphBuilder } from "../graph_builder/GraphBuilder";
 import { CodeSandbox } from "../CodeSandbox";
 import { StudioWorkspace } from "../workspace/StudioWorkspace";
 import { DTREE_PREBUILT_ITEMS, DTREE_ALGORITHM_ITEMS } from "./dtreeWorkspaceData";
+import { DTreeAlgorithm } from "./dtreeTypes";
 
 export function DTreeTool() {
-  const d = useDTree();
-  const [algo, setAlgo] = useState("id3");
+  const [algo, setAlgo] = useState<DTreeAlgorithm>("id3");
+  const d = useDTree(algo);
 
   return (
     <StudioWorkspace
-      title="Decision Tree Induction Lab"
-      category={d.tutorial.badge}
-      description={d.dataset.description}
-      prebuiltLabel="Dataset"
-      prebuiltItems={DTREE_PREBUILT_ITEMS}
-      selectedPrebuiltId={d.selectedDatasetId}
-      onSelectPrebuiltId={d.setSelectedDatasetId}
-      algorithmItems={DTREE_ALGORITHM_ITEMS}
-      selectedAlgorithmId={algo}
-      onSelectAlgorithmId={setAlgo}
+      title="Decision Tree Induction Lab" category={d.tutorial.badge} description={d.dataset.description}
+      prebuiltLabel="Dataset" prebuiltItems={DTREE_PREBUILT_ITEMS}
+      selectedPrebuiltId={d.selectedDatasetId} onSelectPrebuiltId={d.setSelectedDatasetId}
+      algorithmItems={DTREE_ALGORITHM_ITEMS} selectedAlgorithmId={algo} onSelectAlgorithmId={(id) => setAlgo(id as DTreeAlgorithm)}
       activeLogMessage={d.log}
       exportData={{ toolType: "dtree", problem: d.dataset, filename: `${d.dataset.id || "dtree"}-dataset` }}
       onImportProblem={(data) => {
@@ -36,17 +30,16 @@ export function DTreeTool() {
       controls={{ onReset: d.initializeDTree, speed: d.speed, setSpeed: d.setSpeed }}
       animationSlot={
         <DTreeCanvasCard
-          onAutoBuild={d.autoBuildTree} onReset={d.initializeDTree} onStepId3={d.stepId3}
+          onAutoBuild={d.autoBuildTree} onReset={d.initializeDTree} onStepId3={d.stepTree}
           isPlaying={d.isPlaying} onTogglePlay={d.togglePlay} canStep={d.canStep}
           candidateGains={d.candidateGains} selectedSplitAttr={d.selectedSplitAttr}
           setSelectedSplitAttr={d.setSelectedSplitAttr} onSplit={d.splitNode}
-          tree={d.tree} log={d.log} speed={d.speed} setSpeed={d.setSpeed}
+          tree={d.tree} log={d.log} speed={d.speed} setSpeed={d.setSpeed} algo={algo}
         />
       }
-      graphBuilderSlot={<GraphBuilder />}
-      codingSlot={<CodeSandbox title="ID3 Decision Tree Code" initialCode={d.codeTemplate} algorithmName="ID3" />}
+      codingSlot={<CodeSandbox title="ID3 Decision Tree Code" initialCode={d.codeTemplate} algorithmName={algo.toUpperCase()} />}
       theorySlot={<DTreeTabs codeTemplate={d.codeTemplate} tutorial={d.tutorial} />}
-      inspectorSlot={<DTreeGainRankingCard candidateGains={d.candidateGains} />}
+      inspectorSlot={<DTreeGainRankingCard candidateGains={d.candidateGains} algo={algo} />}
       stateSlot={<DTreeDatasetTable dataset={d.dataset} />}
     />
   );

@@ -11,6 +11,7 @@ interface NeuralToolbarProps {
   onReset: () => void;
   speed: number;
   setSpeed: (v: number) => void;
+  disabled?: boolean;
 }
 
 export function NeuralToolbar(p: NeuralToolbarProps) {
@@ -22,6 +23,7 @@ export function NeuralToolbar(p: NeuralToolbarProps) {
         onStep1={p.onStep1}
         onStep10={p.onStep10}
         onReset={p.onReset}
+        disabled={p.disabled}
       />
       <TimerSpeedBar speed={p.speed} setSpeed={p.setSpeed} />
       <NeuralToolbarHint />
