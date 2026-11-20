@@ -33,6 +33,12 @@ export function useConstraintSplitting(
       setDomains(res.restoredDomains);
       setArcQueue(res.newArcs);
       setLog(res.log);
+      setSplitHistory((prev) => prev.slice(0, res.remainingBackups.length));
+      setActiveSplitId(
+        res.remainingBackups.length > 0
+          ? res.remainingBackups[res.remainingBackups.length - 1].id
+          : null,
+      );
     }
   };
 

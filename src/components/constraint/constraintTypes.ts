@@ -20,6 +20,7 @@ export interface VariableDomains {
 export interface DomainBackup {
   id: string;
   domains: VariableDomains;
+  alternateBranch?: VariableDomains;
 }
 
 export interface ConstraintStepButtonsProps {

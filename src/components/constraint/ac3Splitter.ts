@@ -25,14 +25,21 @@ export function executeDomainSplit(
 ) {
   const domain = domains[varName];
   if (!domain || domain.length <= 1) return null;
-  const val = domain[0];
+  const half = Math.ceil(domain.length / 2);
+  const d1 = domain.slice(0, half);
+  const d2 = domain.slice(half);
+  const branchVal = d1.length === 1 ? d1[0] : `{${d1.join(", ")}}`;
   const newId = `split-${Date.now()}`;
-  const backup: DomainBackup = { id: newId, domains: { ...domains } };
-  const updatedDomains = { ...domains, [varName]: [val] };
+  const backup: DomainBackup = {
+    id: newId,
+    domains: { ...domains },
+    alternateBranch: { ...domains, [varName]: d2 },
+  };
+  const updatedDomains = { ...domains, [varName]: d1 };
   const newNode: SplitTreeNode = {
     id: newId,
     varName,
-    value: val,
+    value: branchVal,
     parent: activeSplitId,
     status: "active",
   };
@@ -42,7 +49,7 @@ export function executeDomainSplit(
     newArcs: createConstraintArcs(problem),
     newNode,
     newId,
-    log: `Split domain of ${varName}: Testing branch ${varName} = "${val}".`,
+    log: `Split domain of ${varName}: Testing branch ${varName} ∈ ${branchVal} (alt: {${d2.join(", ")}}).`,
   };
 }
 
@@ -52,10 +59,11 @@ export function executeBacktrack(
 ) {
   if (domainBackups.length === 0) return null;
   const last = domainBackups[domainBackups.length - 1];
+  const restored = last.alternateBranch || last.domains;
   return {
     remainingBackups: domainBackups.slice(0, -1),
-    restoredDomains: last.domains,
+    restoredDomains: restored,
     newArcs: createConstraintArcs(problem),
-    log: "Backtracked to previous domain state.",
+    log: `Backtracked to ${last.alternateBranch ? "alternate domain branch" : "previous domain state"}.`,
   };
 }

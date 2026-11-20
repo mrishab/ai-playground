@@ -21,10 +21,11 @@ export function ConstraintStepButtons(props: ConstraintStepButtonsProps) {
         variant="default"
         size="sm"
         onClick={onFineStep}
+        disabled={arcQueueLength === 0}
         className="gap-1.5 h-8 font-semibold"
       >
         <SkipForward className="h-3.5 w-3.5" />
-        {arcQueueLength > 0 ? "Fine Step (Arc)" : "Step MRV Split"}
+        Fine Step (Arc)
       </Button>
 
       <ConstraintAutoAcButton

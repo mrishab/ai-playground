@@ -143,12 +143,12 @@ export const CSP_PROBLEMS: CSPProblemMap = {
     ],
     constraints: [
       {
-        name: "",
+        name: "A ≠ B",
         variables: ["A", "B"],
         allowed: [],
       },
       {
-        name: "",
+        name: "B ≠ C",
         variables: ["B", "C"],
         allowed: [],
       },
@@ -181,17 +181,17 @@ export const CSP_PROBLEMS: CSPProblemMap = {
     ],
     constraints: [
       {
-        name: "",
+        name: "A ≠ C",
         variables: ["A", "C"],
         allowed: [],
       },
       {
-        name: "",
+        name: "B ≠ C",
         variables: ["B", "C"],
         allowed: [],
       },
       {
-        name: "",
+        name: "A ≠ B",
         variables: ["A", "B"],
         allowed: [],
       },
@@ -267,47 +267,47 @@ export const CSP_PROBLEMS: CSPProblemMap = {
     ],
     constraints: [
       {
-        name: "",
+        name: "E ≠ D",
         variables: ["E", "D"],
         allowed: [],
       },
       {
-        name: "",
+        name: "E ≠ A",
         variables: ["E", "A"],
         allowed: [],
       },
       {
-        name: "",
+        name: "E ≠ B",
         variables: ["E", "B"],
         allowed: [],
       },
       {
-        name: "",
+        name: "B ≠ D",
         variables: ["B", "D"],
         allowed: [],
       },
       {
-        name: "",
+        name: "A ≠ D",
         variables: ["A", "D"],
         allowed: [],
       },
       {
-        name: "",
+        name: "A ≠ B",
         variables: ["A", "B"],
         allowed: [],
       },
       {
-        name: "",
+        name: "E ≠ C",
         variables: ["E", "C"],
         allowed: [],
       },
       {
-        name: "",
+        name: "C ≠ D",
         variables: ["C", "D"],
         allowed: [],
       },
       {
-        name: "",
+        name: "B ≠ C",
         variables: ["B", "C"],
         allowed: [],
       },
@@ -351,37 +351,37 @@ export const CSP_PROBLEMS: CSPProblemMap = {
     ],
     constraints: [
       {
-        name: "",
+        name: "D ≠ C",
         variables: ["D", "C"],
         allowed: [],
       },
       {
-        name: "",
+        name: "A ≠ D",
         variables: ["A", "D"],
         allowed: [],
       },
       {
-        name: "",
+        name: "A ≠ B",
         variables: ["A", "B"],
         allowed: [],
       },
       {
-        name: "",
+        name: "E ≠ D",
         variables: ["E", "D"],
         allowed: [],
       },
       {
-        name: "",
+        name: "E ≠ C",
         variables: ["E", "C"],
         allowed: [],
       },
       {
-        name: "",
+        name: "E ≠ B",
         variables: ["E", "B"],
         allowed: [],
       },
       {
-        name: "",
+        name: "E ≠ A",
         variables: ["E", "A"],
         allowed: [
           [

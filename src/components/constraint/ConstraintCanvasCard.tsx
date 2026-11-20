@@ -17,7 +17,7 @@ export function ConstraintCanvasCard({ c }: ConstraintCanvasCardProps) {
         hasBackups={c.domainBackups.length > 0}
         speed={c.speed}
         setSpeed={c.setSpeed}
-        onFineStep={c.arcQueue.length > 0 ? c.fineStep : c.stepMacSearch}
+        onFineStep={c.fineStep}
         onToggleAutoAC={c.toggleAutoAC}
         onBacktrack={c.backtrack}
         onReset={c.initializeCSP}

@@ -18,8 +18,11 @@ export function stepRandomWalk(
   const targetVar = problem.variables.find((v) => v.name === targetVarName)!;
 
   if (isRandom) {
+    const candidateVals = targetVar.domain.filter((v) => v !== assignment[targetVar.name]);
     const randomVal =
-      targetVar.domain[Math.floor(Math.random() * targetVar.domain.length)];
+      candidateVals.length > 0
+        ? candidateVals[Math.floor(Math.random() * candidateVals.length)]
+        : targetVar.domain[0];
     const nextAssign = { ...assignment, [targetVar.name]: randomVal };
     const newConflicts = evaluateConflicts(problem, nextAssign);
     return {
@@ -31,7 +34,9 @@ export function stepRandomWalk(
 
   let bestVals: string[] = [];
   let minConf = 9999;
-  for (const val of targetVar.domain) {
+  const candidateVals = targetVar.domain.filter((v) => v !== assignment[targetVar.name]);
+  const evalDomain = candidateVals.length > 0 ? candidateVals : targetVar.domain;
+  for (const val of evalDomain) {
     const c = evaluateConflicts(problem, {
       ...assignment,
       [targetVar.name]: val,

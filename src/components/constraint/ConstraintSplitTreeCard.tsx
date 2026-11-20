@@ -28,11 +28,14 @@ export function ConstraintSplitTreeCard({
             <span>
               Depth {i + 1}:{" "}
               <strong>
-                {s.varName} = "{s.value}"
+                {s.varName} {s.value.startsWith("{") ? "∈" : "="} {s.value}
               </strong>
             </span>
-            <Badge variant="purple" className="text-[10px]">
-              Active
+            <Badge
+              variant={s.status === "failed" ? "secondary" : "purple"}
+              className="text-[10px]"
+            >
+              {s.status === "failed" ? "Pruned" : s.status === "solved" ? "Solved" : "Active"}
             </Badge>
           </div>
         ))}

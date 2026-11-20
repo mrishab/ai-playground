@@ -42,6 +42,6 @@ export function useDTree(algo: DTreeAlgorithm = "id3") {
     log,
     ...actions,
     ...stepper,
-    codeTemplate: getDTreeCodeTemplate(dsState.dataset),
+    codeTemplate: getDTreeCodeTemplate(dsState.dataset, algo),
   };
 }

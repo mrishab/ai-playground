@@ -10,10 +10,13 @@ export function stepTabu(
 ) {
   const targetVar =
     problem.variables[Math.floor(Math.random() * problem.variables.length)];
-  let bestVal = assignment[targetVar.name];
+  const currentVal = assignment[targetVar.name];
+  const candidates = targetVar.domain.filter((v) => v !== currentVal);
+  const evalDomain = candidates.length > 0 ? candidates : targetVar.domain;
+  let bestVal = evalDomain[0];
   let minConf = 9999;
 
-  for (const val of targetVar.domain) {
+  for (const val of evalDomain) {
     if (
       tabuList.some(
         (item) => item.varName === targetVar.name && item.val === val,
@@ -31,7 +34,7 @@ export function stepTabu(
   }
 
   if (minConf === 9999) {
-    for (const val of targetVar.domain) {
+    for (const val of evalDomain) {
       const c = evaluateConflicts(problem, {
         ...assignment,
         [targetVar.name]: val,
