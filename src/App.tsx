@@ -3,6 +3,7 @@ import { Navbar } from "./components/Navbar";
 import { Sidebar } from "./components/Sidebar";
 import { CommandPalette } from "./components/CommandPalette";
 import { ToolViewRouter } from "./components/ToolViewRouter";
+import { BugReportBubble } from "./components/feedback/BugReportBubble";
 import { useAppTheme } from "./hooks/useAppTheme";
 import { useAppShell } from "./hooks/useAppShell";
 
@@ -46,6 +47,7 @@ export function App() {
         onClose={() => shell.setIsPaletteOpen(false)}
         onSelectView={shell.setCurrentView}
       />
+      <BugReportBubble />
     </div>
   );
 }

@@ -1,6 +1,16 @@
 import React from "react";
 import { Search, Moon, Sun, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { AuthorLink } from "./AuthorLink";
+import { SponsorButton } from "./SponsorButton";
+
+interface NavbarActionsProps {
+  currentView: string;
+  onSelectView: (view: string) => void;
+  onOpenCommandPalette: () => void;
+  isDarkMode: boolean;
+  onToggleDarkMode: () => void;
+}
 
 export function NavbarActions({
   currentView,
@@ -8,13 +18,7 @@ export function NavbarActions({
   onOpenCommandPalette,
   isDarkMode,
   onToggleDarkMode,
-}: {
-  currentView: string;
-  onSelectView: (view: string) => void;
-  onOpenCommandPalette: () => void;
-  isDarkMode: boolean;
-  onToggleDarkMode: () => void;
-}) {
+}: NavbarActionsProps) {
   return (
     <div className="flex items-center gap-2">
       <Button
@@ -37,20 +41,17 @@ export function NavbarActions({
         <span className="hidden sm:inline">Exercises</span>
       </Button>
 
+      <AuthorLink />
+      <SponsorButton />
+
       <Button
         variant="ghost"
         size="icon"
         onClick={onToggleDarkMode}
         className="h-8 w-8 text-muted-foreground hover:text-foreground transition-colors duration-150"
-        aria-label={
-          isDarkMode ? "Switch to light theme" : "Switch to dark theme"
-        }
+        aria-label={isDarkMode ? "Switch to light theme" : "Switch to dark theme"}
       >
-        {isDarkMode ? (
-          <Sun className="h-4 w-4 text-primary" />
-        ) : (
-          <Moon className="h-4 w-4 text-foreground" />
-        )}
+        {isDarkMode ? <Sun className="h-4 w-4 text-primary" /> : <Moon className="h-4 w-4 text-foreground" />}
       </Button>
     </div>
   );
