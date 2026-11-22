@@ -13,13 +13,13 @@ export function ProofAnswerBox({
       <div className="text-foreground/90">{log}</div>
       {answers.length > 0 && (
         <div className="mt-2 space-y-1">
-          <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+          <span className="font-semibold text-primary">
             Computed Bindings:
           </span>
           {answers.map((ans, idx) => (
             <div
               key={idx}
-              className="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/30 rounded border border-emerald-200 dark:border-emerald-500/20 text-emerald-800 dark:text-emerald-200"
+              className="px-2 py-1 bg-primary/10 rounded border border-primary/20 text-primary"
             >
               {Object.keys(ans).length > 0
                 ? Object.entries(ans)

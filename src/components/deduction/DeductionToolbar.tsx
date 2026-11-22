@@ -39,7 +39,7 @@ export function DeductionToolbar({ algo, onSelectAlgo, onNextAnswer, answersCoun
       <div className="flex items-center gap-1.5">
         {onNextAnswer && (
           <Button variant="outline" size="sm" onClick={onNextAnswer} title="Jump to Next Answer" className="h-7 px-2 text-[11px] gap-1">
-            <Sparkles className="h-3 w-3 text-amber-500" />
+            <Sparkles className="h-3 w-3 text-primary" />
             Next Answer
           </Button>
         )}
