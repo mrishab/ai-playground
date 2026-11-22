@@ -19,7 +19,8 @@ export function ExerciseStepRunner(p: RunnerProps) {
   const s = useExerciseStepper(p.toolId, p.sampleId, p.exerciseId, p.activeQuestionIdx, p.branch);
   const effectiveOpen = isOpen || p.activeQuestionIdx != null;
   const handleToggle = () => {
-    if (effectiveOpen) { setIsOpen(false); p.onClearQuestionIdx?.(); } else setIsOpen(true);
+    if (effectiveOpen) { setIsOpen(false); p.onClearQuestionIdx?.(); }
+    else setIsOpen(true);
   };
 
   return (
@@ -39,15 +40,9 @@ export function ExerciseStepRunner(p: RunnerProps) {
               <span className="font-semibold text-foreground text-xs">{s.currentStep?.label || ""}</span>
             </div>
             <ExerciseStepControls
-              stepIndex={s.stepIndex}
-              totalSteps={s.steps.length}
-              isPlaying={s.isPlaying}
-              onStepForward={s.stepForward}
-              onStepBack={s.stepBack}
-              onReset={s.reset}
-              onTogglePlay={s.togglePlay}
-              speed={s.speed}
-              setSpeed={s.setSpeed}
+              stepIndex={s.stepIndex} totalSteps={s.steps.length} isPlaying={s.isPlaying}
+              onStepForward={s.stepForward} onStepBack={s.stepBack} onReset={s.reset}
+              onTogglePlay={s.togglePlay} speed={s.speed} setSpeed={s.setSpeed}
             />
           </div>
           <p className="text-xs text-muted-foreground leading-relaxed">{s.currentStep?.detail || ""}</p>
@@ -57,4 +52,3 @@ export function ExerciseStepRunner(p: RunnerProps) {
     </div>
   );
 }
-

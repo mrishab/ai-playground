@@ -18,6 +18,8 @@ export function CommandPalette({
     setQuery,
     filteredNav,
     filteredExercises,
+    selectedIndex,
+    handleKeyDown,
     handleSelect,
     handleClose,
   } = useCommandPalette(onClose, onSelectView);
@@ -28,11 +30,12 @@ export function CommandPalette({
       onClose={handleClose}
       className="p-0 overflow-hidden max-w-xl"
     >
-      <CommandPaletteInput query={query} onChange={setQuery} />
+      <CommandPaletteInput query={query} onChange={setQuery} onKeyDown={handleKeyDown} />
       <CommandPaletteResults
         query={query}
         filteredNav={filteredNav}
         filteredExercises={filteredExercises}
+        selectedIndex={selectedIndex}
         onSelect={handleSelect}
       />
     </Modal>

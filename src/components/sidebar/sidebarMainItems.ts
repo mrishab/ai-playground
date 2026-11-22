@@ -23,7 +23,12 @@ export const NAV_MAIN_ITEMS: NavItem[] = [
     icon: ShieldCheck,
     category: "Main Tools",
   },
-  { id: "hill", title: "SLS for CSP", icon: Zap, category: "Main Tools" },
+  {
+    id: "hill",
+    title: "SLS for CSP (Stochastic Local Search)",
+    icon: Zap,
+    category: "Main Tools",
+  },
   {
     id: "deduction",
     title: "Definite Clause Deduction",

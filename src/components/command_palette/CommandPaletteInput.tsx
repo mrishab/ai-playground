@@ -1,13 +1,17 @@
 import React, { useRef, useEffect } from "react";
 import { Search } from "lucide-react";
 
+interface CommandPaletteInputProps {
+  query: string;
+  onChange: (val: string) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+}
+
 export function CommandPaletteInput({
   query,
   onChange,
-}: {
-  query: string;
-  onChange: (val: string) => void;
-}) {
+  onKeyDown,
+}: CommandPaletteInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => { inputRef.current?.focus(); }, []);
 
@@ -19,6 +23,7 @@ export function CommandPaletteInput({
         aria-label="Search tools and exercises"
         value={query}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={onKeyDown}
         placeholder="Type to search tools, algorithms, exercises..."
         className="w-full h-12 bg-transparent text-sm focus:outline-none placeholder:text-muted-foreground transition-colors duration-150"
       />

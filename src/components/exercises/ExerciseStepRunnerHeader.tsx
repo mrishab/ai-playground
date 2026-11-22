@@ -20,7 +20,7 @@ export function ExerciseStepRunnerHeader({
     <div className="flex items-center justify-between p-2.5 hover:bg-primary/10 transition-colors">
       <button
         onClick={onToggleOpen}
-        className="flex-1 flex items-center justify-between text-xs font-semibold text-primary text-left"
+        className="flex-1 flex items-center justify-between text-xs font-semibold text-primary text-left transition-[color,transform] duration-150 active:scale-[0.99]"
       >
         <span className="flex items-center gap-1.5 truncate">
           <PlayCircle className="h-3.5 w-3.5 shrink-0" />
@@ -31,7 +31,7 @@ export function ExerciseStepRunnerHeader({
       {hasActiveQuestion && onClearQuestion && (
         <button
           onClick={onClearQuestion}
-          className="ml-2 px-1.5 py-0.5 rounded text-[10px] bg-secondary text-muted-foreground hover:text-foreground flex items-center gap-1"
+          className="ml-2 px-1.5 py-0.5 rounded text-[10px] bg-secondary text-muted-foreground hover:text-foreground transition-colors duration-150 active:scale-[0.98] flex items-center gap-1"
         >
           <X className="h-3 w-3" /> Full
         </button>

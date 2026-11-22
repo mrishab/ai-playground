@@ -206,7 +206,9 @@ export function parseProblemXml(xmlString: string): { toolType?: string; problem
   const xmlDoc = parser.parseFromString(xmlString, "application/xml");
   const parserError = xmlDoc.getElementsByTagName("parsererror");
   if (parserError.length > 0) {
-    throw new Error("XML Parse Error: " + (parserError[0].textContent || "Invalid XML format"));
+    const rawMsg = parserError[0].textContent || "Invalid XML format";
+    const cleanMsg = rawMsg.split("\n")[0].replace(/^error on line/i, "Error on line").trim();
+    throw new Error("XML Parse Error: " + cleanMsg);
   }
 
   const root = xmlDoc.documentElement;

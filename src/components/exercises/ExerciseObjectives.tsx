@@ -9,7 +9,7 @@ export function ExerciseObjectives({ goals }: { goals: string[] }) {
       <ul className="space-y-1 text-foreground/80">
         {goals.map((g) => (
           <li key={g} className="flex items-start gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
+            <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
             <span>{g}</span>
           </li>
         ))}

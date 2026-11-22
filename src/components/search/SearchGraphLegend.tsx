@@ -23,6 +23,10 @@ export function SearchGraphLegend() {
         <span className="w-2.5 h-2.5 rounded-full bg-foreground inline-block" />{" "}
         Current
       </span>
+      <span className="flex items-center gap-1">
+        <span className="w-3 h-1 rounded-full bg-primary inline-block" />{" "}
+        Solution
+      </span>
     </div>
   );
 }

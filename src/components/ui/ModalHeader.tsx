@@ -17,7 +17,7 @@ export function ModalHeader({
       <button
         onClick={onClose}
         aria-label="Close dialog"
-        className="rounded-md p-1 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+        className="rounded-md p-1 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors duration-150 active:scale-[0.95]"
       >
         <X className="h-5 w-5" />
       </button>

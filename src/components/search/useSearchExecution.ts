@@ -12,8 +12,7 @@ export function useSearchExecution(
   const s = useSearchState();
 
   const initializeSearch = useCallback(() => {
-    const start =
-      graph.nodes.find((n) => n.id === graph.startNode) || graph.nodes[0];
+    const start = graph.nodes.find((n) => n.id === graph.startNode) || graph.nodes[0];
     const h = start?.h || 0;
     const f = algorithm === "best_first" ? h : algorithm === "lcfs" ? 0 : h;
     s.setFrontier(start ? [{ nodes: [start.id], cost: 0, h, f }] : []);
@@ -23,11 +22,7 @@ export function useSearchExecution(
     s.setIsGoalReached(false);
     s.setHistory([]);
     s.setInspectedNode(null);
-    s.setLog(
-      start
-        ? `Initialized ${algorithm.toUpperCase()} from start node "${start.id}".`
-        : "No nodes in graph.",
-    );
+    s.setLog(start ? `Initialized ${algorithm.toUpperCase()} from start node "${start.id}".` : "No nodes in graph.");
     // react-doctor-disable-next-line react-doctor/exhaustive-deps
   }, [graph, algorithm]);
 

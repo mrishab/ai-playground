@@ -21,19 +21,19 @@ export function ExerciseQuestionItem(p: QuestionItemProps) {
     }`}>
       <div className="font-medium text-foreground leading-relaxed">{p.index + 1}. {p.question.q}</div>
       <div className="flex items-center flex-wrap gap-2 pt-1">
-        <button onClick={p.onToggleHint} className="inline-flex items-center gap-1 text-[11px] text-amber-500 font-medium">
+        <button onClick={p.onToggleHint} className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground font-medium transition-colors duration-150 active:scale-[0.98]">
           <Lightbulb className="h-3.5 w-3.5" />
           {p.isHintOpen ? "Hide Hint" : "View Hint"}
         </button>
         <span className="text-border">•</span>
-        <button onClick={p.onToggleSolution} className="inline-flex items-center gap-1 text-[11px] text-emerald-500 font-medium">
+        <button onClick={p.onToggleSolution} className="inline-flex items-center gap-1 text-[11px] text-primary hover:text-primary/80 font-medium transition-colors duration-150 active:scale-[0.98]">
           <CheckCircle2 className="h-3.5 w-3.5" />
           {p.isSolutionOpen ? "Hide Solution" : "Reveal Solution"}
         </button>
         {p.onExecuteLogic && (
           <>
             <span className="text-border">•</span>
-            <button onClick={p.onExecuteLogic} className={`inline-flex items-center gap-1 text-[11px] font-medium transition-colors ${
+            <button onClick={p.onExecuteLogic} className={`inline-flex items-center gap-1 text-[11px] font-medium transition-colors duration-150 active:scale-[0.98] ${
               p.isActive ? "text-primary font-bold" : "text-primary/80 hover:text-primary"
             }`}>
               <PlayCircle className="h-3.5 w-3.5" />

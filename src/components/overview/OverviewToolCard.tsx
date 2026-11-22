@@ -13,20 +13,27 @@ export function OverviewToolCard({
   return (
     <Card
       onClick={onSelect}
-      className="group cursor-pointer border-border/70 bg-card/50 hover:bg-card hover:border-primary/40 transition-colors p-4 shadow-xs"
+      className="group cursor-pointer border-border/70 bg-card/50 hover:bg-card hover:border-primary/40 transition-colors p-4 shadow-xs flex flex-col justify-between"
     >
-      <div className="flex items-center gap-3">
-        <div className={`p-2.5 rounded-xl border ${tool.color} shrink-0`}>
-          <Icon className="h-5 w-5" />
+      <div className="space-y-2.5">
+        <div className="flex items-center gap-3">
+          <div className={`p-2.5 rounded-xl border ${tool.color} shrink-0`}>
+            <Icon className="h-5 w-5" />
+          </div>
+          <div className="min-w-0">
+            <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
+              {tool.title}
+            </h3>
+            <span className="text-xs text-muted-foreground">
+              {tool.category}
+            </span>
+          </div>
         </div>
-        <div className="min-w-0">
-          <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
-            {tool.title}
-          </h3>
-          <span className="text-xs text-muted-foreground">
-            {tool.category}
-          </span>
-        </div>
+        {tool.description && (
+          <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+            {tool.description}
+          </p>
+        )}
       </div>
     </Card>
   );

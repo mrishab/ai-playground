@@ -34,7 +34,7 @@ export function WorkspaceLogView({ log, history, statsBadges }: WorkspaceLogView
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" onClick={handleCopy}>
-            {copied ? <Check className="w-3.5 h-3.5 mr-1 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5 mr-1" />}
+            {copied ? <Check className="w-3.5 h-3.5 mr-1 text-primary" /> : <Copy className="w-3.5 h-3.5 mr-1" />}
             {copied ? "Copied" : "Copy Trace"}
           </Button>
         </div>

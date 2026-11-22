@@ -19,7 +19,8 @@ export function ToolViewRouter({
   currentView: string;
   onOpenTool: (id: string) => void;
 }) {
-  switch (currentView) {
+  const baseView = currentView.split("?")[0];
+  switch (baseView) {
     case "overview":
       return <OverviewView onSelectTool={onOpenTool} />;
     case "exercises":

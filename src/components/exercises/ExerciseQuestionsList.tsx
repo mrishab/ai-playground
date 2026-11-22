@@ -18,7 +18,7 @@ export function ExerciseQuestionsList(p: QuestionsListProps) {
   return (
     <div className="space-y-3 pt-2">
       <span className="font-semibold text-foreground flex items-center gap-1.5">
-        <HelpCircle className="h-4 w-4 text-cyan-400" />
+        <HelpCircle className="h-4 w-4 text-primary" />
         Directed Assessment Questions
       </span>
       <div className="space-y-2.5">

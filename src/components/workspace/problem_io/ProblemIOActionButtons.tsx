@@ -28,12 +28,12 @@ export function ProblemIOActionButtons({ hasExport, hasReset, hasImport, onExpor
       )}
       {hasReset && (
         <Button variant="outline" size="sm" onClick={onReset} data-testid="reset-problem-btn" title="Reset / Clear Problem" className="text-xs px-2.5 h-8 font-medium gap-1">
-          <RotateCcw className="w-3.5 h-3.5 text-amber-500" /><span>Reset Problem</span>
+          <RotateCcw className="w-3.5 h-3.5 text-muted-foreground" /><span>Reset Problem</span>
         </Button>
       )}
       {hasImport && (
         <Button variant="outline" size="sm" onClick={onOpenImport} data-testid="import-problem-btn" title="Import Problem (JSON or XML)" className="text-xs px-2.5 h-8 font-medium gap-1">
-          <Upload className="w-3.5 h-3.5 text-emerald-500" /><span>Import</span>
+          <Upload className="w-3.5 h-3.5 text-primary" /><span>Import</span>
         </Button>
       )}
     </>

@@ -17,7 +17,7 @@ export function SearchGraphFooter({
       <span className="text-[11px] text-muted-foreground">
         Frontier paths:{" "}
         <strong className="text-primary">{frontierCount}</strong> | Expanded:{" "}
-        <strong className="text-purple-600 dark:text-purple-400">
+        <strong className="text-primary">
           {expandedCount}
         </strong>
       </span>

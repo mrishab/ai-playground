@@ -12,7 +12,7 @@ export function SearchInspectorCard({ node, graph }: SearchInspectorCardProps) {
   if (!node) return null;
 
   return (
-    <Card className="border-cyan-500/30 bg-cyan-950/10 shadow-sm animate-in fade-in">
+    <Card className="border-primary/30 bg-primary/5 shadow-sm animate-in fade-in">
       <CardHeader className="p-4 pb-2">
         <CardTitle className="text-sm flex items-center justify-between">
           <span>Node Inspector: {node.id}</span>
@@ -24,7 +24,7 @@ export function SearchInspectorCard({ node, graph }: SearchInspectorCardProps) {
       <CardContent className="p-4 pt-1 text-xs space-y-1.5">
         <div className="flex justify-between">
           <span className="text-muted-foreground">Heuristic h({node.id}):</span>
-          <span className="font-mono font-bold text-sky-400">{node.h}</span>
+          <span className="font-mono font-bold text-primary">{node.h}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-muted-foreground">Coordinates:</span>
