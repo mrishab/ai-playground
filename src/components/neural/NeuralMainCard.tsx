@@ -16,6 +16,8 @@ interface MainCardProps {
   onAddPoint: (p: DataPoint) => void;
   epoch: number;
   loss: number;
+  bce?: number;
+  accuracy?: number;
   selectedDatasetId: string;
   speed: number;
   setSpeed: (v: number) => void;
@@ -41,6 +43,8 @@ export function NeuralMainCard(p: MainCardProps) {
         onAddPoint={p.onAddPoint}
         epoch={p.epoch}
         loss={p.loss}
+        bce={p.bce}
+        accuracy={p.accuracy}
         selectedDatasetId={p.selectedDatasetId}
         algo={p.algo}
       />

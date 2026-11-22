@@ -40,7 +40,7 @@ export function NeuralHyperparamsCard({
         <div className="space-y-1.5">
           <div className="flex justify-between">
             <span className="text-muted-foreground">Momentum (α):</span>
-            <span className="font-mono text-purple-400 font-bold">
+            <span className="font-mono text-primary font-bold">
               {momentum.toFixed(2)}
             </span>
           </div>

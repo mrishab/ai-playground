@@ -45,3 +45,16 @@ export function trainEpochStep(
   }
   return { mse: totalError / points.length };
 }
+
+export function checkNeuralConvergence(
+  mse: number,
+  pointsLength: number,
+  convergedRef: { current: boolean },
+  setIsPlaying: (p: boolean) => void,
+): void {
+  if (pointsLength > 0 && mse < 0.02 && !convergedRef.current) {
+    setIsPlaying(false);
+    convergedRef.current = true;
+    import("canvas-confetti").then(({ default: confetti }) => confetti({ particleCount: 60, spread: 70 }));
+  }
+}

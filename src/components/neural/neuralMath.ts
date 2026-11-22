@@ -53,3 +53,26 @@ export function computeDatasetMse(points: DataPoint[], weights: NeuralWeights, a
   }
   return totalError / points.length;
 }
+
+export function computeDatasetBce(points: DataPoint[], weights: NeuralWeights, algo: string = "mlp_sgd"): number {
+  if (points.length === 0) return 0;
+  const eps = 1e-7;
+  let totalBce = 0;
+  for (const p of points) {
+    const { output } = forwardPass(p.x, p.y, weights, algo);
+    const pred = Math.max(eps, Math.min(1 - eps, output));
+    totalBce += -(p.label * Math.log(pred) + (1 - p.label) * Math.log(1 - pred));
+  }
+  return totalBce / points.length;
+}
+
+export function computeDatasetAccuracy(points: DataPoint[], weights: NeuralWeights, algo: string = "mlp_sgd"): number {
+  if (points.length === 0) return 0;
+  let correct = 0;
+  for (const p of points) {
+    const { output } = forwardPass(p.x, p.y, weights, algo);
+    const predClass = output >= 0.5 ? 1 : 0;
+    if (predClass === p.label) correct++;
+  }
+  return (correct / points.length) * 100;
+}

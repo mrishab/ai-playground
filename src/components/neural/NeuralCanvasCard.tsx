@@ -10,6 +10,8 @@ export function NeuralCanvasCard({
   onAddPoint,
   epoch,
   loss,
+  bce,
+  accuracy,
   selectedDatasetId,
   algo,
 }: {
@@ -18,6 +20,8 @@ export function NeuralCanvasCard({
   onAddPoint: (p: DataPoint) => void;
   epoch: number;
   loss: number;
+  bce?: number;
+  accuracy?: number;
   selectedDatasetId: string;
   algo?: string;
 }) {
@@ -31,7 +35,13 @@ export function NeuralCanvasCard({
         selectedDatasetId={selectedDatasetId}
         algo={algo}
       />
-      <NeuralMetricsFooter epoch={epoch} loss={loss} pointCount={points.length} />
+      <NeuralMetricsFooter
+        epoch={epoch}
+        loss={loss}
+        bce={bce}
+        accuracy={accuracy}
+        pointCount={points.length}
+      />
     </div>
   );
 }

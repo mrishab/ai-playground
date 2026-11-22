@@ -1,9 +1,14 @@
-import { useState, useRef, useCallback } from "react";
-import confetti from "canvas-confetti";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { DataPoint } from "@/data/neuralProblems";
 import { useSimulationTimer } from "@/hooks/useSimulationTimer";
-import { NeuralWeights, createInitialWeights, computeDatasetMse } from "./neuralMath";
-import { trainEpochStep } from "./neuralTrainer";
+import {
+  NeuralWeights,
+  createInitialWeights,
+  computeDatasetMse,
+  computeDatasetBce,
+  computeDatasetAccuracy,
+} from "./neuralMath";
+import { trainEpochStep, checkNeuralConvergence } from "./neuralTrainer";
 
 export function useNeuralTraining(
   points: DataPoint[], learningRate: number, momentum: number, algo: string = "mlp_sgd",
@@ -18,6 +23,7 @@ export function useNeuralTraining(
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [speed, setSpeed] = useState<number>(600);
   const convergedRef = useRef(false);
+  const isFirstMountRef = useRef(true);
 
   const resetTraining = useCallback(() => {
     setIsPlaying(false);
@@ -29,20 +35,24 @@ export function useNeuralTraining(
     setLossHistory([trueMse]);
   }, [points, algo]);
 
+  useEffect(() => {
+    if (isFirstMountRef.current) { isFirstMountRef.current = false; return; }
+    resetTraining();
+  }, [algo, resetTraining]);
+
   const trainEpoch = useCallback(() => {
     if (points.length === 0) return;
     const { mse } = trainEpochStep(points, weightsRef.current, learningRate, momentum, algo);
     setLoss(mse);
     setEpoch((prev) => prev + 1);
     setLossHistory((prev) => [...prev.slice(-59), mse]);
-    if (points.length > 0 && mse < 0.02 && !convergedRef.current) {
-      if (isPlaying) setIsPlaying(false);
-      convergedRef.current = true;
-      confetti({ particleCount: 60, spread: 70 });
-    }
-  }, [points, learningRate, momentum, algo, isPlaying]);
+    checkNeuralConvergence(mse, points.length, convergedRef, setIsPlaying);
+  }, [points, learningRate, momentum, algo]);
 
   useSimulationTimer(isPlaying, points.length > 0 && (loss >= 0.02 || epoch === 0), trainEpoch, 1050 - speed);
 
-  return { epoch, loss, lossHistory, isPlaying, setIsPlaying, speed, setSpeed, weightsRef, resetTraining, trainEpoch };
+  const bce = computeDatasetBce(points, weightsRef.current, algo);
+  const accuracy = computeDatasetAccuracy(points, weightsRef.current, algo);
+
+  return { epoch, loss, bce, accuracy, lossHistory, isPlaying, setIsPlaying, speed, setSpeed, weightsRef, resetTraining, trainEpoch };
 }

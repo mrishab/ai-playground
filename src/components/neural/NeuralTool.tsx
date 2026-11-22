@@ -25,7 +25,11 @@ export function NeuralTool() {
         d.handleImportDataset(data.problem);
       }}
       onResetProblem={d.handleResetDataset}
-      statsBadges={[{ label: "Points", value: d.points.length, variant: "cyan" }, { label: "Loss", value: d.loss.toFixed(4), variant: d.loss < 0.1 ? "success" : "warning" }]}
+      statsBadges={[
+        { label: "Points", value: d.points.length, variant: "cyan" },
+        { label: "MSE", value: d.loss.toFixed(4), variant: d.loss < 0.1 ? "success" : "warning" },
+        { label: "Acc", value: `${(d.accuracy * 100).toFixed(0)}%`, variant: d.accuracy >= 0.9 ? "success" : "secondary" },
+      ]}
       controls={{
         onReset: d.resetNetwork, onStep: d.trainEpoch, canStep: d.points.length > 0,
         isDone: d.points.length === 0, stepLabel: "1 Epoch",
@@ -37,7 +41,7 @@ export function NeuralTool() {
           isPlaying={d.isPlaying} onTogglePlay={() => d.setIsPlaying(!d.isPlaying)}
           onStep1={d.trainEpoch} onStep10={step10} onReset={d.resetNetwork}
           weightsRef={d.weightsRef} points={d.points} onAddPoint={(p) => d.setPoints((prev) => [...prev, p])}
-          epoch={d.epoch} loss={d.loss} selectedDatasetId={d.selectedDatasetId} speed={d.speed} setSpeed={d.setSpeed}
+          epoch={d.epoch} loss={d.loss} bce={d.bce} accuracy={d.accuracy} selectedDatasetId={d.selectedDatasetId} speed={d.speed} setSpeed={d.setSpeed}
           algo={algo}
         />
       }

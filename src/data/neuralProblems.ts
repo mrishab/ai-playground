@@ -70,76 +70,22 @@ export const NEURAL_DATASETS: NeuralDatasetMap = {
     description:
       "Two interleaving crescent moons testing complex non-linear decision boundary warping.",
     points: [
-      {
-        x: -0.8,
-        y: 0.2,
-        label: 0,
-      },
-      {
-        x: -0.6,
-        y: 0.5,
-        label: 0,
-      },
-      {
-        x: -0.3,
-        y: 0.6,
-        label: 0,
-      },
-      {
-        x: 0.0,
-        y: 0.5,
-        label: 0,
-      },
-      {
-        x: 0.2,
-        y: 0.2,
-        label: 0,
-      },
-      {
-        x: -0.4,
-        y: 0.3,
-        label: 0,
-      },
-      {
-        x: -0.1,
-        y: 0.4,
-        label: 0,
-      },
-      {
-        x: -0.1,
-        y: -0.2,
-        label: 1,
-      },
-      {
-        x: 0.1,
-        y: -0.5,
-        label: 1,
-      },
-      {
-        x: 0.4,
-        y: -0.6,
-        label: 1,
-      },
-      {
-        x: 0.7,
-        y: -0.5,
-        label: 1,
-      },
-      {
-        x: 0.9,
-        y: -0.2,
-        label: 1,
-      },
-      {
-        x: 0.3,
-        y: -0.3,
-        label: 1,
-      },
-      {
-        x: 0.6,
-        y: -0.4,
-        label: 1,
-      },
+      { x: -0.7, y: 0.0, label: 0 },
+      { x: -0.6, y: 0.3, label: 0 },
+      { x: -0.35, y: 0.5, label: 0 },
+      { x: 0.0, y: 0.5, label: 0 },
+      { x: 0.25, y: 0.3, label: 0 },
+      { x: 0.35, y: 0.0, label: 0 },
+      { x: -0.2, y: 0.3, label: 0 },
+      { x: 0.05, y: 0.25, label: 0 },
+      { x: -0.35, y: 0.1, label: 1 },
+      { x: -0.1, y: 0.15, label: 1 },
+      { x: 0.1, y: 0.0, label: 1 },
+      { x: 0.35, y: -0.2, label: 1 },
+      { x: 0.6, y: -0.2, label: 1 },
+      { x: 0.7, y: 0.1, label: 1 },
+      { x: 0.1, y: -0.2, label: 1 },
+      { x: 0.35, y: -0.4, label: 1 },
     ],
   },
   circles: {
