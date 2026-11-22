@@ -25,7 +25,7 @@ export function DTreeGainRankingCard({
               <span className="font-bold text-foreground">{cg.attr}</span>
               {i === 0 && <Badge variant="cyan" className="text-[9px] py-0">Best Split</Badge>}
             </div>
-            <span className="font-mono text-cyan-400 font-semibold">
+            <span className="font-mono text-primary font-semibold">
               {shortName}: {cg.gain.toFixed(4)}
             </span>
           </div>

@@ -34,15 +34,19 @@ export const TreeNodeView = ({
       </div>
     </div>
     {node.children && node.children.length > 0 && (
-      <div className="flex flex-nowrap items-start justify-center gap-6 pt-4 border-t border-border/40 relative min-w-max">
-        {node.children.map((child) => (
-          <div key={child.value} className="flex flex-col items-center space-y-2">
-            <Badge variant="outline" className="text-[10px]">
-              {child.value}
-            </Badge>
-            <TreeNodeView node={child.node} depth={depth + 1} algo={algo} />
-          </div>
-        ))}
+      <div className="flex flex-col items-center w-full">
+        <div className="w-px h-3 bg-border" />
+        <div className="flex flex-nowrap items-start justify-center gap-6 pt-0 border-t border-border relative min-w-max">
+          {node.children.map((child) => (
+            <div key={child.value} className="flex flex-col items-center space-y-1.5 relative">
+              <div className="w-px h-3 bg-border -mt-px" />
+              <Badge variant="outline" className="text-[10px] bg-background/90 font-mono shadow-xs">
+                {child.value}
+              </Badge>
+              <TreeNodeView node={child.node} depth={depth + 1} algo={algo} />
+            </div>
+          ))}
+        </div>
       </div>
     )}
   </div>
