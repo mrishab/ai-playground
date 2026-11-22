@@ -1,18 +1,12 @@
 import { useCallback, useRef } from "react";
-import confetti from "canvas-confetti";
 import { CSPProblem } from "@/data/cspProblems";
 import { executeFineStep } from "./ac3Engine";
 import { useConstraintState } from "./useConstraintState";
-import { findMrvVariable, isCspFullySolved, hasAnyWipeout } from "./ac3MacStep";
+import { findMrvVariable, isCspFullySolved, hasAnyWipeout, handleCspSolved } from "./ac3MacStep";
 
-export function useConstraintStepper(
-  s: ReturnType<typeof useConstraintState>,
-  problem: CSPProblem,
-) {
+export function useConstraintStepper(s: ReturnType<typeof useConstraintState>, problem: CSPProblem) {
   const solvedRef = useRef(false);
-  const resetSolved = useCallback(() => {
-    solvedRef.current = false;
-  }, []);
+  const resetSolved = useCallback(() => { solvedRef.current = false; }, []);
 
   const fineStep = useCallback((): boolean => {
     const res = executeFineStep(s.arcQueue, s.domains, problem);
@@ -20,27 +14,16 @@ export function useConstraintStepper(
     s.setDomains(res.updatedDomains);
     s.setCurrentArc(res.currentArc);
     s.setLog(res.log);
-    if (res.isWipeout) {
-      s.markCurrentSplitFailed();
-    }
-    const solved = isCspFullySolved(res.updatedDomains) && res.updatedQueue.length === 0;
-    if (solved && !solvedRef.current) {
-      solvedRef.current = true;
-      confetti({ particleCount: 50, spread: 60 });
-      s.setLog("CSP completely solved by AC alone!");
-      s.markSplitsSolved();
+    if (res.isWipeout) s.markCurrentSplitFailed();
+    if (isCspFullySolved(res.updatedDomains) && res.updatedQueue.length === 0) {
+      handleCspSolved(s, solvedRef);
     }
     return !res.done;
   }, [s, problem]);
 
   const stepMacSearch = useCallback((): boolean => {
     if (isCspFullySolved(s.domains) && s.arcQueue.length === 0) {
-      if (!solvedRef.current) {
-        solvedRef.current = true;
-        confetti({ particleCount: 60, spread: 70 });
-        s.setLog("CSP solution found!");
-        s.markSplitsSolved();
-      }
+      handleCspSolved(s, solvedRef, "CSP solution found!");
       return false;
     }
     if (hasAnyWipeout(s.domains)) {

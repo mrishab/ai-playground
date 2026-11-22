@@ -15,7 +15,7 @@ export function ConstraintSplitTreeCard({
     <Card className="border-border/80 shadow-sm">
       <CardHeader className="p-4 pb-2">
         <CardTitle className="text-sm font-semibold flex items-center gap-1.5">
-          <GitBranch className="h-4 w-4 text-purple-400" />
+          <GitBranch className="h-4 w-4 text-primary" />
           Domain Splitting Tree
         </CardTitle>
       </CardHeader>
@@ -23,7 +23,7 @@ export function ConstraintSplitTreeCard({
         {splitHistory.map((s, i) => (
           <div
             key={s.id}
-            className="flex items-center justify-between p-2 rounded bg-purple-950/20 border border-purple-500/30 text-purple-200"
+            className="flex items-center justify-between p-2 rounded bg-secondary/50 border border-border text-foreground"
           >
             <span>
               Depth {i + 1}:{" "}

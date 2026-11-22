@@ -28,7 +28,7 @@ export function useHillClimbing() {
     cfg.setIsPlaying(false);
     s.initializeAssignment();
     // react-doctor-disable-next-line react-doctor/exhaustive-deps
-  }, [probState.problem]);
+  }, [probState.problem, cfg.algorithm]);
 
   useSimulationTimer(
     cfg.isPlaying,

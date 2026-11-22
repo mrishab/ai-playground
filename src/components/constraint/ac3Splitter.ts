@@ -71,3 +71,17 @@ export function executeBacktrack(
     alternateValue: last.altValue,
   };
 }
+
+export function updateSplitHistoryOnBacktrack(
+  prev: SplitTreeNode[],
+  res: NonNullable<ReturnType<typeof executeBacktrack>>,
+): SplitTreeNode[] {
+  if (res.exploredAlternate && res.alternateValue) {
+    if (prev.length === 0) return prev;
+    const updated = [...prev];
+    const lastIdx = updated.length - 1;
+    updated[lastIdx] = { ...updated[lastIdx], value: res.alternateValue, status: "active" };
+    return updated;
+  }
+  return prev.slice(0, res.remainingBackups.length);
+}

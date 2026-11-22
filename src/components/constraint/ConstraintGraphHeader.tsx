@@ -17,7 +17,7 @@ export function ConstraintGraphHeader({
       </span>
       <span>
         Active Branch:{" "}
-        <strong className="text-purple-400">
+        <strong className="text-accent-foreground">
           {activeSplitId ? "Split Branch" : "Root"}
         </strong>
       </span>

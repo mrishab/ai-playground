@@ -21,7 +21,7 @@ export function HillAlgorithmSpecificSliders(
       <LabeledSlider
         label="Random Walk Prob (p):"
         value={randomWalkProb.toFixed(2)}
-        colorClass="text-amber-400"
+        colorClass="text-primary"
         min={0.01}
         max={0.9}
         step={0.05}
@@ -36,7 +36,7 @@ export function HillAlgorithmSpecificSliders(
       <LabeledSlider
         label="Temperature (T):"
         value={temperature.toFixed(2)}
-        colorClass="text-rose-400"
+        colorClass="text-destructive"
         min={0.1}
         max={50}
         step={0.5}

@@ -25,3 +25,18 @@ export function isCspFullySolved(domains: VariableDomains): boolean {
 export function hasAnyWipeout(domains: VariableDomains): boolean {
   return Object.values(domains).some((d) => !d || d.length === 0);
 }
+
+export function handleCspSolved(
+  s: { setLog: (l: string) => void; markSplitsSolved: () => void; domainBackups?: any[] },
+  solvedRef: { current: boolean },
+  defaultMsg?: string,
+): void {
+  if (solvedRef.current) return;
+  solvedRef.current = true;
+  import("canvas-confetti").then(({ default: confetti }) => confetti({ particleCount: 50, spread: 60 }));
+  const msg = defaultMsg || (s.domainBackups && s.domainBackups.length > 0
+    ? "CSP completely solved via MAC search (Domain Splitting + AC)!"
+    : "CSP completely solved by AC alone!");
+  s.setLog(msg);
+  s.markSplitsSolved();
+}

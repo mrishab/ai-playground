@@ -14,7 +14,7 @@ export function HillTabuSlider({
     <LabeledSlider
       label="Tabu Tenure:"
       value={String(tabuTenure)}
-      colorClass="text-purple-400"
+      colorClass="text-primary"
       min={1}
       max={20}
       step={1}

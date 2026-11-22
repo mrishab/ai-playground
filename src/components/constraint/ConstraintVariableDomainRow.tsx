@@ -30,7 +30,7 @@ export function ConstraintVariableDomainRow({
                   isPruned
                     ? "bg-destructive/10 text-destructive/50 line-through"
                     : currentVals.length === 1
-                    ? "bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30"
+                    ? "bg-primary/20 text-primary font-bold border border-primary/30"
                     : "bg-primary/10 text-primary border border-primary/20"
               }`}
             >

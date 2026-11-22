@@ -2,6 +2,8 @@ import React from "react";
 import { Badge } from "../ui/Badge";
 import { CSPProblem } from "@/data/cspProblems";
 import { VariableAssignment } from "./hillTypes";
+import { isConstraintViolated } from "./hillEvaluation";
+import { HillActiveConflicts } from "./HillActiveConflicts";
 
 interface HillAssignmentGridProps {
   problem: CSPProblem;
@@ -16,22 +18,19 @@ export function HillAssignmentGrid({
   conflicts,
   stepCount,
 }: HillAssignmentGridProps) {
+  const violatedConstraints = problem.constraints.filter((c) =>
+    isConstraintViolated(c, assignment),
+  );
+
   return (
     <div className="p-4 bg-canvas border-b border-border">
       <div className="flex items-center justify-between mb-3 text-xs">
-        <span className="text-muted-foreground font-semibold">
-          Total Assignment State
-        </span>
+        <span className="text-muted-foreground font-semibold">Total Assignment State</span>
         <div className="flex items-center gap-2">
-          <Badge
-            variant={conflicts === 0 ? "success" : "destructive"}
-            className="font-mono"
-          >
-            {conflicts} Violated Constraints
+          <Badge variant={conflicts === 0 ? "success" : "destructive"} className="font-mono">
+            {conflicts} Violated Constraint{conflicts === 1 ? "" : "s"}
           </Badge>
-          <span className="text-[11px] text-muted-foreground font-mono">
-            Step: {stepCount}
-          </span>
+          <span className="text-[11px] text-muted-foreground font-mono">Step: {stepCount}</span>
         </div>
       </div>
 
@@ -41,15 +40,13 @@ export function HillAssignmentGrid({
             key={v.name}
             className="p-3 rounded-xl bg-card border border-border/80 flex flex-col items-center justify-center space-y-1 shadow-sm transition-colors duration-300 ease-out"
           >
-            <span className="text-xs font-semibold text-muted-foreground">
-              {v.name}
-            </span>
-            <span className="text-base font-bold font-mono text-primary">
-              {assignment[v.name] || "-"}
-            </span>
+            <span className="text-xs font-semibold text-muted-foreground">{v.name}</span>
+            <span className="text-base font-bold font-mono text-primary">{assignment[v.name] || "-"}</span>
           </div>
         ))}
       </div>
+
+      <HillActiveConflicts violatedConstraints={violatedConstraints} assignment={assignment} />
     </div>
   );
 }
