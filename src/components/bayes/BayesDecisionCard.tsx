@@ -41,7 +41,7 @@ export function BayesDecisionCard({
             <div className="flex items-center gap-2">
               <span className="font-mono font-bold text-primary">EU: {alt.eu.toFixed(2)}</span>
               {alt.isOptimal && (
-                <Badge variant="outline" className="text-[10px] py-0 text-emerald-500 border-emerald-500/40">
+                <Badge variant="success" className="text-[10px] py-0">
                   Optimal
                 </Badge>
               )}

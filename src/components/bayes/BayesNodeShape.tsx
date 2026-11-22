@@ -42,7 +42,7 @@ export function BayesNodeShape({ type, isObserved }: BayesNodeShapeProps) {
   if (type === "utility") {
     return (
       <polygon
-        points="0,-28 44,0 0,28 -44,0"
+        points="0,-32 54,0 0,32 -54,0"
         className="fill-primary/20 stroke-primary transition-colors duration-200 ease-out"
         strokeWidth="2"
       />

@@ -27,7 +27,7 @@ export function BayesToolbar({
           <span className="text-muted-foreground text-[11px]">
             Click node to cycle:
           </span>
-          <span className="font-mono text-cyan-400 text-[11px]">
+          <span className="font-mono text-primary text-[11px]">
             Unobserved → Val 1 → Val 2 → None
           </span>
         </div>

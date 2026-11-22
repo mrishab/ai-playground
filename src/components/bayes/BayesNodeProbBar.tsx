@@ -46,7 +46,7 @@ export function BayesNodeProbBar({
         textAnchor="middle"
         className="fill-muted-foreground font-mono text-[8px]"
       >
-        {(pVal1 * 100).toFixed(0)}% {outcome0?.substring(0, 4)}
+        {(pVal1 * 100).toFixed(0)}% {outcome0}
       </text>
     </g>
   );

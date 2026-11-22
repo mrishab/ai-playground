@@ -1,4 +1,4 @@
-import { BayesNetwork, EvidenceMap, NetworkBeliefs } from "@/data/bayesProblems";
+import { BayesNetwork, EvidenceMap, NetworkBeliefs, ParentConfig } from "@/data/bayesProblems";
 import { getCptIndex } from "./bayesCptUtils";
 import { computeBayesBeliefs } from "./bayesEngine";
 
@@ -12,25 +12,27 @@ export function computeRejectionSamplingBeliefs(
 
   const cptMap = new Map(network.cpts.map((c) => [c.target, c]));
 
-  const parentMap: Record<string, string[]> = {};
+  const parentMap = new Map<string, string[]>();
   chanceNodes.forEach((n) => {
-    parentMap[n.id] = cptMap.get(n.id)?.parents || [];
+    parentMap.set(n.id, cptMap.get(n.id)?.parents || []);
   });
 
-  const inDegree: Record<string, number> = {};
+  const inDegree = new Map<string, number>();
   chanceNodes.forEach((n) => {
-    inDegree[n.id] = parentMap[n.id].length;
+    inDegree.set(n.id, (parentMap.get(n.id) || []).length);
   });
 
-  const queue = chanceNodes.filter((n) => inDegree[n.id] === 0).map((n) => n.id);
+  const queue = chanceNodes.filter((n) => (inDegree.get(n.id) || 0) === 0).map((n) => n.id);
   const topoOrder: string[] = [];
   while (queue.length > 0) {
     const curr = queue.shift()!;
     topoOrder.push(curr);
     chanceNodes.forEach((other) => {
-      if (parentMap[other.id].includes(curr) && inDegree[other.id] !== undefined) {
-        inDegree[other.id]--;
-        if (inDegree[other.id] === 0) queue.push(other.id);
+      const parents = parentMap.get(other.id) || [];
+      if (parents.includes(curr)) {
+        const curDeg = inDegree.get(other.id) ?? 0;
+        inDegree.set(other.id, curDeg - 1);
+        if (curDeg - 1 === 0) queue.push(other.id);
       }
     });
   }
@@ -39,12 +41,12 @@ export function computeRejectionSamplingBeliefs(
     if (!topoOrder.includes(n.id)) topoOrder.push(n.id);
   });
 
-  const counts: Record<string, Record<string, number>> = {};
+  const sampleCounts = new Map<string, number>();
+  const sampleKey = (nodeId: string, outcome: string) => `${nodeId}:${outcome}`;
   chanceNodes.forEach((n) => {
-    counts[n.id] = {};
     const outs = n.outcomes.length > 0 ? n.outcomes : ["true", "false"];
     outs.forEach((o) => {
-      counts[n.id][o] = 0;
+      sampleCounts.set(sampleKey(n.id, o), 0);
     });
   });
 
@@ -64,7 +66,7 @@ export function computeRejectionSamplingBeliefs(
         sample[nodeId] = outs[Math.floor(Math.random() * outs.length)];
         continue;
       }
-      const parentConfig: Record<string, string> = {};
+      const parentConfig: ParentConfig = {};
       cpt.parents.forEach((p) => {
         parentConfig[p] = sample[p] || (network.nodes.find((n) => n.id === p)?.outcomes[0] ?? "true");
       });
@@ -90,8 +92,9 @@ export function computeRejectionSamplingBeliefs(
       accepted++;
       topoOrder.forEach((nodeId) => {
         const val = sample[nodeId];
-        if (counts[nodeId] && val) {
-          counts[nodeId][val] = (counts[nodeId][val] || 0) + 1;
+        if (val) {
+          const k = sampleKey(nodeId, val);
+          sampleCounts.set(k, (sampleCounts.get(k) || 0) + 1);
         }
       });
     }
@@ -106,7 +109,8 @@ export function computeRejectionSamplingBeliefs(
     beliefs[n.id] = {};
     const outs = n.outcomes.length > 0 ? n.outcomes : ["true", "false"];
     outs.forEach((o) => {
-      beliefs[n.id][o] = Number((counts[n.id][o] / accepted).toFixed(3));
+      const count = sampleCounts.get(sampleKey(n.id, o)) || 0;
+      beliefs[n.id][o] = Number((count / accepted).toFixed(3));
     });
   });
 

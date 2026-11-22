@@ -31,7 +31,7 @@ export function BayesNodeSvg({
       <BayesNodeShape type={node.type} isObserved={isObserved} />
       <text
         x="0"
-        y="-10"
+        y={node.type === "utility" ? "4" : "-10"}
         textAnchor="middle"
         fontSize="11"
         fontWeight="bold"

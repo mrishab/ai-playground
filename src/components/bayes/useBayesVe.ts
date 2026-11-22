@@ -1,12 +1,11 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { BayesNetwork, EvidenceMap } from "@/data/bayesProblems";
-import { VeStepSnapshot } from "./bayesVeTypes";
+import { VeStepSnapshot, getValidBayesQueryVar } from "./bayesVeTypes";
 import { generateVeSteps } from "./bayesVeEngine";
 import { useSimulationTimer } from "@/hooks/useSimulationTimer";
 
 export function useBayesVe(network: BayesNetwork, evidence: EvidenceMap) {
-  const defaultQuery = network.nodes.find((n) => n.type === "chance" && !evidence[n.id])?.id || network.nodes[0]?.id || "";
-  const [queryVar, setQueryVar] = useState(defaultQuery);
+  const [queryVar, setQueryVar] = useState(() => getValidBayesQueryVar(network, evidence));
   const steps: VeStepSnapshot[] = useMemo(() => generateVeSteps(network, queryVar, evidence), [network, queryVar, evidence]);
   const [stepIndex, setStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -15,10 +14,7 @@ export function useBayesVe(network: BayesNetwork, evidence: EvidenceMap) {
   useEffect(() => {
     const valid = network.nodes.some((n) => n.id === queryVar && n.type === "chance");
     if (!valid) {
-      const fallback = network.nodes.find((n) => n.type === "chance" && !evidence[n.id])?.id
-        || network.nodes.find((n) => n.type === "chance")?.id
-        || network.nodes[0]?.id || "";
-      setQueryVar(fallback);
+      setQueryVar(getValidBayesQueryVar(network, evidence));
       setStepIndex(0);
     }
   }, [network, queryVar, evidence]);
@@ -31,11 +27,8 @@ export function useBayesVe(network: BayesNetwork, evidence: EvidenceMap) {
   const safeStepIndex = Math.min(stepIndex, Math.max(0, steps.length - 1));
 
   const stepForward = useCallback(() => {
-    if (stepIndex >= steps.length - 1) {
-      setIsPlaying(false);
-    } else {
-      setStepIndex((idx) => Math.min(idx + 1, steps.length - 1));
-    }
+    if (stepIndex >= steps.length - 1) setIsPlaying(false);
+    else setStepIndex((idx) => Math.min(idx + 1, steps.length - 1));
   }, [stepIndex, steps.length]);
 
   const stepBack = useCallback(() => setStepIndex((idx) => Math.max(0, idx - 1)), []);
@@ -44,9 +37,7 @@ export function useBayesVe(network: BayesNetwork, evidence: EvidenceMap) {
     if (safeStepIndex >= steps.length - 1) {
       setStepIndex(0);
       setIsPlaying(true);
-    } else {
-      setIsPlaying((p) => !p);
-    }
+    } else setIsPlaying((p) => !p);
   }, [safeStepIndex, steps.length]);
 
   const reset = useCallback(() => {
@@ -56,20 +47,9 @@ export function useBayesVe(network: BayesNetwork, evidence: EvidenceMap) {
 
   useSimulationTimer(isPlaying, safeStepIndex < steps.length - 1, stepForward, 1050 - speed);
 
-  const currentStep = steps[safeStepIndex] || null;
-
   return {
-    queryVar,
-    setQueryVar: handleSetQueryVar,
-    steps,
-    stepIndex: safeStepIndex,
-    currentStep,
-    isPlaying,
-    speed,
-    setSpeed,
-    stepForward,
-    stepBack,
-    togglePlay,
-    reset,
+    queryVar, setQueryVar: handleSetQueryVar, steps, stepIndex: safeStepIndex,
+    currentStep: steps[safeStepIndex] || null, isPlaying, speed, setSpeed,
+    stepForward, stepBack, togglePlay, reset,
   };
 }

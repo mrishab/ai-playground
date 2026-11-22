@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { BayesNetwork, EvidenceMap } from "@/data/bayesProblems";
 import { testDSeparationEngine } from "./dSeparation";
 
@@ -20,6 +20,12 @@ export function useBayesDSep(
     setDsepResult(
       testDSeparationEngine(network, evidence, dsepNodeA, dsepNodeB),
     );
+  }, [network, evidence, dsepNodeA, dsepNodeB]);
+
+  useEffect(() => {
+    if (dsepResult !== null && dsepNodeA && dsepNodeB) {
+      setDsepResult(testDSeparationEngine(network, evidence, dsepNodeA, dsepNodeB));
+    }
   }, [network, evidence, dsepNodeA, dsepNodeB]);
 
   return {
