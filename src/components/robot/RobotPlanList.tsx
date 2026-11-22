@@ -26,9 +26,9 @@ export function RobotPlanList({
               key={`${loc}-${idx}`}
               className={`p-2 rounded-lg flex items-center justify-between font-mono ${
                 isCurrent
-                  ? "bg-purple-950/40 border border-purple-500/40 text-purple-200"
+                  ? "bg-primary/20 border border-primary/40 text-primary"
                   : isDone
-                    ? "bg-emerald-950/20 text-emerald-400/70"
+                    ? "bg-secondary/40 text-muted-foreground"
                     : "bg-secondary/30 text-muted-foreground"
               }`}
             >
@@ -36,7 +36,7 @@ export function RobotPlanList({
                 {idx + 1}. Navigate to "{loc}"
               </span>
               {isDone && (
-                <span className="text-[10px] text-emerald-400">Reached</span>
+                <span className="text-[10px] text-primary">Reached</span>
               )}
               {isCurrent && (
                 <Badge variant="purple" className="text-[9px] py-0">

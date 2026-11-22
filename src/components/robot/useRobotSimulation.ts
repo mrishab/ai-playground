@@ -25,7 +25,7 @@ export function useRobotSimulation() {
 
   useEffect(() => {
     initializeWorld();
-  }, [initializeWorld]);
+  }, [initializeWorld, algo]);
 
   return {
     ...worldState,

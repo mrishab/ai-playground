@@ -30,7 +30,7 @@ export function StripsHorizonToolbar(p: StripsHorizonToolbarProps) {
           <RotateCcw className="h-3.5 w-3.5" />
         </Button>
         <Button variant="outline" size="sm" onClick={p.onTogglePlay} className="h-8 px-2">
-          {p.isPlaying ? <Pause className="h-3.5 w-3.5 text-amber-500 fill-amber-500" /> : <Play className="h-3.5 w-3.5" />}
+          {p.isPlaying ? <Pause className="h-3.5 w-3.5 text-primary fill-primary" /> : <Play className="h-3.5 w-3.5" />}
         </Button>
         <Button variant="outline" size="sm" onClick={p.onStepForward} disabled={isStepDisabled} className="gap-1 h-8 text-xs font-medium">
           <StepForward className="h-3.5 w-3.5" />

@@ -11,8 +11,8 @@ export function isGoalContradictory(problem: PlanningProblem): { contradictory: 
     return { contradictory: false };
   }
 
-  const basesForBlock: Record<string, string> = {};
-  const topsForBlock: Record<string, string> = {};
+  const basesForBlock = new Map<string, string>();
+  const topsForBlock = new Map<string, string>();
 
   for (const g of problem.goal) {
     if (g.predicate === "on" && Array.isArray(g.args) && g.args.length >= 2) {
@@ -22,35 +22,37 @@ export function isGoalContradictory(problem: PlanningProblem): { contradictory: 
         return { contradictory: true, reason: `Block ${top} cannot be stacked onto itself.` };
       }
       // 2. Block on multiple bases
-      if (basesForBlock[top] && basesForBlock[top] !== base) {
+      const existingBase = basesForBlock.get(top);
+      if (existingBase && existingBase !== base) {
         return {
           contradictory: true,
-          reason: `Block ${top} cannot be simultaneously on ${basesForBlock[top]} and ${base}.`,
+          reason: `Block ${top} cannot be simultaneously on ${existingBase} and ${base}.`,
         };
       }
-      basesForBlock[top] = base;
+      basesForBlock.set(top, base);
 
       // 3. Base supporting multiple tops
-      if (topsForBlock[base] && topsForBlock[base] !== top) {
+      const existingTop = topsForBlock.get(base);
+      if (existingTop && existingTop !== top) {
         return {
           contradictory: true,
-          reason: `Block ${base} cannot simultaneously support both ${topsForBlock[base]} and ${top}.`,
+          reason: `Block ${base} cannot simultaneously support both ${existingTop} and ${top}.`,
         };
       }
-      topsForBlock[base] = top;
+      topsForBlock.set(base, top);
     }
   }
 
   // 4. Cycle detection in goal: A -> B -> ... -> A
-  for (const startBlock of Object.keys(basesForBlock)) {
+  for (const startBlock of basesForBlock.keys()) {
     const visited = new Set<string>();
     let curr: string | undefined = startBlock;
-    while (curr && basesForBlock[curr]) {
+    while (curr && basesForBlock.get(curr)) {
       if (visited.has(curr)) {
         return { contradictory: true, reason: `Cycle detected in goal dependencies containing ${curr}.` };
       }
       visited.add(curr);
-      curr = basesForBlock[curr];
+      curr = basesForBlock.get(curr);
     }
   }
 

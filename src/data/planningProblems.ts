@@ -71,9 +71,9 @@ export const PLANNING_PROBLEMS: PlanningProblemMap = {
   },
   simpleSwap: {
     id: "simpleSwap",
-    name: "Simple Two-Block Swap",
+    name: "Simple Two-Block Stacking",
     description:
-      "Swap block A and B on the table into a stacked tower on(A, B).",
+      "Stack block A onto block B from the table to achieve on(A, B).",
     initial: {
       table: ["block1", "block2"],
       stacks: [],

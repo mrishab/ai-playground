@@ -44,7 +44,7 @@ export function StripsTheoryCards({
         <CardContent className="p-4 pt-1 space-y-3 text-xs leading-relaxed">
           {tutorial.keyTakeaways.map((point) => (
             <div key={point} className="flex items-start gap-2.5">
-              <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
+              <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
               <span className="text-foreground/90">{point}</span>
             </div>
           ))}

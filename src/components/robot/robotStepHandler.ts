@@ -27,7 +27,7 @@ export function advanceRobotSimulation(
     };
   }
 
-  const { newPose, sensorWhiskers } = computeNextRobotStep(
+  const { newPose, sensorWhiskers, isStuck } = computeNextRobotStep(
     robotPose,
     targetLoc,
     world,
@@ -37,7 +37,9 @@ export function advanceRobotSimulation(
     arrived: false,
     isComplete: false,
     nextIdx: currentPlanIndex,
-    log: "",
+    log: isStuck
+      ? `Robot trapped in local obstacle minimum (whisker front: ${sensorWhiskers.front}px). Re-planning navigation.`
+      : "",
     newPose,
     sensorWhiskers,
   };

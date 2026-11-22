@@ -48,18 +48,7 @@ export function useStripsToCsp(algo = "bounded_csp") {
   return {
     ...probState,
     tutorial: TOOL_TUTORIALS.strips_to_csp,
-    horizonK,
-    setHorizonK,
-    isSolved,
-    extractedPlan,
-    stepFluents,
-    encodingStats,
-    log,
-    isPlaying,
-    speed,
-    setSpeed,
-    stepForward,
-    resetHorizon,
-    togglePlay,
+    horizonK, setHorizonK, isSolved, extractedPlan, stepFluents, encodingStats,
+    log, isPlaying, speed, setSpeed, stepForward, resetHorizon, togglePlay,
   };
 }

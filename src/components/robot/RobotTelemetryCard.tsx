@@ -21,7 +21,7 @@ export function RobotTelemetryCard({
       <CardContent className="p-4 pt-1 space-y-2.5 text-xs font-mono">
         <div className="flex justify-between items-center p-2 rounded bg-secondary/30">
           <span className="text-muted-foreground">Front Range:</span>
-          <span className="font-bold text-cyan-400">
+          <span className="font-bold text-primary">
             {sensorWhiskers.front} cm
           </span>
         </div>
@@ -39,7 +39,7 @@ export function RobotTelemetryCard({
         </div>
         <div className="flex justify-between items-center p-2 rounded bg-secondary/30">
           <span className="text-muted-foreground">Heading:</span>
-          <span className="font-bold text-amber-400">
+          <span className="font-bold text-foreground">
             {robotPose.angle.toFixed(1)}°
           </span>
         </div>

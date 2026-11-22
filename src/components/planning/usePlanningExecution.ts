@@ -17,9 +17,7 @@ export function usePlanningExecution(
   const [speed, setSpeed] = useState<number>(600);
 
   const initializeBlocks = useCallback(() => {
-    // react-doctor-disable-next-line react-doctor/no-adjust-state-on-prop-change
     setIsExecuting(false);
-    // react-doctor-disable-next-line react-doctor/no-adjust-state-on-prop-change
     setCurrentStepIndex(0);
     world.resetWorld();
     const { steps, log, isUnsolvable: unsolvable } = initPlanState(problem, plannerType);
@@ -28,16 +26,16 @@ export function usePlanningExecution(
     world.setLog(log);
   }, [problem, plannerType, world.resetWorld, world.setLog]);
 
-  useEffect(() => {
-    // react-doctor-disable-next-line react-doctor/no-pass-live-state-to-parent
-    initializeBlocks();
-  }, [initializeBlocks]);
+  useEffect(() => { initializeBlocks(); }, [initializeBlocks]);
 
   const stepExecution = useCallback(() => {
+    if (isUnsolvable || planSteps.length === 0) {
+      setIsExecuting(false);
+      world.setLog(isUnsolvable ? "Planning problem is contradictory or unsolvable." : "No steps to execute.");
+      return;
+    }
     if (currentStepIndex >= planSteps.length) {
       setIsExecuting(false);
-      world.setLog("Goal configuration reached! Plan execution complete.");
-      firePlanningConfetti(70, 80);
       return;
     }
     world.applyStep(planSteps[currentStepIndex]);
@@ -48,19 +46,12 @@ export function usePlanningExecution(
       world.setLog("Goal configuration reached! Plan execution complete.");
       firePlanningConfetti(70, 80);
     }
-  }, [currentStepIndex, planSteps, world.applyStep, world.setLog]);
+  }, [currentStepIndex, isUnsolvable, planSteps, world.applyStep, world.setLog]);
 
   useSimulationTimer(isExecuting, currentStepIndex < planSteps.length, stepExecution, 1050 - speed);
 
   return {
-    currentStepIndex,
-    isExecuting,
-    setIsExecuting,
-    planSteps,
-    isUnsolvable,
-    speed,
-    setSpeed,
-    initializeBlocks,
-    stepExecution,
+    currentStepIndex, isExecuting, setIsExecuting, planSteps, isUnsolvable,
+    speed, setSpeed, initializeBlocks, stepExecution,
   };
 }

@@ -14,7 +14,7 @@ interface PlanningToolbarProps {
 }
 
 export function PlanningToolbar(p: PlanningToolbarProps) {
-  const isDone = p.currentStepIndex >= p.totalSteps;
+  const isDone = p.totalSteps === 0 || p.currentStepIndex >= p.totalSteps;
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-2 p-3 bg-secondary/30 border-b border-border text-xs" aria-label="Planning Canvas Controls">

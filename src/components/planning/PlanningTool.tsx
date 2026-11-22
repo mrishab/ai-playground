@@ -32,6 +32,7 @@ export function PlanningTool() {
         onStep: d.stepExecution, stepLabel: "Advance", isPlaying: d.isExecuting,
         onTogglePlay: () => d.setIsExecuting(!d.isExecuting), onReset: d.initializeBlocks,
         speed: d.speed, setSpeed: d.setSpeed, isDone: isGoalAchieved || isUnsolvable,
+        canStep: !isUnsolvable && d.planSteps.length > 0 && d.currentStepIndex < d.planSteps.length,
       }}
       animationSlot={
         <PlanningCanvasCard

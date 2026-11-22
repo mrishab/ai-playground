@@ -18,6 +18,9 @@ export function applyRobotStep(
   } else {
     poseState.setSensorWhiskers(res.sensorWhiskers);
     poseState.setRobotPose(res.newPose);
+    if (res.log) {
+      poseState.setLog(res.log);
+    }
     if (
       res.newPose.x !== poseState.robotPose.x ||
       res.newPose.y !== poseState.robotPose.y

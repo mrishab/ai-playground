@@ -3,6 +3,7 @@ import { PLANNING_PROBLEMS, PlanningProblem } from "@/data/planningProblems";
 import { TOOL_TUTORIALS } from "@/data/toolTutorials";
 import { usePlanningWorld } from "./usePlanningWorld";
 import { usePlanningExecution } from "./usePlanningExecution";
+import { BLANK_PLANNING_PROBLEM, normalizePlanningProblem } from "./planningToolUtils";
 
 export function usePlanningTool() {
   const [selectedProblemId, setSelectedProblemId] = useState<string>("sussman");
@@ -16,24 +17,12 @@ export function usePlanningTool() {
   const [plannerType, setPlannerType] = useState<"forward" | "regression">("forward");
 
   const handleImportProblem = (imported: PlanningProblem) => {
-    setCustomProblem({
-      ...imported,
-      initial: imported.initial || { table: [], stacks: [], holding: null, clear: [] },
-      blocks: Array.isArray(imported.blocks) ? imported.blocks : [],
-      goal: Array.isArray(imported.goal) ? imported.goal : [],
-    });
+    setCustomProblem(normalizePlanningProblem(imported));
     setSelectedProblemId("custom");
   };
 
   const handleResetProblem = () => {
-    setCustomProblem({
-      id: "blank",
-      name: "Empty Planning World",
-      description: "Reset empty blocks world",
-      initial: { table: [], stacks: [], holding: null, clear: [] },
-      goal: [],
-      blocks: [],
-    });
+    setCustomProblem(BLANK_PLANNING_PROBLEM);
     setSelectedProblemId("custom");
   };
 
